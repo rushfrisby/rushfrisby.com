@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>Rush Frisby</title>
+<meta name="HandheldFriendly" content="True" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="stylesheet" type="text/css" href="/css/screen.css" />
+<link rel="stylesheet" type="text/css" href="/css/webkid.css" />
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+<meta property="og:site_name" content="Rush Frisby" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Rush Frisby" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Rush Frisby" />
+<meta name="twitter:label1" content="Written by" />
+<meta name="twitter:data1" content="Rush Frisby" />
+<!--<link rel="alternate" type="application/rss+xml" title="Rush Frisby's Blog" href="https://rushfrisby.com/rss/" />-->
+</head>
+<body class="post-template">
+<link rel="stylesheet" href="/css/prism.css">
+<script src="/js/prism.js" type="text/javascript"></script>
+<header id="header">
+<nav class="header-nav" ">
+<div class="blog-title"><a href="/">Rush Frisby</a></div>
+<div class="blog-description">Thoughts on software and technology.</div>
+
+<div class="taglist-wrapper clearfix">
+<ul id="taglist" class="taglist">
+<li class="nav-home" role="presentation">
+<a href="/">Home</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/about">About</a>
+</li>
+<li class="nav-mechanical-keyboards" role="presentation">
+<a href="/mechanical-keyboards">Mechanical Keyboards</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/tags">Tags</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/archive">Archive</a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<main id="content" class="content" role="main">
+<div id="article" class="box ">
+<article class='post'>
+<header class='post-header'>
+<a href='/interface-to-rpc-service'><h1 class='post-title'>Interface to RPC Service</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2018-08-02'>Thursday, August 2, 2018</time>
+</section>
+</header>
+<section class='post-content'>
+<p>I'm currently working on <a href="https://github.com/rushfrisby/InterfaceRpc">a project to quickly stand up an RPC service</a> based on an interface. It's a .NET Standard library. Here's how it works.</p>
+
+<p>Let's say you have an interface,  </p>
+
+<pre><code>public interface IEchoService  
+{
+    string Echo(string echo);
+}
+</code></pre>
+
+<p>, and you have an implementation that needs to be exposed so that others can call it. I chose HTTP for this.</p>
+
+<p>On the server I use <code>HttpListener</code> to create a web server and listen for requests. When a request comes in the path maps to a method name. For example, if my web server is listening on <code>http://localhost:6000/</code> and a request for <code>http://localhost:6000/Echo</code> comes in - that maps to the <code>Echo</code> method on the interface... then I use reflection to call it on the implementation that was provided.</p>
+
+<p>If <code>Echo</code> didn't map to a method on the interface then a 404 response is returned.</p>
+
+<p>In my library all HTTP requests are POSTs. The content is deserialized based upon the <code>Content-Type</code> header value of the request. I am using another library I created to handle this called <a href="https://github.com/rushfrisby/SerializerDotNet">SerializerDotNet</a>. At the time of writing it supports JSON and Protobuf. The same serializer used for deserialization is also used to return data in the response and the response's <code>Content-Type</code> is the same as the incoming request.</p>
+
+<p>Remember when I said "quickly stand up an RPC service"? This is how quickly it's done...  </p>
+
+<pre><code>var svc = new RpcService&lt;IEchoService&gt;(new EchoService());  
+svc.Start();  
+</code></pre>
+
+<p>To use this in your own project add <a href="https://www.nuget.org/packages/InterfaceRpc.Service/">InterfaceRpc.Service</a> to your project using NuGet.</p>
+
+<p>There is a file called <code>rpcsettings.json</code> where you can specify additional settings. Currently only the web server prefixes and number of connections.</p>
+
+<p>To create a client it's just as easy...  </p>
+
+<pre><code>var client = new RpcClient&lt;IEchoService&gt;.Create("http://localhost:6000/");  
+</code></pre>
+
+<p>To use this in your own project add <a href="https://www.nuget.org/packages/InterfaceRpc.Client/">InterfaceRpc.Client</a> to your project using NuGet.</p>
+
+<p>By default it uses <code>JsonSerializer</code>. There is an optional 2nd argument where you can specify the type of <code>ISerializer</code> (like <code>ProtobufSerializer</code>)</p>
+
+<p>Then you can call any method defined in your interface:</p>
+
+<pre><code>var echoed = client.Echo("hello");  
+</code></pre>
+
+<h4 id="limitations">Limitations</h4>
+
+<p>(stuff I could use help on)</p>
+
+<ul>
+<li><p>I punted on handling SSL certs so it only runs over plain HTTP right now. This seems reasonable given that it's common to setup a load balancer or proxy in front of web sites and services.</p></li>
+<li><p>8 parameters in method signatures - this can expand to more in the future, if needed, but I think once you get this many it's better to create a class with properties for each and use 1 parameter in the signature.</p></li>
+<li><p>Because of limitations with <code>ValueTuple</code>, text based serialization reads a little funky, but I'm sure Microsoft will fix this in future versions of .NET Standard. In the meantime I'm curious to see what people think about having "Item1", "Item2", etc... map to method parameters. There could be some work done to replace these with parameter names but it would add (unnecessary?) overhead.</p></li>
+<li><p>A good name. Any suggestions?</p></li>
+<li><p>See the <a href="https://github.com/rushfrisby/InterfaceRpc/issues">issues list on github</a> for more</p></li>
+</ul>
+
+<h4 id="why">Why?</h4>
+
+<p>This will help tremendously in moving off of WCF / .NET Framework and onto .NET Core. WCF clients aren't supported in .NET Core. The good thing about WCF is that it is interface-based, so swapping out a server implementation is relatively easy. Assuming a <code>ChannelFactory</code> was used for the client, it can be replaced even easier.</p>
+
+<p>If you'd like to help in fleshing this idea out more please contribute through the <a href="https://github.com/rushfrisby/InterfaceRpc">github repo</a>!</p>
+
+<table width="100%" style="border:1px solid #c0c0c0;">  
+<tr>  
+<td nowrap="nowrap"><a href="https://www.nuget.org/packages/InterfaceRpc.Service/" target="_blank">InterfaceRpc.Service</a></td>  
+<td width="100%"><a href="https://www.nuget.org/packages/InterfaceRpc.Service/" target="_blank"><img src="https://img.shields.io/nuget/v/InterfaceRpc.Service.svg?style=flat" alt="NuGet Status" style="display:inline;padding:0" /></a></td>  
+</tr>  
+<tr>  
+<td nowrap="nowrap"><a href="https://www.nuget.org/packages/InterfaceRpc.Client/" target="_blank">InterfaceRpc.Client</a></td>  
+<td width="100%"><a href="https://www.nuget.org/packages/InterfaceRpc.Client/" target="_blank"><img src="https://img.shields.io/nuget/v/InterfaceRpc.Client.svg?style=flat" alt="NuGet Status" style="display:inline;padding:0" /></a></td>  
+</tr>  
+</table>
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+<article class='post'>
+<header class='post-header'>
+<a href='/losing-our-memory'><h1 class='post-title'>Losing Our Memory</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2017-12-08'>Friday, December 8, 2017</time>
+</section>
+</header>
+<section class='post-content'>
+<p>I read <a href="http://www.hanselman.com/blog/WhenDidWeStopCaringAboutMemoryManagement.aspx">this post by Scott Hanselman</a> a while back and agree with him in that memory management in .NET is not a concern for developers. I have not thought directly about any of the items he listed within the last 10 years. I learned low level programming early on but once I moved into higher level languages, memory management became something I thought about less and less. There are three factors that contribute to this: Memory capacity, cost, and management.</p>
+
+<p>Memory capacity took a huge jump in the late 2000s. It became common for run-of-the-mill servers to have 16GB+ of RAM. The amount of memory available now is so excessive that database servers can run entirely in memory. In the unlikely event that memory runs out, the emergence of the cloud and auto-scaling saves us - which brings me to my next point.</p>
+
+<p>Memory costs nothing! It's so cheap that maxing out a server with the most RAM possible is expected. If your server is running in the cloud it's not even worth mentioning "memory". The cost of cloud servers is cheap and auto-scaling means you're only paying for what you need anyways. If you need more memory the cloud will give it to you automatically and for the most part without you even knowing!</p>
+
+<p>The third reason why, and most specifically for .NET developers, is that the garbage collector does a darn good job of memory management. This was one of the original selling features of the framework! Let the GC handle what it was meant to do and let developers solve the problem at hand.</p>
+
+<p>Recently I've thought a lot memory management. That's because my company develops firmware in C on handheld devices with a low amount of memory. Hardware specs aren't something companies change regularly and we have a good sourcing cost for the chips we get. Let's just say that there is no incentive to add more memory so developers have to make-do with what they've got.</p>
+
+<p>I'm not writing C, so I'm not thinking about memory directly, but I'm writing web services that are consumed by these devices. Here are some things I have to keep in mind during development:</p>
+
+<ul>
+<li>The serialization format must be compatible and performant on our device.</li>
+<li>The data types returned must be platform agnostic.</li>
+<li>The data structures must adhere to a strict contract.</li>
+<li>The size of each piece of data could be an issue.</li>
+<li>The overall size of requests and responses must be as small as possible.</li>
+</ul>
+
+<p>If all of these criteria are met then I have a <em>pretty good</em> chance of the device being able to work well with the service.</p>
+
+<p>As far as the technologies I chose, I went with Protobuf for serialization. It's fast and produces small output. It's supported on all of the systems &amp; languages my company is working with. Both the software and firmware teams can utilize .proto definitions as contracts and generate structures/classes from them. Protobuf isn't a silver bullet though. I still need to be mindful of the data I am working with...</p>
+
+<p>For example, before our device can communicate with the service it must obtain a security token (a <code>string</code>). I found bug in the the way the security token was generated, so I fixed it, and pushed a new version of the service out. Suddenly our devices stopped working! What happened?</p>
+
+<p>It turns out that the token, before my fix, was 1000 characters long. The firmware team allocated 1000 characters for that field in their code. When I made my fix the token generated was 1200 characters long. The device was truncating the string and subsequent requests to the service couldn't be validated because the token wasn't correct. I hadn't given one thought to the size of token value because a <code>string</code> type in .NET can hold a variable length (fairly large) string no problem. On our devices though, that 1000 characters was critical!</p>
+
+<p>In conclusion, I don't expect .NET developers will actively pay attention to memory management. They should keep it in the back of their mind at all times though. It's important to know how the framework you are working with deals with memory. It would be a good investment to dig deep into it when beginning to learn a new framework. Once .NET Core becomes more prevalent I expect memory management will garner some attention, but ultimately it will end up in the state that .NET Framework developers are in now - ignorance.</p>
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+<article class='post'>
+<header class='post-header'>
+<a href='/are-coding-bootcamps-worth-it'><h1 class='post-title'>Are Coding Bootcamps Worth It?</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2017-08-20'>Sunday, August 20, 2017</time>
+</section>
+</header>
+<section class='post-content'>
+<p>I watched a John Sonmez video today on "Why Are Coding Bootcamps SO EXPENSIVE?" which is embedded below.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nmp86zZ2BWU?ecver=1" frameborder="0" allowfullscreen></iframe>
+
+<p>Normally John gives great advice but I have to disagree with him on this topic. Yes bootcamps are expensive, but the real questions is, <strong>are they worth it</strong>? I don't think so and here is why...</p>
+
+<p>I am the Software Development Manager at <a href="http://www.lsq.com">LSQ</a>. Over the past six month I've had both front-end and back-end software development positions open. I've read thousands resumes and interviewed hundreds of candidates who have come straight out of coding bootcamps looking for a job. The reason why I haven't given any of them a job offer is due to the problems I describe below.</p>
+
+<p>The first problem I've found with bootcamps is that 3 months (or less) is not enough time to gain adequate knowledge that would equip someone to make an impact on the job. During my interview process I ask candidates to write code (using CoderPad) and most of the time they fail. For example, I asked one candidate to list a number of things using HTML and CSS. Inside each item in the list there was one element aligned to the left and one to the right. The candidate was having trouble doing this so I suggested using floats. The response I got was "What are floats?". Incredible! Three months just isn't enough time. That is basic stuff though - I wonder why they don't cover it?</p>
+
+<p>The second problem is that candidates have no drive. They think they deserve everything even though they've done nothing. They're thinking is, "If I shell out $10K for bootcamp"... "companies will be pounding on my door with $100K/yr job offers.", which is such a lazy mentality that it's scary to think that that's how our society thinks. You won't get a (good) job with no experience. On top of that, candidates don't do any research into the company they are interviewing at. I want candidates who are passionate about what LSQ is doing. I'd like to see someone figure out and tell me what our problems are, and potential solutions, when they come to the interview: study and be prepared!</p>
+
+<p>The third problem is that every candidate looks exactly the same. <strong>Exactly. The. Same.</strong> They all have github accounts with the same repos for the same projects they completed during the same bootcamp. All of the repos have the same <em>boring</em> code in them. There is no Art, Creativity, or Craftsmanship in the code candidates write. If you want to distinguish yourself from everyone else you need to stand out. Work on open source projects outside of the bootcamp; create a fictional company and build solutions for solving the problems that company would face; whatever it is you need to do to stand out - do it!</p>
+
+<p>In conclusion, bootcamps aren't helping anyone. They're not get rich quick schemes. Software development is a craft. If you're interested in doing it as a career it's better off to learn on your own for a longer (than 3 month) period of time. Take an internship to get you in the door. Start small and build a foundation that a career can be built on.</p>
+
+<h4 id="followup">Follow Up</h4>
+
+<p>I should have mentioned this in my original post, but, a couple of nation-wide coding bootcamps have shut down recently. Both "Dev Bootcamp" and "The Iron Yard" will cease to exist. This is a good indication that bootcamps are not worth it! You can <a href="https://www.edsurge.com/news/2017-07-20-another-major-coding-bootcamp-iron-yard-announces-closure">read more about the closures here</a>.</p>
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+<article class='post'>
+<header class='post-header'>
+<a href='/meetup-using-protobuf-in-net'><h1 class='post-title'>Meetup: Using Protobuf in .NET</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2017-08-08'>Tuesday, August 8, 2017</time>
+</section>
+</header>
+<section class='post-content'>
+<p>Protocol Buffers is a method of serializing structured data. It is useful in developing programs to communicate with each other over a wire or for storing data.</p>
+
+<p>On August 10<sup>th</sup> I will be speaking at the Orlando .NET User Group <a href="https://www.meetup.com/ONETUG/events/241115418/">meetup on Using Protobuf in .NET</a>. Come check it out if you are interested in this cool technology! The meetup starts at 6PM at the Melrose Tech Center inside the downtown Orlando Library. Afterwards the group heads over to Harp &amp; Celt for food and drinks over more tech talk!</p>
+
+<p><img src="https://secure.meetupstatic.com/photos/event/e/a/4/4/highres_362039972.jpeg" alt="" /></p>
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+<article class='post'>
+<header class='post-header'>
+<a href='/application-security-and-single-sign-on'><h1 class='post-title'>Application Security and Single Sign On</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-12-16'>Friday, December 16, 2016</time>
+</section>
+</header>
+<section class='post-content'>
+<p>In 2017 I will be developing <a href="https://github.com/rushfrisby/AppSecSSO">a new, open source, application security and single sign on solution</a>. It will compete directly with <a href="https://www.onelogin.com/">OneLogin</a> and <a href="https://www.okta.com/">Okta</a>. Since 2000 I have built four solutions just like this.</p>
+
+<p>In 2000 I took my first stab at this for <a href="https://www.google.com/?q=EVLogix">EVLogix</a>. My solution consisted of a few classes and a few web pages that secured our main web app, using classic ASP. I'm sure it was completely insecure. I hope it's not still being used.</p>
+
+<p>In 2008 I had a grand idea to create an "application framework" which provided a dashboard for users to launch their web applications and gave developers a way of managing apps and accounts. I was building user-management-type-stuff into every app I wrote and this would allow me to skip that and just get to the point of what each app was meant to do. I created a LLC and developed the source under it. Eventually I abandoned the project when I realized what I had built could be done better. It was .NET based but was using ASP.NET web forms and the API requests were parsed and constructed in a non-standard way.</p>
+
+<p>In 2010 I built a new solution for the company I was working for at the time, <a href="http://www.digitalrisk.com/">Digital Risk</a>. The web portion was built using ASP.NET MVC and the API moved to a WCF service. This was much improved, however, some design choices were poor and I started securing other WCF services with it. This resulted in security overload and made it frustrating for other developers to use.</p>
+
+<p>In 2014 I built another solution for <a href="http://derivesystems.com/">Derive Systems</a> (who I currently work for). The web portion and API are again written in ASP.NET MVC and WCF, but I didn't make any mistakes I had made previously. It's secure and easy for developers to use with web, mobile, and desktop apps.</p>
+
+<p><strong>So why am I developing yet another solution?</strong></p>
+
+<p>My primary reason is to use this as a way of learning <a href="https://www.microsoft.com/net/core/platform">.NET Core</a>. .NET Core is cross-platform so it can be hosted on <strong>Windows <em>and</em> Linux</strong>. I also want the solution to be open-source to promote broader use and gain input from different people. I am a big fan of <a href="https://github.com/">GitHub</a> so I am hosting the source on there.</p>
+
+<p>I haven't decided on one thing yet - whether the solution will be simultaneously used for profit or not. <a href="https://exceptionless.com/">Exceptionless</a> currently works on this model and they do a good job of it. I recently listened to a podcast on <a href="https://a16z.com/">Andreessen Horowitz</a> in which they said this model is gaining popularity. Using the solution for profit will affect the type of open-source community members that choose to contribute so I am taking that into consideration as well.</p>
+
+<p>I am looking for community members who want to get involved early. If so, <a href="mailto:rush@rushfrisby.com?subject=Your AppSecSSO project">shoot me an email</a>, <a href="https://twitter.com/rushonerok/">hit me up on twitter</a>, or <a href="https://github.com/rushfrisby/AppSecSSO/issues">create some issues</a> on GitHub!</p>
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+</div>
+<div id="sidebar"><div class="box sidebox about">
+<div class="sidebox-title">About</div>
+<div class="sidebox-content">
+<p class="center"><img src="/img/rush_headshot_2018_256-min.jpg" title="Rush Frisby" alt="Rush Frisby" width="256" height="256" /></p>
+<p>Rush is a software architect who loves solving problems. You'll usually find him writing about security concepts and sharing solutions to problems he's faced.</p>
+</div>
+</div>
+<div class="sidebox box social clearfix">
+<ul>
+<a href="/rss" target="_blank" class="social-item rss"><li><i class="fa fa-rss"></i></li></a>
+<a href="https://twitter.com/rushonerok" target="_blank" class="social-item tw"><li><i class="fa fa-twitter"></i></li></a>
+<a href="http://github.com/rushfrisby" class="social-item github"><li><i class="fa fa-github"></i></li></a>
+<a href="/" class="social-item home"><li><i class="fa fa-home"></i></li></a>
+</ul>
+</div>
+<div class='box sidebox latest-articles'>
+<div class='sidebox-title'>Latest Articles</div>
+<div class='sidebox-content'>
+<a href='/interface-to-rpc-service'><div class='date'>2 AUG 2018</div><div>Interface to RPC Service</div></a>
+<a href='/losing-our-memory'><div class='date'>8 DEC 2017</div><div>Losing Our Memory</div></a>
+<a href='/are-coding-bootcamps-worth-it'><div class='date'>20 AUG 2017</div><div>Are Coding Bootcamps Worth It?</div></a>
+<a href='/meetup-using-protobuf-in-net'><div class='date'>8 AUG 2017</div><div>Meetup: Using Protobuf in .NET</div></a>
+<a href='/application-security-and-single-sign-on'><div class='date'>16 DEC 2016</div><div>Application Security and Single Sign On</div></a>
+</div>
+</div>
+
+</main>
+<footer class="site-footer clearfix">
+<section class="copyright"><a href="https://rushfrisby.com">Rush Frisby</a> &copy; 2018</section>
+<section class="poweredby">Proudly published with my own blog engine</section>
+</footer>
+<script type="text/javascript">
+var links = document.links;
+for (var i = 0, linksLength = links.length; i < linksLength; i++) {
+   if (links[i].hostname != window.location.hostname) {
+       links[i].target = '_blank';
+   } 
+}
+</script>
+<script type="text/javascript" src="/js/jquery.min.js?v=800fecc11f"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js?v=800fecc11f"></script>
+<script type="text/javascript" src="/js/jquery.xml2json.js?v=800fecc11f"></script>
+<script type="text/javascript" src="/js/index.js?v=800fecc11f"></script>
+<script type="text/javascript" src="/js/webkid.js?v=800fecc11f"></script>
+</body>
+</html>

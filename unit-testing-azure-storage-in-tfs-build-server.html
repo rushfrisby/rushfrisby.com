@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>Unit Testing Azure Storage in TFS/Build Server</title>
+<meta name="HandheldFriendly" content="True" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="stylesheet" type="text/css" href="/css/screen.css" />
+<link rel="stylesheet" type="text/css" href="/css/webkid.css" />
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+<meta property="og:site_name" content="Rush Frisby" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Unit Testing Azure Storage in TFS/Build Server" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Unit Testing Azure Storage in TFS/Build Server" />
+<meta name="twitter:label1" content="Written by" />
+<meta name="twitter:data1" content="Rush Frisby" />
+<!--<link rel="alternate" type="application/rss+xml" title="Rush Frisby's Blog" href="https://rushfrisby.com/rss/" />-->
+</head>
+<body class="post-template">
+<link rel="stylesheet" href="/css/prism.css">
+<script src="/js/prism.js" type="text/javascript"></script>
+<header id="header">
+<nav class="header-nav" ">
+<div class="blog-title"><a href="/">Rush Frisby</a></div>
+<div class="blog-description">Thoughts on software and technology.</div>
+
+<div class="taglist-wrapper clearfix">
+<ul id="taglist" class="taglist">
+<li class="nav-home" role="presentation">
+<a href="/">Home</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/about">About</a>
+</li>
+<li class="nav-mechanical-keyboards" role="presentation">
+<a href="/mechanical-keyboards">Mechanical Keyboards</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/tags">Tags</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/archive">Archive</a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<main id="content" class="content" role="main">
+<div id="article" class="box ">
+<article class='post'>
+<header class='post-header'>
+<a href='/unit-testing-azure-storage-in-tfs-build-server'><h1 class='post-title'>Unit Testing Azure Storage in TFS/Build Server</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2014-12-02'>Tuesday, December 2, 2014</time>
+</section>
+</header>
+<section class='post-content'>
+<p>I’ve been working on a project that saves and reads blobs from Azure. I created a unit test for this functionality. Instead of making calls to Azure proper, I am running the Azure Storage Emulator so that I don’t incur any cost. “It works on my machine!” …but when I check my code into TFS and do a build on the server, the unit test fails because the Storage Emulator is not running. If I remote desktop into the server and start the Storage Emulator then the unit test passes. Starting the emulator manually is a problem because if the server reboots then I have to remember to start that up again and I won’t know about it until the test fails. Other developers might not know to do this either.</p>
+
+<p>To combat this problem I tried starting the emulator with a scheduled task that runs when the server starts. This did not work. I’m not sure why but it just didn’t. Task Scheduler says the task is running but I don’t see it in Task Manager and my unit test fails. I can only assume that the Task Manager status is wrong and <em>something</em> that it doesn’t know about isn’t working. It would be nice if Microsoft created the emulator so that it runs as a Windows Service instead.</p>
+
+<p>I Googled for a solution and came up empty except for one article that mentioned starting the emulator from within code. In order to detect if the emulator is running or not, first you need to access a storage container. If you get a StorageException then the emulator isn’t running and you know to start it. This seems like a hacky solution but I tried it and it works. Here is what I ended up with:</p>
+
+<script src="https://gist.github.com/rushfrisby/43344de7882b53ae0d77.js"></script>
+
+<p>The first line of that method checks a config setting that will let me turn the hack on/off. You won’t need it when you move to production because Azure is always on.</p>
+
+<p>One thing to note is that your build controller must be using a user account and not a built-in account. This is because the storage emulator stores it’s settings in the user’s directory. I created a local administrator account on my build server to run the build controller as.</p>
+</section>
+<footer class='post-footer'>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='fa fa-twitter' href='https://twitter.com/share?text=Unit+Testing+Azure+Storage+in+TFS%2fBuild+Server&amp;url=' onclick='window.open(this.href + window.location.href, 'twitter-share', 'width=550,height=235');return false;' target='_blank'>
+<span class='hidden'>Twitter</span>
+</a>
+<a class='fa fa-facebook' href='https://www.facebook.com/sharer/sharer.php?u=' onclick='window.open(this.href + window.location.href, 'facebook-share','width=580,height=296');return false;' target='_blank'>
+<span class='hidden'>Facebook</span>
+</a>
+<a class='fa fa-google' href='https://plus.google.com/share?url=' onclick='window.open(this.href + window.location.href, 'google-plus-share', 'width=490,height=530');return false;' target='_blank'>
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+<div id="disqus_thread">
+	<iframe id="dsq-app9441" name="dsq-app9441" allowtransparency="true" scrolling="no" tabindex="0" title="Disqus" style="width: 1px !important; min-width: 100% !important; border: medium none !important; overflow: hidden !important; height: 727px !important;" src="https://disqus.com/embed/comments/?base=default&amp;f=rushfrisby&amp;t_i=&amp;t_u=https%3A%2F%2Frushfrisby.com%2Finterface-to-rpc-service%2F&amp;t_d=Interface%20to%20RPC%20Service&amp;t_t=Interface%20to%20RPC%20Service&amp;s_o=default#version=f51929c5205670fde13c1721baf9ca15" horizontalscrolling="no" verticalscrolling="no" width="100%" frameborder="0"></iframe>
+</div>
+<script type="text/javascript">
+    var disqus_shortname = 'rushfrisby'; // required: replace example with your forum shortname
+    var disqus_identifier = '';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script');
+		dsq.type = 'text/javascript';
+		dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</article>
+
+</div>
+<div id="sidebar"><div class="box sidebox about">
+<div class="sidebox-title">About</div>
+<div class="sidebox-content">
+<p class="center"><img src="/img/rush_headshot_2018_256-min.jpg" title="Rush Frisby" alt="Rush Frisby" width="256" height="256" /></p>
+<p>Rush is a software architect who loves solving problems. You'll usually find him writing about security concepts and sharing solutions to problems he's faced.</p>
+</div>
+</div>
+<div class="sidebox box social clearfix">
+<ul>
+<a href="/rss" target="_blank" class="social-item rss"><li><i class="fa fa-rss"></i></li></a>
+<a href="https://twitter.com/rushonerok" target="_blank" class="social-item tw"><li><i class="fa fa-twitter"></i></li></a>
+<a href="http://github.com/rushfrisby" class="social-item github"><li><i class="fa fa-github"></i></li></a>
+<a href="/" class="social-item home"><li><i class="fa fa-home"></i></li></a>
+</ul>
+</div>
+<div class='box sidebox latest-articles'>
+<div class='sidebox-title'>Latest Articles</div>
+<div class='sidebox-content'>
+<a href='/interface-to-rpc-service'><div class='date'>2 AUG 2018</div><div>Interface to RPC Service</div></a>
+<a href='/losing-our-memory'><div class='date'>8 DEC 2017</div><div>Losing Our Memory</div></a>
+<a href='/are-coding-bootcamps-worth-it'><div class='date'>20 AUG 2017</div><div>Are Coding Bootcamps Worth It?</div></a>
+<a href='/meetup-using-protobuf-in-net'><div class='date'>8 AUG 2017</div><div>Meetup: Using Protobuf in .NET</div></a>
+<a href='/application-security-and-single-sign-on'><div class='date'>16 DEC 2016</div><div>Application Security and Single Sign On</div></a>
+</div>
+</div>
+
+</main>
+<footer class="site-footer clearfix">
+<section class="copyright"><a href="https://rushfrisby.com">Rush Frisby</a> &copy; 2018</section>
+<section class="poweredby">Proudly published with my own blog engine</section>
+</footer>
+<script type="text/javascript">
+var links = document.links;
+for (var i = 0, linksLength = links.length; i < linksLength; i++) {
+   if (links[i].hostname != window.location.hostname) {
+       links[i].target = '_blank';
+   } 
+}
+</script>
+<script type="text/javascript" src="/js/jquery.min.js?v=800fecc11f"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js?v=800fecc11f"></script>
+<script type="text/javascript" src="/js/jquery.xml2json.js?v=800fecc11f"></script>
+<script type="text/javascript" src="/js/index.js?v=800fecc11f"></script>
+<script type="text/javascript" src="/js/webkid.js?v=800fecc11f"></script>
+</body>
+</html>

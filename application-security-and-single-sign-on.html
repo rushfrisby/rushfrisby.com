@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>Application Security and Single Sign On</title>
+<meta name="HandheldFriendly" content="True" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="stylesheet" type="text/css" href="/css/screen.css" />
+<link rel="stylesheet" type="text/css" href="/css/webkid.css" />
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+<meta property="og:site_name" content="Rush Frisby" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Application Security and Single Sign On" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Application Security and Single Sign On" />
+<meta name="twitter:label1" content="Written by" />
+<meta name="twitter:data1" content="Rush Frisby" />
+<!--<link rel="alternate" type="application/rss+xml" title="Rush Frisby's Blog" href="https://rushfrisby.com/rss/" />-->
+</head>
+<body class="post-template">
+<link rel="stylesheet" href="/css/prism.css">
+<script src="/js/prism.js" type="text/javascript"></script>
+<header id="header">
+<nav class="header-nav" ">
+<div class="blog-title"><a href="/">Rush Frisby</a></div>
+<div class="blog-description">Thoughts on software and technology.</div>
+
+<div class="taglist-wrapper clearfix">
+<ul id="taglist" class="taglist">
+<li class="nav-home" role="presentation">
+<a href="/">Home</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/about">About</a>
+</li>
+<li class="nav-mechanical-keyboards" role="presentation">
+<a href="/mechanical-keyboards">Mechanical Keyboards</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/tags">Tags</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/archive">Archive</a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<main id="content" class="content" role="main">
+<div id="article" class="box ">
+<article class='post'>
+<header class='post-header'>
+<a href='/application-security-and-single-sign-on'><h1 class='post-title'>Application Security and Single Sign On</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-12-16'>Friday, December 16, 2016</time>
+</section>
+</header>
+<section class='post-content'>
+<p>In 2017 I will be developing <a href="https://github.com/rushfrisby/AppSecSSO">a new, open source, application security and single sign on solution</a>. It will compete directly with <a href="https://www.onelogin.com/">OneLogin</a> and <a href="https://www.okta.com/">Okta</a>. Since 2000 I have built four solutions just like this.</p>
+
+<p>In 2000 I took my first stab at this for <a href="https://www.google.com/?q=EVLogix">EVLogix</a>. My solution consisted of a few classes and a few web pages that secured our main web app, using classic ASP. I'm sure it was completely insecure. I hope it's not still being used.</p>
+
+<p>In 2008 I had a grand idea to create an "application framework" which provided a dashboard for users to launch their web applications and gave developers a way of managing apps and accounts. I was building user-management-type-stuff into every app I wrote and this would allow me to skip that and just get to the point of what each app was meant to do. I created a LLC and developed the source under it. Eventually I abandoned the project when I realized what I had built could be done better. It was .NET based but was using ASP.NET web forms and the API requests were parsed and constructed in a non-standard way.</p>
+
+<p>In 2010 I built a new solution for the company I was working for at the time, <a href="http://www.digitalrisk.com/">Digital Risk</a>. The web portion was built using ASP.NET MVC and the API moved to a WCF service. This was much improved, however, some design choices were poor and I started securing other WCF services with it. This resulted in security overload and made it frustrating for other developers to use.</p>
+
+<p>In 2014 I built another solution for <a href="http://derivesystems.com/">Derive Systems</a> (who I currently work for). The web portion and API are again written in ASP.NET MVC and WCF, but I didn't make any mistakes I had made previously. It's secure and easy for developers to use with web, mobile, and desktop apps.</p>
+
+<p><strong>So why am I developing yet another solution?</strong></p>
+
+<p>My primary reason is to use this as a way of learning <a href="https://www.microsoft.com/net/core/platform">.NET Core</a>. .NET Core is cross-platform so it can be hosted on <strong>Windows <em>and</em> Linux</strong>. I also want the solution to be open-source to promote broader use and gain input from different people. I am a big fan of <a href="https://github.com/">GitHub</a> so I am hosting the source on there.</p>
+
+<p>I haven't decided on one thing yet - whether the solution will be simultaneously used for profit or not. <a href="https://exceptionless.com/">Exceptionless</a> currently works on this model and they do a good job of it. I recently listened to a podcast on <a href="https://a16z.com/">Andreessen Horowitz</a> in which they said this model is gaining popularity. Using the solution for profit will affect the type of open-source community members that choose to contribute so I am taking that into consideration as well.</p>
+
+<p>I am looking for community members who want to get involved early. If so, <a href="mailto:rush@rushfrisby.com?subject=Your AppSecSSO project">shoot me an email</a>, <a href="https://twitter.com/rushonerok/">hit me up on twitter</a>, or <a href="https://github.com/rushfrisby/AppSecSSO/issues">create some issues</a> on GitHub!</p>
+</section>
+<footer class='post-footer'>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='fa fa-twitter' href='https://twitter.com/share?text=Application+Security+and+Single+Sign+On&amp;url=' onclick='window.open(this.href + window.location.href, 'twitter-share', 'width=550,height=235');return false;' target='_blank'>
+<span class='hidden'>Twitter</span>
+</a>
+<a class='fa fa-facebook' href='https://www.facebook.com/sharer/sharer.php?u=' onclick='window.open(this.href + window.location.href, 'facebook-share','width=580,height=296');return false;' target='_blank'>
+<span class='hidden'>Facebook</span>
+</a>
+<a class='fa fa-google' href='https://plus.google.com/share?url=' onclick='window.open(this.href + window.location.href, 'google-plus-share', 'width=490,height=530');return false;' target='_blank'>
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+<div id="disqus_thread">
+	<iframe id="dsq-app9441" name="dsq-app9441" allowtransparency="true" scrolling="no" tabindex="0" title="Disqus" style="width: 1px !important; min-width: 100% !important; border: medium none !important; overflow: hidden !important; height: 727px !important;" src="https://disqus.com/embed/comments/?base=default&amp;f=rushfrisby&amp;t_i=&amp;t_u=https%3A%2F%2Frushfrisby.com%2Finterface-to-rpc-service%2F&amp;t_d=Interface%20to%20RPC%20Service&amp;t_t=Interface%20to%20RPC%20Service&amp;s_o=default#version=f51929c5205670fde13c1721baf9ca15" horizontalscrolling="no" verticalscrolling="no" width="100%" frameborder="0"></iframe>
+</div>
+<script type="text/javascript">
+    var disqus_shortname = 'rushfrisby'; // required: replace example with your forum shortname
+    var disqus_identifier = '';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script');
+		dsq.type = 'text/javascript';
+		dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</article>
+
+</div>
+<div id="sidebar"><div class="box sidebox about">
+<div class="sidebox-title">About</div>
+<div class="sidebox-content">
+<p class="center"><img src="/img/rush_headshot_2018_256-min.jpg" title="Rush Frisby" alt="Rush Frisby" width="256" height="256" /></p>
+<p>Rush is a software architect who loves solving problems. You'll usually find him writing about security concepts and sharing solutions to problems he's faced.</p>
+</div>
+</div>
+<div class="sidebox box social clearfix">
+<ul>
+<a href="/rss" target="_blank" class="social-item rss"><li><i class="fa fa-rss"></i></li></a>
+<a href="https://twitter.com/rushonerok" target="_blank" class="social-item tw"><li><i class="fa fa-twitter"></i></li></a>
+<a href="http://github.com/rushfrisby" class="social-item github"><li><i class="fa fa-github"></i></li></a>
+<a href="/" class="social-item home"><li><i class="fa fa-home"></i></li></a>
+</ul>
+</div>
+<div class='box sidebox latest-articles'>
+<div class='sidebox-title'>Latest Articles</div>
+<div class='sidebox-content'>
+<a href='/interface-to-rpc-service'><div class='date'>2 AUG 2018</div><div>Interface to RPC Service</div></a>
+<a href='/losing-our-memory'><div class='date'>8 DEC 2017</div><div>Losing Our Memory</div></a>
+<a href='/are-coding-bootcamps-worth-it'><div class='date'>20 AUG 2017</div><div>Are Coding Bootcamps Worth It?</div></a>
+<a href='/meetup-using-protobuf-in-net'><div class='date'>8 AUG 2017</div><div>Meetup: Using Protobuf in .NET</div></a>
+<a href='/application-security-and-single-sign-on'><div class='date'>16 DEC 2016</div><div>Application Security and Single Sign On</div></a>
+</div>
+</div>
+
+</main>
+<footer class="site-footer clearfix">
+<section class="copyright"><a href="https://rushfrisby.com">Rush Frisby</a> &copy; 2018</section>
+<section class="poweredby">Proudly published with my own blog engine</section>
+</footer>
+<script type="text/javascript">
+var links = document.links;
+for (var i = 0, linksLength = links.length; i < linksLength; i++) {
+   if (links[i].hostname != window.location.hostname) {
+       links[i].target = '_blank';
+   } 
+}
+</script>
+<script type="text/javascript" src="/js/jquery.min.js?v=800fecc11f"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js?v=800fecc11f"></script>
+<script type="text/javascript" src="/js/jquery.xml2json.js?v=800fecc11f"></script>
+<script type="text/javascript" src="/js/index.js?v=800fecc11f"></script>
+<script type="text/javascript" src="/js/webkid.js?v=800fecc11f"></script>
+</body>
+</html>

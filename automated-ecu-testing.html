@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>Automated ECU Testing</title>
+<meta name="HandheldFriendly" content="True" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="stylesheet" type="text/css" href="/css/screen.css" />
+<link rel="stylesheet" type="text/css" href="/css/webkid.css" />
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+<meta property="og:site_name" content="Rush Frisby" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Automated ECU Testing" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Automated ECU Testing" />
+<meta name="twitter:label1" content="Written by" />
+<meta name="twitter:data1" content="Rush Frisby" />
+<!--<link rel="alternate" type="application/rss+xml" title="Rush Frisby's Blog" href="https://rushfrisby.com/rss/" />-->
+</head>
+<body class="post-template">
+<link rel="stylesheet" href="/css/prism.css">
+<script src="/js/prism.js" type="text/javascript"></script>
+<header id="header">
+<nav class="header-nav" ">
+<div class="blog-title"><a href="/">Rush Frisby</a></div>
+<div class="blog-description">Thoughts on software and technology.</div>
+
+<div class="taglist-wrapper clearfix">
+<ul id="taglist" class="taglist">
+<li class="nav-home" role="presentation">
+<a href="/">Home</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/about">About</a>
+</li>
+<li class="nav-mechanical-keyboards" role="presentation">
+<a href="/mechanical-keyboards">Mechanical Keyboards</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/tags">Tags</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/archive">Archive</a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<main id="content" class="content" role="main">
+<div id="article" class="box ">
+<article class='post'>
+<header class='post-header'>
+<a href='/automated-ecu-testing'><h1 class='post-title'>Automated ECU Testing</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-05-10'>Tuesday, May 10, 2016</time>
+</section>
+</header>
+<section class='post-content'>
+<p>At <a href="https://derivesystems.com/">Derive Systems</a> we make devices for re-calibrating <a href="https://en.wikipedia.org/wiki/Engine_control_unit" target="_blank">Engine Control Units</a> (ECUs). You may be familiar with our two brands: <a href="https://www.sctflash.com">SCT</a> and <a href="https://www.bullydog.com">BullyDog</a>. There is a lot that goes into making devices. We design the hardware, write firmware and software, and do all of our own testing. Calibrating and reverse engineering ECUs is also a part of the process. Believe it or not the car tuning business is cut-throat so we do all of this in-house to prevent others from stealing our technology.</p>
+
+<p>Recently I have moved away from the Software Team to start a Rapid Prototyping Team. The first project I have been tasked with is automating our testing process. Currently when a new version of our firmware is up for release, our Quality Assurance department bench tests a device on as many ECUs as possible. This process is slow, mundane, and prone to error. Luckily a co-worker, <a href="https://www.linkedin.com/in/maverickideas">Thomas Carter</a>, already had a prototype in the works for automating the testing process. I needed an electrical engineer for my team so I snatched him up. I was hesitant to write about what we've been doing until we made some progress, which we have, so I feel like I can share bits and pieces now. It's still far from complete so I will write a few more times about the project. On another note, this needs to work <em>better</em> than a prototype would, paradoxically, but it's not a project any other team is equipped to handle.</p>
+
+<p>Primarily our devices support three main manufacturers: Ford, GM, and Dodge/Chrysler. For this reason we are separating tests by manufacturer. Each manufacturer will be on their own network (<a href="https://en.wikipedia.org/wiki/CAN_bus">CANBUS</a>), have devices dedicated to them, and have the ability to be tested in parallel to other manufactures. We will launch initially on two devices: the <a href="https://www.youtube.com/watch?v=5qe2pDUoIDA">X4</a> and the <a href="https://www.youtube.com/watch?v=WNNUWgMIuOU">BDX</a>, and add support for the <a href="https://www.youtube.com/watch?v=LHPYipPfKG0">GTX</a> later in the year. Over 150 ECUs will be connected initially. Support for additional manufacturers and an increased number of ECUs will come later in the year as well.</p>
+
+<p><strong>Our goal is to run tests on all ECUs within a few hours.</strong> Here is a rough diagram of how I've designed the system. It can take up to 15 minutes to update an ECU so we will be bumping up our hardware count to reduce the overall testing time to meet our goal.</p>
+
+<p><img src="/content/images/2016/05/Automated-ECU-Design-Diagram.png" alt="Automated ECU Design Diagram" /></p>
+
+<p>The Server consists of a self-hosted SignalR service and a WCF service. This allows us to push commands to our control units (Raspberry Pis) and Web UI. It also allows us to pull data when we need. We will manage the server through a web interface and store everything in SQL Azure. The Server and Web UI are also running in Azure.</p>
+
+<p>The Raspberry Pis are running the latest build of Windows 10 IoT. They startup with a UI app that simply displays the video feed from a camera mounted over our device. A SignalR client runs in the background ready to accept commands from the server. Connected to the Raspberry Pi over USB is a camera, micro controller which activates solenoids (does the button presses on our device), and to an I2C power relay controller (for powering ECUs) because we can't power over 150 ECUs at one time. Not all of this is shown in the diagram. For the device, camera, and selenoids, Thomas created a holder which he 3D printed. Here is what everything looks like put together.</p>
+
+<p><img src="/content/images/2016/05/Automated-ECU-Device-Holder.jpg" alt="Device holder and solenoids" /></p>
+
+<p>And here is the Raspberry Pi. There is a 7" touch panel display facing down and our solenoid controller hat on top.</p>
+
+<p><img src="/content/images/2016/05/Automated-ECU-Rpi.jpg" alt="Raspberry Pi controller" /></p>
+
+<p>Both of these will get mounted to a wall in a room dedicated to ECU testing. The room is 20x10. All of the power and devices will be mounted on the back wall. The side walls will have floor to ceiling shelving for holding the ECUs. The fourth wall is glass. It will be somewhat of a showpiece when it's finished. It's currently under construction...</p>
+
+<p><img src="/content/images/2016/05/Automated-ECU-Room-Construction.jpg" alt="Room construction" /></p>
+
+<p>The walls will be painted dark grey and a thin band of LED lights will encircle the room. The main lights will almost never be on because it won't get any foot traffic. Tomorrow the glass wall is supposed to be installed. The floor will be covered with leftover carpet we have in storage.</p>
+
+<p>This is where we currently keep the ECUs. Some are checked-out or missing but in total there is just over 150. We will be adding another 50 or so this year.</p>
+
+<p><img src="/content/images/2016/05/Automated-ECU-Storage-Closet.jpg" alt="Current storage closet" /></p>
+
+<p>More to come over the next few weeks... stay tuned!</p>
+
+<p>See also: <a href="/automated-ecu-testing-part-2">Part 2</a> | <a href="/automated-ecu-testing-part-3/">Part 3</a></p>
+</section>
+<footer class='post-footer'>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='fa fa-twitter' href='https://twitter.com/share?text=Automated+ECU+Testing&amp;url=' onclick='window.open(this.href + window.location.href, 'twitter-share', 'width=550,height=235');return false;' target='_blank'>
+<span class='hidden'>Twitter</span>
+</a>
+<a class='fa fa-facebook' href='https://www.facebook.com/sharer/sharer.php?u=' onclick='window.open(this.href + window.location.href, 'facebook-share','width=580,height=296');return false;' target='_blank'>
+<span class='hidden'>Facebook</span>
+</a>
+<a class='fa fa-google' href='https://plus.google.com/share?url=' onclick='window.open(this.href + window.location.href, 'google-plus-share', 'width=490,height=530');return false;' target='_blank'>
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+<div id="disqus_thread">
+	<iframe id="dsq-app9441" name="dsq-app9441" allowtransparency="true" scrolling="no" tabindex="0" title="Disqus" style="width: 1px !important; min-width: 100% !important; border: medium none !important; overflow: hidden !important; height: 727px !important;" src="https://disqus.com/embed/comments/?base=default&amp;f=rushfrisby&amp;t_i=&amp;t_u=https%3A%2F%2Frushfrisby.com%2Finterface-to-rpc-service%2F&amp;t_d=Interface%20to%20RPC%20Service&amp;t_t=Interface%20to%20RPC%20Service&amp;s_o=default#version=f51929c5205670fde13c1721baf9ca15" horizontalscrolling="no" verticalscrolling="no" width="100%" frameborder="0"></iframe>
+</div>
+<script type="text/javascript">
+    var disqus_shortname = 'rushfrisby'; // required: replace example with your forum shortname
+    var disqus_identifier = '';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script');
+		dsq.type = 'text/javascript';
+		dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</article>
+
+</div>
+<div id="sidebar"><div class="box sidebox about">
+<div class="sidebox-title">About</div>
+<div class="sidebox-content">
+<p class="center"><img src="/img/rush_headshot_2018_256-min.jpg" title="Rush Frisby" alt="Rush Frisby" width="256" height="256" /></p>
+<p>Rush is a software architect who loves solving problems. You'll usually find him writing about security concepts and sharing solutions to problems he's faced.</p>
+</div>
+</div>
+<div class="sidebox box social clearfix">
+<ul>
+<a href="/rss" target="_blank" class="social-item rss"><li><i class="fa fa-rss"></i></li></a>
+<a href="https://twitter.com/rushonerok" target="_blank" class="social-item tw"><li><i class="fa fa-twitter"></i></li></a>
+<a href="http://github.com/rushfrisby" class="social-item github"><li><i class="fa fa-github"></i></li></a>
+<a href="/" class="social-item home"><li><i class="fa fa-home"></i></li></a>
+</ul>
+</div>
+<div class='box sidebox latest-articles'>
+<div class='sidebox-title'>Latest Articles</div>
+<div class='sidebox-content'>
+<a href='/interface-to-rpc-service'><div class='date'>2 AUG 2018</div><div>Interface to RPC Service</div></a>
+<a href='/losing-our-memory'><div class='date'>8 DEC 2017</div><div>Losing Our Memory</div></a>
+<a href='/are-coding-bootcamps-worth-it'><div class='date'>20 AUG 2017</div><div>Are Coding Bootcamps Worth It?</div></a>
+<a href='/meetup-using-protobuf-in-net'><div class='date'>8 AUG 2017</div><div>Meetup: Using Protobuf in .NET</div></a>
+<a href='/application-security-and-single-sign-on'><div class='date'>16 DEC 2016</div><div>Application Security and Single Sign On</div></a>
+</div>
+</div>
+
+</main>
+<footer class="site-footer clearfix">
+<section class="copyright"><a href="https://rushfrisby.com">Rush Frisby</a> &copy; 2018</section>
+<section class="poweredby">Proudly published with my own blog engine</section>
+</footer>
+<script type="text/javascript">
+var links = document.links;
+for (var i = 0, linksLength = links.length; i < linksLength; i++) {
+   if (links[i].hostname != window.location.hostname) {
+       links[i].target = '_blank';
+   } 
+}
+</script>
+<script type="text/javascript" src="/js/jquery.min.js?v=800fecc11f"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js?v=800fecc11f"></script>
+<script type="text/javascript" src="/js/jquery.xml2json.js?v=800fecc11f"></script>
+<script type="text/javascript" src="/js/index.js?v=800fecc11f"></script>
+<script type="text/javascript" src="/js/webkid.js?v=800fecc11f"></script>
+</body>
+</html>

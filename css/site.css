@@ -2112,3 +2112,12 @@ a.article-link:visited {
     display: none;
   }
 }
+
+.fa-fs
+{
+ display: table-cell;
+ height:1.28571429em;
+ width:1.28571429em;
+ vertical-align: middle;
+ text-align:center
+}

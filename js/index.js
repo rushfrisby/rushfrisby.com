@@ -1,7 +1,3 @@
-/**
- * Main JS file for Casper behaviours
- */
-
 /* globals jQuery, document */
 (function ($, sr, undefined) {
     "use strict";
@@ -58,6 +54,14 @@
         $(window).smartresize(casperFullImg);
 
         $(".scroll-down").arctic_scroll();
+		
+		//set target to _blank for all external links
+		var links = document.links;
+		for (var i = 0, linksLength = links.length; i < linksLength; i++) {
+		   if (links[i].hostname != window.location.hostname) {
+			   links[i].target = '_blank';
+		   } 
+		}
 
     });
 

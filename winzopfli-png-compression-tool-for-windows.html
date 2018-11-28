@@ -52,14 +52,10 @@
 </header>
 <section class='post-content'>
 <p>Zopfli is a compression algorithm developed by Google. At the moment it produces the smallest possible output on files that can be decompressed using the DEFLATE algorithm. PNG files use DEFLATE so they can be compressed using Zopfli. The one downside is that the algorithm is pretty slow. Here is a <a href="http://blog.codinghorror.com/zopfli-optimization-literally-free-bandwidth/">good article with more details</a>.</p>
-
 <p>I created WinZopfli as a GUI tool for compressing multiple PNG files at once.</p>
-
 <p>[sdm_download id=”4321″ fancy=”0″] * Requires <a href="https://www.microsoft.com/en-us/download/details.aspx?id=49981">Microsoft .NET Framework 4.6.1</a></p>
-
-<p>Screenshot: <br />
-<img src="/content/images/2016/04/2016-01-04-13_59_17-WinZopfli-PNG-Compression.png" alt="WinZopfli - PNG Compression" /></p>
-
+<p>Screenshot:<br />
+<img src="/img/post/2016-01-04-13_59_17-WinZopfli-PNG-Compression.png" alt="WinZopfli - PNG Compression" /></p>
 <p><strong>Note:</strong> The tool will create a thread for each logical processor on your system. This will lag your system until it’s done processing PNGs. If you want to change this behavior open the WinZopfli.exe.config file in a text editor and change the value for <em>NumberOfThreads</em>. Changing the value to 0 will revert back to the default behavior.</p>
 </section>
 <footer class='post-footer'>

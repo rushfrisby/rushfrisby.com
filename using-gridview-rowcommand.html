@@ -52,18 +52,12 @@
 </header>
 <section class='post-content'>
 <p>I haven’t used this in 6 months and had to lookup how to do it. For some reason the built-in GridView “delete” feature does not work for me (have tried it on multiple setups). Fortunately it is not hard to replicate.</p>
-
 <p>First your GridView has a property called DataKeyNames. Set this to the primary key of your data source. Now in your GridView create a ButtonField. Give it some text and specify the CommandName. CommandName can be any string but keep it simple.</p>
-
-<p><img src="/content/images/2016/04/RowCommand_01.jpg" alt="" /></p>
-
+<p><img src="/img/post/RowCommand_01.jpg" alt="" /></p>
 <p>Next create a RowCommand event for your GridView.</p>
-
-<p><img src="/content/images/2016/04/RowCommand_02.jpg" alt="" /></p>
-
+<p><img src="/img/post/RowCommand_02.jpg" alt="" /></p>
 <p>Next fill in the functionality for your command. In the event method you just have to test for which command was fired. Take a look at my example, it also shows how to get the GridView row index and the primary key so that I can delete the record from my sql table.</p>
-
-<pre><code class="language-csharp">protected void gridServers_RowCommand(object sender, GridViewCommandEventArgs e)  
+<pre><code class="csharp language-csharp">protected void gridServers_RowCommand(object sender, GridViewCommandEventArgs e)
 {
   if (e.CommandName.ToLower().Equals("deleteserver"))
   {
@@ -74,7 +68,6 @@
   }
 }
 </code></pre>
-
 <p>You can come up with other commands, just be creative.</p>
 </section>
 <footer class='post-footer'>

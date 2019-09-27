@@ -4,7 +4,7 @@
     "IsPublished": false,
     "PublishedOn": "2019-09-27T17:53:07.3333252+00:00",
     "Slug": "interfacerpc-20",
-    "Tags": [],
+    "Tags": ["rpc","services","dotnet"],
     "IsPage": false
   },
   {
@@ -616,7 +616,7 @@
     "Title": "REST API Contracts",
     "IsPublished": false,
     "PublishedOn": null,
-    "Slug": "temp-slug-23",
+    "Slug": "rest-api-contracts",
     "Tags": [],
     "IsPage": false
   },
@@ -624,7 +624,7 @@
     "Title": "Entity Framework Performance",
     "IsPublished": false,
     "PublishedOn": null,
-    "Slug": "temp-slug-24",
+    "Slug": "entity-framework-performance",
     "Tags": [],
     "IsPage": false
   },
@@ -632,7 +632,7 @@
     "Title": "How to do pagination and sorting",
     "IsPublished": false,
     "PublishedOn": null,
-    "Slug": "temp-slug-25",
+    "Slug": "how-to-do-pagination-and-sorting",
     "Tags": [],
     "IsPage": false
   },
@@ -640,7 +640,7 @@
     "Title": "Stack switching",
     "IsPublished": false,
     "PublishedOn": null,
-    "Slug": "temp-slug-26",
+    "Slug": "stack-switching",
     "Tags": [],
     "IsPage": false
   },
@@ -648,7 +648,7 @@
     "Title": "Secure Web Chat",
     "IsPublished": false,
     "PublishedOn": null,
-    "Slug": "temp-slug-38",
+    "Slug": "secure-web-chat",
     "Tags": [],
     "IsPage": false
   },
@@ -656,7 +656,7 @@
     "Title": "Rework",
     "IsPublished": false,
     "PublishedOn": null,
-    "Slug": "temp-slug-44",
+    "Slug": "rework",
     "Tags": [],
     "IsPage": false
   },
@@ -664,7 +664,7 @@
     "Title": "Design Pattern: Object Pool",
     "IsPublished": false,
     "PublishedOn": null,
-    "Slug": "temp-slug-48",
+    "Slug": "object-pool-design-pattern",
     "Tags": [],
     "IsPage": false
   },
@@ -672,7 +672,7 @@
     "Title": "Interviewing",
     "IsPublished": false,
     "PublishedOn": null,
-    "Slug": "temp-slug-54",
+    "Slug": "interviewing",
     "Tags": [],
     "IsPage": false
   },

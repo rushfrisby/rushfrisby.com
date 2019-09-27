@@ -1,5 +1,13 @@
 [
   {
+    "Title": "InterfaceRpc 2.0",
+    "IsPublished": false,
+    "PublishedOn": "2019-09-27T17:53:07.3333252+00:00",
+    "Slug": "interfacerpc-20",
+    "Tags": [],
+    "IsPage": false
+  },
+  {
     "Title": "2016 Conferences",
     "IsPublished": true,
     "PublishedOn": "2016-03-10T09:32:02-05:00",
@@ -161,7 +169,10 @@
     "IsPublished": true,
     "PublishedOn": "2018-05-06T00:00:00-04:00",
     "Slug": "code-keyboard",
-    "Tags": ["keyboards","hardware"],
+    "Tags": [
+      "keyboards",
+      "hardware"
+    ],
     "IsPage": true
   },
   {
@@ -189,7 +200,11 @@
     "IsPublished": true,
     "PublishedOn": "2018-05-07T00:00:00-04:00",
     "Slug": "dev-tty-keycaps",
-    "Tags": ["keyboards","hardware","keycaps"],
+    "Tags": [
+      "keyboards",
+      "hardware",
+      "keycaps"
+    ],
     "IsPage": true
   },
   {
@@ -327,7 +342,10 @@
     "IsPublished": true,
     "PublishedOn": "2018-08-02T06:28:49-04:00",
     "Slug": "interface-to-rpc-service",
-    "Tags": ["rpc","services"],
+    "Tags": [
+      "rpc",
+      "services"
+    ],
     "IsPage": false
   },
   {
@@ -407,7 +425,10 @@
     "IsPublished": true,
     "PublishedOn": "2016-02-29T00:00:00-05:00",
     "Slug": "mechanical-keyboards",
-    "Tags": ["keyboards","hardware"],
+    "Tags": [
+      "keyboards",
+      "hardware"
+    ],
     "IsPage": true
   },
   {
@@ -415,7 +436,10 @@
     "IsPublished": true,
     "PublishedOn": "2017-08-08T15:09:30-04:00",
     "Slug": "meetup-using-protobuf-in-net",
-    "Tags": ["protobuf","meetups"],
+    "Tags": [
+      "protobuf",
+      "meetups"
+    ],
     "IsPage": false
   },
   {
@@ -779,7 +803,10 @@
     "IsPublished": true,
     "PublishedOn": "2018-05-07T00:00:00-04:00",
     "Slug": "varmilo-va87mr",
-    "Tags": ["keyboards","hardware"],
+    "Tags": [
+      "keyboards",
+      "hardware"
+    ],
     "IsPage": true
   },
   {

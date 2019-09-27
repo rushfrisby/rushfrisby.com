@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>windows azure</title>
+<meta name="HandheldFriendly" content="True" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" type="text/css" href="/css/site.css" />
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+<meta property="og:site_name" content="Rush Frisby" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="windows azure" />
+<meta name="twitter:title" content="windows azure" />
+<meta name="twitter:data1" content="Rush Frisby" />
+</head>
+<body class="post-template">
+<header id="header">
+<nav class="header-nav" ">
+<div class="blog-title"><a href="/">Rush Frisby</a></div>
+<div class="blog-description">Thoughts on software and technology.</div>
+
+<div class="taglist-wrapper clearfix">
+<ul id="taglist" class="taglist">
+<li class="nav-home" role="presentation">
+<a href="/">Home</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/about">About</a>
+</li>
+<li class="nav-mechanical-keyboards" role="presentation">
+<a href="/mechanical-keyboards">Mechanical Keyboards</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/tags">Tags</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/archive">Archive</a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<main id="content" class="content" role="main">
+<div id="article" class="box ">
+<h2 class='tag'>windows azure</h2>
+<article class='post'>
+<header class='post-header'>
+<a href='/rock-paper-azure-challenge-bot'><h1 class='post-title'>Rock, Paper, Azure Challenge Bot</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2013-02-08'>Friday, February 8, 2013</time>
+</section>
+</header>
+<section class='post-content'>
+<p>In early January I caught a tweet on my twitter stream about a programming challenge called Rock, Paper, Azure. It was sponsored by Microsoft in order to promote their <a href="http://www.windowsazure.com">Windows Azure</a> service. The challenge was to create a bot that would play “Rock, Paper, Azure” (RPA) which is a modified version of Rock, Paper, Scissors (RPS).</p>
+<h3>In RPA there are two new options</h3>
+<p>Dynamite and Water Balloon. Dynamite beats Rock, Paper, and Scissors. You have a limit of 100 Dynamite you can use per match. Water Balloon beats Dynamite but loses to Rock, Paper, and Scissors. You have an unlimited supply of Water Balloons.</p>
+<h3>How the game is played</h3>
+<p>Your bot will play every other bot that was submitted. Each match is played until one player has 1000 points. If you win a round you get a point, so you are playing at least 1000 rounds against each bot. If you tie (ex: both of you throw Rock) then no player gets a point for that round and the point carries over to the next round. If you win the next round you now get 2 points. A maximum of 5000 rounds are played. If no one reaches 1000 points by that time the winner is the player with the most points or a tie if equal.</p>
+<h3>Creating a bot</h3>
+<p>Microsoft was kind enough to put together a sample solution which included 3 bot implementations: Cycle, Random, and “Big Bang”. You can guess what the first two do, right? Big Bang started off with 5 Dynamite moves and then switched to choosing random moves. From the samples it was easy to see how to build a bot. Implement IRockPaperScissorsBot which has one method called MakeMove – that’s it.</p>
+<h3>Results</h3>
+<p>At one point I was in the top 25 and a few days after the competition had ended I slid down into the 30’s. There were over 150 submissions so I thought I had decent logic. Throughout the competition you could submit your bot and have it run against every other bot. Doing this was very useful because the challenge website provided logs for every match and you can reverse engineer your opponents logic based on that. I only did this for the top ranked bots who were beating me.</p>
+<h3>Prizes!</h3>
+<p>Every week there were 5 random winners (the competition ran for 6 weeks). Random weekly winners got a $50 BestBuy gift certificate. I was a random winner in the last week. Woohoo! The top 3 overall got some nicer prizes so that could have been a motivating factor for some submissions. I entered just because it sounded like fun… and I had never used Windows Azure before.</p>
+<p>I thought I would release my bot code here in case it was of interest to anyone. I added comments throughout as to why I put certain logic in.</p>
+<script src="https://gist.github.com/rushfrisby/a481b1be08cdc036c61c.js"></script>
+
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+</div>
+<div id="sidebar"><div class="box sidebox about">
+<div class="sidebox-title">About</div>
+<div class="sidebox-content">
+<p class="center"><img src="/img/rush_headshot_2018_256-min.jpg" title="Rush Frisby" alt="Rush Frisby" width="256" height="256" /></p>
+<p>Rush is a software architect who loves solving problems. You'll usually find him writing about security concepts and sharing solutions to problems he's faced.</p>
+</div>
+</div>
+<div class="sidebox box social clearfix">
+<ul>
+<a href="/rss" target="_blank" class="social-item rss"><li><i class="fa fa-rss fa-fs">&nbsp;</i></li></a>
+<a href="https://twitter.com/rushonerok" target="_blank" class="social-item tw"><li><i class="fa fa-twitter fa-fs">&nbsp;</i></li></a>
+<a href="http://github.com/rushfrisby" class="social-item github"><li><i class="fa fa-github fa-fs">&nbsp;</i></li></a>
+<a href="/" class="social-item home"><li><i class="fa fa-home fa-fs">&nbsp;</i></li></a>
+</ul>
+</div>
+<div class='box sidebox latest-articles'>
+<div class='sidebox-title'>Latest Articles</div>
+<div class='sidebox-content'>
+<a href='/interface-to-rpc-service'><div class='date'>2 AUG 2018</div><div>Interface to RPC Service</div></a>
+<a href='/losing-our-memory'><div class='date'>8 DEC 2017</div><div>Losing Our Memory</div></a>
+<a href='/are-coding-bootcamps-worth-it'><div class='date'>20 AUG 2017</div><div>Are Coding Bootcamps Worth It?</div></a>
+<a href='/meetup-using-protobuf-in-net'><div class='date'>8 AUG 2017</div><div>Meetup: Using Protobuf in .NET</div></a>
+<a href='/application-security-and-single-sign-on'><div class='date'>16 DEC 2016</div><div>Application Security and Single Sign On</div></a>
+</div>
+</div>
+
+</main>
+<footer class="site-footer clearfix">
+<section class="copyright"><a href="https://rushfrisby.com">Rush Frisby</a> &copy; 2018</section>
+<section class="poweredby">Proudly <a href="https://github.com/rushfrisby/rushfrisby.com">published with my own blog engine on github</a></section>
+</footer>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>

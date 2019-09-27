@@ -1,0 +1,6 @@
+
+In college I took a course on statistics. Statistics can be pretty hard so the professor let us take tests with an open-book and open-notes. Now, not every problem EXACTLY the same, so I doubt having this advantage affected grades much. The point I’m getting at here is that statistics about knowing which algorythm to apply. It’s about recognizing patterns. Once you have figured that out you can plug the numbers in, and solve. The mathematical calculations are trivial at that point.
+
+I have been in many software engineering interviews – both as an interviewee and as an interviewer. I hate that a lot of interviewers go straight into dry questions like: “What are the SOLID principles?” or “What design patterns do you know?”. Any halfway educated developer can recite the answers to these and give a little “depth” about them. How does that tell you they actually know what they are talking about? When they are on-the-job how do you know they can recognize and apply the appropriate solution? The worst is when you have an interviewer pound you with the same mundane questions about something specific. Usually I tend to ask a few questions like this, of increasing difficultly, and can come to a conclusion on the level of developer I am interviewing fairly quickly.
+
+

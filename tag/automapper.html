@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>automapper</title>
+<meta name="HandheldFriendly" content="True" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" type="text/css" href="/css/site.css" />
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+<meta property="og:site_name" content="Rush Frisby" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="automapper" />
+<meta name="twitter:title" content="automapper" />
+<meta name="twitter:data1" content="Rush Frisby" />
+</head>
+<body class="post-template">
+<header id="header">
+<nav class="header-nav" ">
+<div class="blog-title"><a href="/">Rush Frisby</a></div>
+<div class="blog-description">Thoughts on software and technology.</div>
+
+<div class="taglist-wrapper clearfix">
+<ul id="taglist" class="taglist">
+<li class="nav-home" role="presentation">
+<a href="/">Home</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/about">About</a>
+</li>
+<li class="nav-mechanical-keyboards" role="presentation">
+<a href="/mechanical-keyboards">Mechanical Keyboards</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/tags">Tags</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/archive">Archive</a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<main id="content" class="content" role="main">
+<div id="article" class="box ">
+<h2 class='tag'>automapper</h2>
+<article class='post'>
+<header class='post-header'>
+<a href='/cast-hacking'><h1 class='post-title'>Cast Hacking</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2014-03-20'>Thursday, March 20, 2014</time>
+</section>
+</header>
+<section class='post-content'>
+<p>Have you ever wanted to cast a base class into a subclass? Consider these two classes:</p>
+<p>public class Animal { } public class Dog : Animal { }</p>
+<p>Because of the inheritance we can create an Animal from a Dog because we know that Dog has all of the necessary properties to set on Animal. Quick example:</p>
+<p>var dog = new Dog(); var animal = (Animal) dog;</p>
+<p>This works in .NET. But what if you wanted to create a Dog from an Animal? Unfortunately Dog may have some properties that Animal doesn’t and so you will get an exception at runtime when trying to cast from an Animal to a Dog:</p>
+<p>var animal = new Animal(); var dog = (Dog) animal;</p>
+<p>Causes this runtime exception:</p>
+<p>An unhandled exception of type 'System.InvalidCastException' occurred. Additional information: Unable to cast object of type 'Animal' to type 'Dog'.</p>
+<p>Getting around this casting issue means you would have to create a new Animal, then for every property on Animal set the value to the corresponding property on Dog. THAT SUCKS. Who has time or the memory to keep that conversion up-to-date? What happens when you add a new property to Animal – will you remember to update this property-copying code as well?</p>
+<p>It wasn’t intended specifically for getting around casting issues but for property copying <a href="https://github.com/AutoMapper/AutoMapper">Automapper</a> is AWESOME! It does pretty much what you would expect. It maps the properties of one class to another so you don’t have this problem of manually maintaining the mappings. Here is how you can create an Animal from a Dog using Automapper:</p>
+<p>Mapper.CreateMap&lt;Animal, Dog&gt;(); var animal = new Animal(); var dog = Mapper.Map&lt;Animal, Dog&gt;(animal);</p>
+<p>For the properties of Dog that Animal doesn’t have, if the property is a value type it’s value will be the type’s default value and for reference types the value will be null. Simple huh?</p>
+
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+</div>
+<div id="sidebar"><div class="box sidebox about">
+<div class="sidebox-title">About</div>
+<div class="sidebox-content">
+<p class="center"><img src="/img/rush_headshot_2018_256-min.jpg" title="Rush Frisby" alt="Rush Frisby" width="256" height="256" /></p>
+<p>Rush is a software architect who loves solving problems. You'll usually find him writing about security concepts and sharing solutions to problems he's faced.</p>
+</div>
+</div>
+<div class="sidebox box social clearfix">
+<ul>
+<a href="/rss" target="_blank" class="social-item rss"><li><i class="fa fa-rss fa-fs">&nbsp;</i></li></a>
+<a href="https://twitter.com/rushonerok" target="_blank" class="social-item tw"><li><i class="fa fa-twitter fa-fs">&nbsp;</i></li></a>
+<a href="http://github.com/rushfrisby" class="social-item github"><li><i class="fa fa-github fa-fs">&nbsp;</i></li></a>
+<a href="/" class="social-item home"><li><i class="fa fa-home fa-fs">&nbsp;</i></li></a>
+</ul>
+</div>
+<div class='box sidebox latest-articles'>
+<div class='sidebox-title'>Latest Articles</div>
+<div class='sidebox-content'>
+<a href='/interface-to-rpc-service'><div class='date'>2 AUG 2018</div><div>Interface to RPC Service</div></a>
+<a href='/losing-our-memory'><div class='date'>8 DEC 2017</div><div>Losing Our Memory</div></a>
+<a href='/are-coding-bootcamps-worth-it'><div class='date'>20 AUG 2017</div><div>Are Coding Bootcamps Worth It?</div></a>
+<a href='/meetup-using-protobuf-in-net'><div class='date'>8 AUG 2017</div><div>Meetup: Using Protobuf in .NET</div></a>
+<a href='/application-security-and-single-sign-on'><div class='date'>16 DEC 2016</div><div>Application Security and Single Sign On</div></a>
+</div>
+</div>
+
+</main>
+<footer class="site-footer clearfix">
+<section class="copyright"><a href="https://rushfrisby.com">Rush Frisby</a> &copy; 2018</section>
+<section class="poweredby">Proudly <a href="https://github.com/rushfrisby/rushfrisby.com">published with my own blog engine on github</a></section>
+</footer>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>

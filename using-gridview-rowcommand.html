@@ -57,18 +57,19 @@
 <p>Next create a RowCommand event for your GridView.</p>
 <p><img src="/img/post/RowCommand_02.jpg" alt="" /></p>
 <p>Next fill in the functionality for your command. In the event method you just have to test for which command was fired. Take a look at my example, it also shows how to get the GridView row index and the primary key so that I can delete the record from my sql table.</p>
-<pre><code class="csharp language-csharp">protected void gridServers_RowCommand(object sender, GridViewCommandEventArgs e)
+<pre><code class="language-csharp">protected void gridServers_RowCommand(object sender, GridViewCommandEventArgs e)
 {
-  if (e.CommandName.ToLower().Equals("deleteserver"))
+  if (e.CommandName.ToLower().Equals(&quot;deleteserver&quot;))
   {
     int index = Convert.ToInt32(e.CommandArgument); int ServerID = Convert.ToInt32(gridServers.DataKeys[index].Value);
-    clsServer server = new clsServer("mediadb");
+    clsServer server = new clsServer(&quot;mediadb&quot;);
     server.ServerID = ServerID; server.DeleteRecord();
     gridServers.DataBind();
   }
 }
 </code></pre>
 <p>You can come up with other commands, just be creative.</p>
+
 </section>
 <footer class='post-footer'>
 </footer>

@@ -52,14 +52,11 @@
 </header>
 <section class='post-content'>
 <p>This is very similar to <a href="using-gridview-rowcommand">Using GridView RowCommand</a> but with some slight changes.</p>
-
 <p>First create a repeater control and bind some data to it which ever way you like. Inside your ItemTemplate (or any other template associated with the repeater control) create a link button control (or button control, whatever you want). Set the CommandName to a descriptive name. Set the CommandArgument to your unique identifier. Mine looks like this:</p>
-
-<p><asp:LinkButton ID="btnDeleteComment" runat="server" Text="Delete" CommandName="DeleteComment" CommandArgument=&lt;%#Eval("CommentID") %>></asp:LinkButton></p>
-
+<p>&lt;asp:LinkButton ID=&quot;btnDeleteComment&quot; runat=&quot;server&quot; Text=&quot;Delete&quot; CommandName=&quot;DeleteComment&quot; CommandArgument=&lt;%#Eval(&quot;CommentID&quot;) %&gt;&gt;&lt;/asp:LinkButton&gt;</p>
 <p>I am setting the CommandArgument to the CommentID which is databound to my repeater. Now in design view, double click on your repeater control and Visual Studio will create a method for handling the ItemCommand event. Here we will test if the CommandName is the one we are looking for and then do some action with the CommandArgument. (In my case delete a comment). This is what mine looks like:</p>
+<p>protected void rptComments_ItemCommand(object source, RepeaterCommandEventArgs e) { if(e.CommandName.ToLower().Equals(&quot;deletecomment&quot;)) { clsComment comment = new clsComment(&quot;mediadb&quot;); comment.CommentID = int.Parse(((LinkButton)e.CommandSource).CommandArgument); comment.DeleteRecord(); rptComments.DataBind(); } }</p>
 
-<p>protected void rptComments_ItemCommand(object source, RepeaterCommandEventArgs e) { if(e.CommandName.ToLower().Equals("deletecomment")) { clsComment comment = new clsComment("mediadb"); comment.CommentID = int.Parse(((LinkButton)e.CommandSource).CommandArgument); comment.DeleteRecord(); rptComments.DataBind(); } }</p>
 </section>
 <footer class='post-footer'>
 </footer>

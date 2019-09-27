@@ -52,32 +52,20 @@
 </header>
 <section class='post-content'>
 <p>Today I’ve updated <a href="http://bundler.codeplex.com/">Bundler.NET</a> to include more optimization of images. You can now take every image in your CSS and create a sprite automatically. Here is how it works… (example solution download below)</p>
-
 <p>First the CSS:</p>
-
 <p>.clear { clear: both; } .img { height: 48px; width: 48px; display: block; margin: 10px; float: left; } .img-browser { background: url('images/browser.png?embed') no-repeat 0 0; } .img-clock { background: url('images/clock.png?embed') no-repeat 0 0; } .img-kdf { background: url('images/kdf.png?embed') no-repeat 0 0; } .img-kservices { background: url('images/kservices.png?embed') no-repeat 0 0; } .img-lock { background: url('images/lock.png?embed') no-repeat 0 0; }</p>
-
 <p>Notice the ?embed after each image reference. This identifies the image to be included in the sprite. When we create our bundle, we want to use a new type called <strong>CssMinifySpriteEmbed</strong>. Here is what that looks like:</p>
-
-<p>var options = new BundleOptions { EnableOptimizations = true, IncludeFileExtensionInAlias = true }; var css = new Bundle("~/css", typeof(CssMinifySpriteEmbed), options); css.AddFile("~/Content/Styles.css"); BundleTable.Add(css);</p>
-
+<p>var options = new BundleOptions { EnableOptimizations = true, IncludeFileExtensionInAlias = true }; var css = new Bundle(&quot;~/css&quot;, typeof(CssMinifySpriteEmbed), options); css.AddFile(&quot;~/Content/Styles.css&quot;); BundleTable.Add(css);</p>
 <p>What this will do is look through all of your styles and find image references. Then it will combine all images into a sprite and optimize that image to make it as small as possible. The result gets base64 encoded and added to the stylesheet as a new style called “sprite”. For every style definition that had an image reference a new definition is added with “.sprite” appended to the name.</p>
-
 <p>All you have to do now is add the “sprite” class to your HTML elements. If you don’t add the class then your original style/image reference applies and not the sprite.</p>
-
 <div> <span class="img img-browser sprite"></span> <span class="img img-clock sprite"></span> <span class="img img-kdf sprite"></span> <span class="img img-kservices sprite"></span> <span class="img img-lock sprite"></span> <div class="clear"></div> </div>
-
 <p>That’s it!</p>
-
 <p>If you want to change the name of the “sprite” class you can set it in the bundle options.</p>
-
-<p>var options = new BundleOptions { Css = new CssOptions { SpriteClassName = "myspriteclass" } };</p>
-
+<p>var options = new BundleOptions { Css = new CssOptions { SpriteClassName = &quot;myspriteclass&quot; } };</p>
 <p><a href="http://rushfrisby.com/link/8742e298-acd4-4bc9-9ea8-4a2b7fe99316">Download example web solution BundlerSprites</a> [4 MB]</p>
-
 <p>For more on using Bundler.NET check out the <a href="http://bundler.codeplex.com/documentation">documentation page on codeplex</a>.</p>
-
 <p>*Update 2013-02-27: ?embed is now required to include images in the sprite. This is to avoid having images that are already sprites included which would not work well with already defined CSS for those sprites.</p>
+
 </section>
 <footer class='post-footer'>
 </footer>

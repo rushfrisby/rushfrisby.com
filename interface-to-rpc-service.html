@@ -52,75 +52,58 @@
 </header>
 <section class='post-content'>
 <p>I'm currently working on <a href="https://github.com/rushfrisby/InterfaceRpc">a project to quickly stand up an RPC service</a> based on an interface. It's a .NET Standard library. Here's how it works.</p>
-
-<p>Let's say you have an interface,  </p>
-
-<pre><code>public interface IEchoService  
+<p>Let's say you have an interface,</p>
+<pre><code>public interface IEchoService
 {
     string Echo(string echo);
 }
 </code></pre>
-
 <p>, and you have an implementation that needs to be exposed so that others can call it. I chose HTTP for this.</p>
-
 <p>On the server I use <code>HttpListener</code> to create a web server and listen for requests. When a request comes in the path maps to a method name. For example, if my web server is listening on <code>http://localhost:6000/</code> and a request for <code>http://localhost:6000/Echo</code> comes in - that maps to the <code>Echo</code> method on the interface... then I use reflection to call it on the implementation that was provided.</p>
-
 <p>If <code>Echo</code> didn't map to a method on the interface then a 404 response is returned.</p>
-
 <p>In my library all HTTP requests are POSTs. The content is deserialized based upon the <code>Content-Type</code> header value of the request. I am using another library I created to handle this called <a href="https://github.com/rushfrisby/SerializerDotNet">SerializerDotNet</a>. At the time of writing it supports JSON and Protobuf. The same serializer used for deserialization is also used to return data in the response and the response's <code>Content-Type</code> is the same as the incoming request.</p>
-
-<p>Remember when I said "quickly stand up an RPC service"? This is how quickly it's done...  </p>
-
-<pre><code>var svc = new RpcService&lt;IEchoService&gt;(new EchoService());  
-svc.Start();  
+<p>Remember when I said &quot;quickly stand up an RPC service&quot;? This is how quickly it's done...</p>
+<pre><code>var svc = new RpcService&lt;IEchoService&gt;(new EchoService());
+svc.Start();
 </code></pre>
-
 <p>To use this in your own project add <a href="https://www.nuget.org/packages/InterfaceRpc.Service/">InterfaceRpc.Service</a> to your project using NuGet.</p>
-
 <p>There is a file called <code>rpcsettings.json</code> where you can specify additional settings. Currently only the web server prefixes and number of connections.</p>
-
-<p>To create a client it's just as easy...  </p>
-
-<pre><code>var client = new RpcClient&lt;IEchoService&gt;.Create("http://localhost:6000/");  
+<p>To create a client it's just as easy...</p>
+<pre><code>var client = new RpcClient&lt;IEchoService&gt;.Create(&quot;http://localhost:6000/&quot;);
 </code></pre>
-
 <p>To use this in your own project add <a href="https://www.nuget.org/packages/InterfaceRpc.Client/">InterfaceRpc.Client</a> to your project using NuGet.</p>
-
 <p>By default it uses <code>JsonSerializer</code>. There is an optional 2nd argument where you can specify the type of <code>ISerializer</code> (like <code>ProtobufSerializer</code>)</p>
-
 <p>Then you can call any method defined in your interface:</p>
-
-<pre><code>var echoed = client.Echo("hello");  
+<pre><code>var echoed = client.Echo(&quot;hello&quot;);
 </code></pre>
-
-<h4 id="limitations">Limitations</h4>
-
+<h4>Limitations</h4>
 <p>(stuff I could use help on)</p>
-
 <ul>
-<li><p>I punted on handling SSL certs so it only runs over plain HTTP right now. This seems reasonable given that it's common to setup a load balancer or proxy in front of web sites and services.</p></li>
-<li><p>8 parameters in method signatures - this can expand to more in the future, if needed, but I think once you get this many it's better to create a class with properties for each and use 1 parameter in the signature.</p></li>
-<li><p>Because of limitations with <code>ValueTuple</code>, text based serialization reads a little funky, but I'm sure Microsoft will fix this in future versions of .NET Standard. In the meantime I'm curious to see what people think about having "Item1", "Item2", etc... map to method parameters. There could be some work done to replace these with parameter names but it would add (unnecessary?) overhead.</p></li>
-<li><p>A good name. Any suggestions?</p></li>
-<li><p>See the <a href="https://github.com/rushfrisby/InterfaceRpc/issues">issues list on github</a> for more</p></li>
+<li><p>I punted on handling SSL certs so it only runs over plain HTTP right now. This seems reasonable given that it's common to setup a load balancer or proxy in front of web sites and services.</p>
+</li>
+<li><p>8 parameters in method signatures - this can expand to more in the future, if needed, but I think once you get this many it's better to create a class with properties for each and use 1 parameter in the signature.</p>
+</li>
+<li><p>Because of limitations with <code>ValueTuple</code>, text based serialization reads a little funky, but I'm sure Microsoft will fix this in future versions of .NET Standard. In the meantime I'm curious to see what people think about having &quot;Item1&quot;, &quot;Item2&quot;, etc... map to method parameters. There could be some work done to replace these with parameter names but it would add (unnecessary?) overhead.</p>
+</li>
+<li><p>A good name. Any suggestions?</p>
+</li>
+<li><p>See the <a href="https://github.com/rushfrisby/InterfaceRpc/issues">issues list on github</a> for more</p>
+</li>
 </ul>
-
-<h4 id="why">Why?</h4>
-
+<h4>Why?</h4>
 <p>This will help tremendously in moving off of WCF / .NET Framework and onto .NET Core. WCF clients aren't supported in .NET Core. The good thing about WCF is that it is interface-based, so swapping out a server implementation is relatively easy. Assuming a <code>ChannelFactory</code> was used for the client, it can be replaced even easier.</p>
-
 <p>If you'd like to help in fleshing this idea out more please contribute through the <a href="https://github.com/rushfrisby/InterfaceRpc">github repo</a>!</p>
-
-<table width="100%" style="border:1px solid #c0c0c0;">  
-<tr>  
-<td nowrap="nowrap"><a href="https://www.nuget.org/packages/InterfaceRpc.Service/" target="_blank">InterfaceRpc.Service</a></td>  
-<td width="100%"><a href="https://www.nuget.org/packages/InterfaceRpc.Service/" target="_blank"><img src="https://img.shields.io/nuget/v/InterfaceRpc.Service.svg?style=flat" alt="NuGet Status" style="display:inline;padding:0" /></a></td>  
-</tr>  
-<tr>  
-<td nowrap="nowrap"><a href="https://www.nuget.org/packages/InterfaceRpc.Client/" target="_blank">InterfaceRpc.Client</a></td>  
-<td width="100%"><a href="https://www.nuget.org/packages/InterfaceRpc.Client/" target="_blank"><img src="https://img.shields.io/nuget/v/InterfaceRpc.Client.svg?style=flat" alt="NuGet Status" style="display:inline;padding:0" /></a></td>  
-</tr>  
+<table width="100%" style="border:1px solid #c0c0c0;">
+<tr>
+<td nowrap="nowrap"><a href="https://www.nuget.org/packages/InterfaceRpc.Service/" target="_blank">InterfaceRpc.Service</a></td>
+<td width="100%"><a href="https://www.nuget.org/packages/InterfaceRpc.Service/" target="_blank"><img src="https://img.shields.io/nuget/v/InterfaceRpc.Service.svg?style=flat" alt="NuGet Status" style="display:inline;padding:0" /></a></td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="https://www.nuget.org/packages/InterfaceRpc.Client/" target="_blank">InterfaceRpc.Client</a></td>
+<td width="100%"><a href="https://www.nuget.org/packages/InterfaceRpc.Client/" target="_blank"><img src="https://img.shields.io/nuget/v/InterfaceRpc.Client.svg?style=flat" alt="NuGet Status" style="display:inline;padding:0" /></a></td>
+</tr>
 </table>
+
 </section>
 <footer class='post-footer'>
 </footer>

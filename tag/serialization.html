@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>serialization</title>
+<meta name="HandheldFriendly" content="True" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" type="text/css" href="/css/site.css" />
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+<meta property="og:site_name" content="Rush Frisby" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="serialization" />
+<meta name="twitter:title" content="serialization" />
+<meta name="twitter:data1" content="Rush Frisby" />
+</head>
+<body class="post-template">
+<header id="header">
+<nav class="header-nav" ">
+<div class="blog-title"><a href="/">Rush Frisby</a></div>
+<div class="blog-description">Thoughts on software and technology.</div>
+
+<div class="taglist-wrapper clearfix">
+<ul id="taglist" class="taglist">
+<li class="nav-home" role="presentation">
+<a href="/">Home</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/about">About</a>
+</li>
+<li class="nav-mechanical-keyboards" role="presentation">
+<a href="/mechanical-keyboards">Mechanical Keyboards</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/tags">Tags</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/archive">Archive</a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<main id="content" class="content" role="main">
+<div id="article" class="box ">
+<h2 class='tag'>serialization</h2>
+<article class='post'>
+<header class='post-header'>
+<a href='/serializing-non-serializable-types-with-protobuf'><h1 class='post-title'>Serializing Non-Serializable Types With Protobuf</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2015-04-02'>Thursday, April 2, 2015</time>
+</section>
+</header>
+<section class='post-content'>
+<p><a href="https://code.google.com/p/protobuf-net/">protobuf-net</a> cannot serialize everything you throw at it. It’s picky about what it does because it wants to be <strong>fast</strong>. If it were to accommodate every type of object it would have to sacrifice speed. The author did however create a hook so that things it can’t serialize can be turned into something it can serialize. This is done with what it calls <em>Surrogates</em>. As you can tell from the name, we tell protobuf-net that for a given type (that it can’t serialize) we want to use a surrogate type (that it can serialize).</p>
+<p>Take this class for example:</p>
+<script src="https://gist.github.com/rushfrisby/bd5ab77ae92e92d122ad.js"></script>
+<p>MyNameValueInfo can’t be serialized because it doesn’t know how to serialize the Value property (typeof object). It will throw an exception: “No Serializer defined for type: System.Object”</p>
+<p>To get around this we need to provide a surrogate for MyNameValueInfo that protobuf-net can serialize. First register the surrogate type (only needs to be done once):</p>
+<p><code>RuntimeTypeModel.Default.Add(typeof(MyNameValueInfo), false).SetSurrogate(typeof(MyNameValueInfoSurrogate));</code></p>
+<p>Then implement MyNameValueInfoSurrogate so that it can be transformed from/to MyNameValueInfo and is serializable by protobuf-net:</p>
+<script src="https://gist.github.com/rushfrisby/8d96986798a6fa43c3b4.js"></script>
+<p><strong>WARNING</strong><br />
+Doing binary serialization like this will include Type information in the serialized byte array. This is only useful if the receiving system is also in .NET. For a more universal approach you could use JSON serialization.</p>
+
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+</div>
+<div id="sidebar"><div class="box sidebox about">
+<div class="sidebox-title">About</div>
+<div class="sidebox-content">
+<p class="center"><img src="/img/rush_headshot_2018_256-min.jpg" title="Rush Frisby" alt="Rush Frisby" width="256" height="256" /></p>
+<p>Rush is a software architect who loves solving problems. You'll usually find him writing about security concepts and sharing solutions to problems he's faced.</p>
+</div>
+</div>
+<div class="sidebox box social clearfix">
+<ul>
+<a href="/rss" target="_blank" class="social-item rss"><li><i class="fa fa-rss fa-fs">&nbsp;</i></li></a>
+<a href="https://twitter.com/rushonerok" target="_blank" class="social-item tw"><li><i class="fa fa-twitter fa-fs">&nbsp;</i></li></a>
+<a href="http://github.com/rushfrisby" class="social-item github"><li><i class="fa fa-github fa-fs">&nbsp;</i></li></a>
+<a href="/" class="social-item home"><li><i class="fa fa-home fa-fs">&nbsp;</i></li></a>
+</ul>
+</div>
+<div class='box sidebox latest-articles'>
+<div class='sidebox-title'>Latest Articles</div>
+<div class='sidebox-content'>
+<a href='/interface-to-rpc-service'><div class='date'>2 AUG 2018</div><div>Interface to RPC Service</div></a>
+<a href='/losing-our-memory'><div class='date'>8 DEC 2017</div><div>Losing Our Memory</div></a>
+<a href='/are-coding-bootcamps-worth-it'><div class='date'>20 AUG 2017</div><div>Are Coding Bootcamps Worth It?</div></a>
+<a href='/meetup-using-protobuf-in-net'><div class='date'>8 AUG 2017</div><div>Meetup: Using Protobuf in .NET</div></a>
+<a href='/application-security-and-single-sign-on'><div class='date'>16 DEC 2016</div><div>Application Security and Single Sign On</div></a>
+</div>
+</div>
+
+</main>
+<footer class="site-footer clearfix">
+<section class="copyright"><a href="https://rushfrisby.com">Rush Frisby</a> &copy; 2018</section>
+<section class="poweredby">Proudly <a href="https://github.com/rushfrisby/rushfrisby.com">published with my own blog engine on github</a></section>
+</footer>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>

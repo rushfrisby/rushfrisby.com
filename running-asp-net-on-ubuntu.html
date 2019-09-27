@@ -52,53 +52,50 @@
 </header>
 <section class='post-content'>
 <p>I wanted to run .NET on linux since I’ve seen people talking about it so much recently. I couldn’t find a start-to-finish tutorial though so I am attempting to do that here.</p>
-
 <ol>
-<li>In VMWare Workstation (you can use VirtualBox just the same) create a VM and install the latest version of <a href="http://www.ubuntu.com/download/desktop">Ubuntu desktop</a>.  </li>
-<li>Once installed and you login, update everything that needs updating in the Ubutntu Software Center and reboot  </li>
-<li>Type everything in the sub-lists below as commands in a terminal…  </li>
-<li>Install Mono: 1. <code>sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF</code>  </li>
-<li><code>echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list</code>  </li>
-<li><code>sudo apt-get update</code>  </li>
-<li><code>sudo apt-get install mono-complete</code>  </li>
-<li>Install libuv: 1. <code>sudo apt-get install automake libtool curl</code>  </li>
-<li><code>curl -sSL https://github.com/libuv/libuv/archive/v1.4.2.tar.gz | sudo tar zxfv - -C /usr/local/src</code>  </li>
-<li><code>cd /usr/local/src/libuv-1.4.2</code>  </li>
-<li><code>sudo sh autogen.sh</code>  </li>
-<li><code>sudo ./configure</code>  </li>
-<li><code>sudo make</code>  </li>
-<li><code>sudo make install</code>  </li>
-<li><code>sudo rm -rf /usr/local/src/libuv-1.4.2 &amp;&amp; cd ~/</code>  </li>
-<li><code>sudo ldconfig</code>  </li>
-<li>Install the .NET Version Manager (DNVM): 1. <code>curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | DNX_BRANCH=dev sh &amp;&amp; source ~/.dnx/dnvm/dnvm.sh</code>  </li>
-<li>Install the .NET Execution Environment (DNX): 1. <code>dnvm upgrade</code>  </li>
-<li>More installs for the next part: 1. <code>sudo apt-get update</code>  </li>
-<li><code>sudo apt-get upgrade</code>  </li>
-<li><code>sudo apt-get install build-essential openssl libssl-dev curl git</code>  </li>
-<li>Install NVM: 1. <code>git clone git://github.com/creationix/nvm.git ~/.nvm</code>  </li>
-<li>To load NVM whenever a terminal is opened: 1. <code>echo '[[ -s "$HOME/.nvm/nvm.sh" ]] &amp;&amp; source "$HOME/.nvm/nvm.sh"' &gt;&gt; ~/.bash_profile</code>  </li>
-<li>Start NVM in the current terminal: 1. <code>. ~/.nvm/nvm.sh</code>  </li>
-<li>Install Node.js (0.12.6 is the latest version as of this post, you should replace this with whatever the current version is when you install it): 1. <code>nvm install v0.12.6</code>  </li>
-<li><code>nvm alias default 0.12.6</code>  </li>
-<li>Install Yeoman (Yo) and the scaffolding template for ASP.NET projects: 1. <code>npm install -g yo generator-aspnet</code>  </li>
-<li>Generate an empty ASP.NET project. A wizard will come up and ask you what type of project you want to create. I created a <em>Simple</em> website and named it “MyFirstDotNetAppOnLinux”: 1. <code>yo aspnet</code>  </li>
-<li>Switch to the new directory/template that was created: 1. <code>cd MyFirstDotNetAppOnLinux</code>  </li>
-<li><code>dnu restore</code>  </li>
-<li>Start Web Server: 1. <code>dnx . kestrel</code>  </li>
-<li>Open Firefox and go to <strong><a href="http://localhost:5000">http://localhost:5000</a></strong>  </li>
+<li>In VMWare Workstation (you can use VirtualBox just the same) create a VM and install the latest version of <a href="http://www.ubuntu.com/download/desktop">Ubuntu desktop</a>.</li>
+<li>Once installed and you login, update everything that needs updating in the Ubutntu Software Center and reboot</li>
+<li>Type everything in the sub-lists below as commands in a terminal…</li>
+<li>Install Mono: 1. <code>sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF</code></li>
+<li><code>echo &quot;deb http://download.mono-project.com/repo/debian wheezy main&quot; | sudo tee /etc/apt/sources.list.d/mono-xamarin.list</code></li>
+<li><code>sudo apt-get update</code></li>
+<li><code>sudo apt-get install mono-complete</code></li>
+<li>Install libuv: 1. <code>sudo apt-get install automake libtool curl</code></li>
+<li><code>curl -sSL https://github.com/libuv/libuv/archive/v1.4.2.tar.gz | sudo tar zxfv - -C /usr/local/src</code></li>
+<li><code>cd /usr/local/src/libuv-1.4.2</code></li>
+<li><code>sudo sh autogen.sh</code></li>
+<li><code>sudo ./configure</code></li>
+<li><code>sudo make</code></li>
+<li><code>sudo make install</code></li>
+<li><code>sudo rm -rf /usr/local/src/libuv-1.4.2 &amp;&amp; cd ~/</code></li>
+<li><code>sudo ldconfig</code></li>
+<li>Install the .NET Version Manager (DNVM): 1. <code>curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | DNX_BRANCH=dev sh &amp;&amp; source ~/.dnx/dnvm/dnvm.sh</code></li>
+<li>Install the .NET Execution Environment (DNX): 1. <code>dnvm upgrade</code></li>
+<li>More installs for the next part: 1. <code>sudo apt-get update</code></li>
+<li><code>sudo apt-get upgrade</code></li>
+<li><code>sudo apt-get install build-essential openssl libssl-dev curl git</code></li>
+<li>Install NVM: 1. <code>git clone git://github.com/creationix/nvm.git ~/.nvm</code></li>
+<li>To load NVM whenever a terminal is opened: 1. <code>echo '[[ -s &quot;$HOME/.nvm/nvm.sh&quot; ]] &amp;&amp; source &quot;$HOME/.nvm/nvm.sh&quot;' &gt;&gt; ~/.bash_profile</code></li>
+<li>Start NVM in the current terminal: 1. <code>. ~/.nvm/nvm.sh</code></li>
+<li>Install Node.js (0.12.6 is the latest version as of this post, you should replace this with whatever the current version is when you install it): 1. <code>nvm install v0.12.6</code></li>
+<li><code>nvm alias default 0.12.6</code></li>
+<li>Install Yeoman (Yo) and the scaffolding template for ASP.NET projects: 1. <code>npm install -g yo generator-aspnet</code></li>
+<li>Generate an empty ASP.NET project. A wizard will come up and ask you what type of project you want to create. I created a <em>Simple</em> website and named it “MyFirstDotNetAppOnLinux”: 1. <code>yo aspnet</code></li>
+<li>Switch to the new directory/template that was created: 1. <code>cd MyFirstDotNetAppOnLinux</code></li>
+<li><code>dnu restore</code></li>
+<li>Start Web Server: 1. <code>dnx . kestrel</code></li>
+<li>Open Firefox and go to <strong>http://localhost:5000</strong></li>
 <li>To kill the web server hit <em>Ctrl+Z</em> then enter <code>kill %1</code></li>
 </ol>
-
 <p>Here are the articles I referenced when putting together this start-to-finish guide:</p>
-
 <ul>
 <li><a href="http://docs.asp.net/en/latest/getting-started/installing-on-linux.html#installing-on-debian-ubuntu-and-derivatives">http://docs.asp.net/en/latest/getting-started/installing-on-linux.html#installing-on-debian-ubuntu-and-derivatives</a></li>
 <li><a href="http://mariehogebrandt.se/articles/installing-yeoman-grunt-bower-and-yo-on-ubuntu/">http://mariehogebrandt.se/articles/installing-yeoman-grunt-bower-and-yo-on-ubuntu/</a></li>
 <li><a href="https://ovaismehboob.wordpress.com/2015/05/02/creating-asp-net-5-web-application-using-yeoman-generator/">https://ovaismehboob.wordpress.com/2015/05/02/creating-asp-net-5-web-application-using-yeoman-generator/</a></li>
 <li><a href="http://stackoverflow.com/questions/25712814/how-to-quit-asp-net-kestrel-web-server-on-a-mac">http://stackoverflow.com/questions/25712814/how-to-quit-asp-net-kestrel-web-server-on-a-mac</a></li>
 </ul>
-
 <p><strong>Don’t forget to install <a href="https://code.visualstudio.com/">Visual Studio Code</a> so you can edit your project in Ubuntu!</strong></p>
+
 </section>
 <footer class='post-footer'>
 </footer>

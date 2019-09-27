@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>social engineering</title>
+<meta name="HandheldFriendly" content="True" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" type="text/css" href="/css/site.css" />
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+<meta property="og:site_name" content="Rush Frisby" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="social engineering" />
+<meta name="twitter:title" content="social engineering" />
+<meta name="twitter:data1" content="Rush Frisby" />
+</head>
+<body class="post-template">
+<header id="header">
+<nav class="header-nav" ">
+<div class="blog-title"><a href="/">Rush Frisby</a></div>
+<div class="blog-description">Thoughts on software and technology.</div>
+
+<div class="taglist-wrapper clearfix">
+<ul id="taglist" class="taglist">
+<li class="nav-home" role="presentation">
+<a href="/">Home</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/about">About</a>
+</li>
+<li class="nav-mechanical-keyboards" role="presentation">
+<a href="/mechanical-keyboards">Mechanical Keyboards</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/tags">Tags</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/archive">Archive</a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<main id="content" class="content" role="main">
+<div id="article" class="box ">
+<h2 class='tag'>social engineering</h2>
+<article class='post'>
+<header class='post-header'>
+<a href='/got-website-backups-left-online'><h1 class='post-title'>Got Website &quot;Backups&quot; Left Online?</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2013-02-14'>Thursday, February 14, 2013</time>
+</section>
+</header>
+<section class='post-content'>
+<p>When I created this blog I built in a method that would catch every “Page Not Found” (404) error and track the number of times it was requested. This is great because I can now see requests to pages that don’t exist any more and redirect them to a page that may be related to what the person was looking for.</p>
+<p>A few days ago I noticed about 10 requests for .zip and .rar files. The files sought after were named things like wwwroot.zip, rushfrisby.com.rar, etc. Sometimes website owners will make a backup of their website as a .zip or .rar archive – and – sometimes they do it in the web site’s root directory (the IIS default folder is called wwwroot by the way). So the requests for these files came from someone who is checking if I have backed up my website in this manner and was lazy enough to leave it there.</p>
+<p>That’s interesting I thought to myself… So I devised an app to do the same thing. I wanted to see what kind of success rate hackers were having and what kind of ill managed websites are out there. Is this a social pattern that is happening frequently and needs to be brought to the public’s attention? I think so, let’s see what we can find.</p>
+<p>My app does two things. First I gave it a starting URL. I picked on a blogger who’s website I read regularly. I scanned his website picking out all of the links. Then I crawled all of those links and picked out the links from each of them… and so on. Essentially it’s a web crawler. All I am looking to get here are the domain names from those links.</p>
+<p>The second thing my app does is create a list of potential file names based on a domain name (eg: wwwroot.zip, rushfrisby.com.rar, etc.) Then I make a request for each file. If I get an OK (200) response back and the Content-Type header matches an archive then we’ve got something. I purposely did not download all of the OK files because that would be morally wrong and I am doing this for research only.</p>
+<p>At present time I’ve found almost 300,000 domain names, inspected about 15,000 of them for files, and found 20 files. I did download a few of them to confirm my suspicion and what I discovered is just what I thought.</p>
+<p>When you backup a website, it probably includes configuration files which are normally not accessible over the web, but are used by a web server so that it knows what to do. Configuration files can include private information such as SMTP credentials, database names and credentials, API credentials, service locations, etc. This is stuff no one should ever know.</p>
+<p>I found a few files that had configuration settings in their backups – with all of the sensitive information in plain text!</p>
+<p>To some sites credit they weren’t all bad. For example one was a software company who’s software was distributed as a file name that matched their domain name.</p>
+<p>There are a few things you can do to protect yourself from this social reverse engineering disaster. First, <strong>do not backup your website and leave the backup in the root folder</strong>. Second, <strong>do not store credentials in your configuration files in plain text</strong>! Many web servers allow you to encrypt sections of your config files so that they cannot be read by the human eye. For example this is a <a href="http://msdn.microsoft.com/en-us/library/zhhddkxy(v=vs.100).aspx">guide on how to encrypt ASP.NET Web.config files</a>.</p>
+<p>My last point is, why are people even making backups in the first place? Real software developers are using source control and branching when they make releases. Builds are compiled from the branch/source code and deployed from a package. If you need to restore a “backup” you can recompile the branch and deploy it. I realize not everyone knows how or has the capability to do this so until then we need to inform developers and ITadministratorsof this problem.</p>
+
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+</div>
+<div id="sidebar"><div class="box sidebox about">
+<div class="sidebox-title">About</div>
+<div class="sidebox-content">
+<p class="center"><img src="/img/rush_headshot_2018_256-min.jpg" title="Rush Frisby" alt="Rush Frisby" width="256" height="256" /></p>
+<p>Rush is a software architect who loves solving problems. You'll usually find him writing about security concepts and sharing solutions to problems he's faced.</p>
+</div>
+</div>
+<div class="sidebox box social clearfix">
+<ul>
+<a href="/rss" target="_blank" class="social-item rss"><li><i class="fa fa-rss fa-fs">&nbsp;</i></li></a>
+<a href="https://twitter.com/rushonerok" target="_blank" class="social-item tw"><li><i class="fa fa-twitter fa-fs">&nbsp;</i></li></a>
+<a href="http://github.com/rushfrisby" class="social-item github"><li><i class="fa fa-github fa-fs">&nbsp;</i></li></a>
+<a href="/" class="social-item home"><li><i class="fa fa-home fa-fs">&nbsp;</i></li></a>
+</ul>
+</div>
+<div class='box sidebox latest-articles'>
+<div class='sidebox-title'>Latest Articles</div>
+<div class='sidebox-content'>
+<a href='/interface-to-rpc-service'><div class='date'>2 AUG 2018</div><div>Interface to RPC Service</div></a>
+<a href='/losing-our-memory'><div class='date'>8 DEC 2017</div><div>Losing Our Memory</div></a>
+<a href='/are-coding-bootcamps-worth-it'><div class='date'>20 AUG 2017</div><div>Are Coding Bootcamps Worth It?</div></a>
+<a href='/meetup-using-protobuf-in-net'><div class='date'>8 AUG 2017</div><div>Meetup: Using Protobuf in .NET</div></a>
+<a href='/application-security-and-single-sign-on'><div class='date'>16 DEC 2016</div><div>Application Security and Single Sign On</div></a>
+</div>
+</div>
+
+</main>
+<footer class="site-footer clearfix">
+<section class="copyright"><a href="https://rushfrisby.com">Rush Frisby</a> &copy; 2018</section>
+<section class="poweredby">Proudly <a href="https://github.com/rushfrisby/rushfrisby.com">published with my own blog engine on github</a></section>
+</footer>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>regularexpressionvalidator</title>
+<meta name="HandheldFriendly" content="True" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" type="text/css" href="/css/site.css" />
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+<meta property="og:site_name" content="Rush Frisby" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="regularexpressionvalidator" />
+<meta name="twitter:title" content="regularexpressionvalidator" />
+<meta name="twitter:data1" content="Rush Frisby" />
+</head>
+<body class="post-template">
+<header id="header">
+<nav class="header-nav" ">
+<div class="blog-title"><a href="/">Rush Frisby</a></div>
+<div class="blog-description">Thoughts on software and technology.</div>
+
+<div class="taglist-wrapper clearfix">
+<ul id="taglist" class="taglist">
+<li class="nav-home" role="presentation">
+<a href="/">Home</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/about">About</a>
+</li>
+<li class="nav-mechanical-keyboards" role="presentation">
+<a href="/mechanical-keyboards">Mechanical Keyboards</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/tags">Tags</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/archive">Archive</a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<main id="content" class="content" role="main">
+<div id="article" class="box ">
+<h2 class='tag'>regularexpressionvalidator</h2>
+<article class='post'>
+<header class='post-header'>
+<a href='/c-date-format-regular-expression'><h1 class='post-title'>C# Date Format Regular Expression</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2006-12-29'>Friday, December 29, 2006</time>
+</section>
+</header>
+<section class='post-content'>
+<p>Use this regular expression to verify a US date format:</p>
+<p>^([1-9]|0[1-9]|1[012])<a href="%5B1-9%5D%7C0%5B1-9%5D%7C%5B12%5D%5B0-9%5D%7C3%5B01%5D">- /.</a>[- /.][0-9]{4}$</p>
+<p>Here is a quick unit test:</p>
+<p>[TestMethod] public void USDateRegex() { var usDateFormat = new Regex(&quot;^([1-9]|0[1-9]|1[012])<a href="%5B1-9%5D%7C0%5B1-9%5D%7C%5B12%5D%5B0-9%5D%7C3%5B01%5D">- /.</a>[- /.][0-9]{4}$&quot;); Assert.IsTrue(usDateFormat.IsMatch(&quot;1/19/1999&quot;)); Assert.IsTrue(usDateFormat.IsMatch(&quot;1-19-1999&quot;)); Assert.IsTrue(usDateFormat.IsMatch(&quot;01/19/1999&quot;)); Assert.IsTrue(usDateFormat.IsMatch(&quot;01-19-1999&quot;)); Assert.IsFalse(usDateFormat.IsMatch(&quot;1999/01/19&quot;)); Assert.IsFalse(usDateFormat.IsMatch(&quot;1999-01-19&quot;)); Assert.IsFalse(usDateFormat.IsMatch(&quot;99/99/1999&quot;)); Assert.IsFalse(usDateFormat.IsMatch(&quot;12/12/12345&quot;)); //this is not a valid date but matches the regex Assert.IsTrue(usDateFormat.IsMatch(&quot;02/31/1999&quot;)); }</p>
+<p>This will also work with the RegularExpressionValidator control in ASP.NET. Do note that some dates do match the expression but are not valid such as 2/31. It turns out that using a regular expression for edge cases is not the best approach. A better solution is to use the <a href="http://msdn.microsoft.com/en-us/library/system.datetime.tryparse.aspx">DateTime.TryParse</a> method or <a href="http://msdn.microsoft.com/en-us/library/system.datetime.tryparseexact.aspx">DateTime.TryParseExact</a> for custom date formats. This will also accept British style dates with the year first (and possibly more that I haven’t tested) so it is much more flexible than using Regex. Here is another example with a quick unit test:</p>
+<p>public bool IsValidDate(string date) { DateTime result; return DateTime.TryParse(date, out result); } [TestMethod] public void USDateTryParse() { Assert.IsTrue(IsValidDate(&quot;1/19/1999&quot;)); Assert.IsTrue(IsValidDate(&quot;1-19-1999&quot;)); Assert.IsTrue(IsValidDate(&quot;01/19/1999&quot;)); Assert.IsTrue(IsValidDate(&quot;01-19-1999&quot;)); Assert.IsTrue(IsValidDate(&quot;1999/01/19&quot;)); Assert.IsTrue(IsValidDate(&quot;1999-01-19&quot;)); Assert.IsFalse(IsValidDate(&quot;99/99/1999&quot;)); Assert.IsFalse(IsValidDate(&quot;12/12/12345&quot;)); Assert.IsFalse(IsValidDate(&quot;02/31/1999&quot;)); }</p>
+
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+</div>
+<div id="sidebar"><div class="box sidebox about">
+<div class="sidebox-title">About</div>
+<div class="sidebox-content">
+<p class="center"><img src="/img/rush_headshot_2018_256-min.jpg" title="Rush Frisby" alt="Rush Frisby" width="256" height="256" /></p>
+<p>Rush is a software architect who loves solving problems. You'll usually find him writing about security concepts and sharing solutions to problems he's faced.</p>
+</div>
+</div>
+<div class="sidebox box social clearfix">
+<ul>
+<a href="/rss" target="_blank" class="social-item rss"><li><i class="fa fa-rss fa-fs">&nbsp;</i></li></a>
+<a href="https://twitter.com/rushonerok" target="_blank" class="social-item tw"><li><i class="fa fa-twitter fa-fs">&nbsp;</i></li></a>
+<a href="http://github.com/rushfrisby" class="social-item github"><li><i class="fa fa-github fa-fs">&nbsp;</i></li></a>
+<a href="/" class="social-item home"><li><i class="fa fa-home fa-fs">&nbsp;</i></li></a>
+</ul>
+</div>
+<div class='box sidebox latest-articles'>
+<div class='sidebox-title'>Latest Articles</div>
+<div class='sidebox-content'>
+<a href='/interface-to-rpc-service'><div class='date'>2 AUG 2018</div><div>Interface to RPC Service</div></a>
+<a href='/losing-our-memory'><div class='date'>8 DEC 2017</div><div>Losing Our Memory</div></a>
+<a href='/are-coding-bootcamps-worth-it'><div class='date'>20 AUG 2017</div><div>Are Coding Bootcamps Worth It?</div></a>
+<a href='/meetup-using-protobuf-in-net'><div class='date'>8 AUG 2017</div><div>Meetup: Using Protobuf in .NET</div></a>
+<a href='/application-security-and-single-sign-on'><div class='date'>16 DEC 2016</div><div>Application Security and Single Sign On</div></a>
+</div>
+</div>
+
+</main>
+<footer class="site-footer clearfix">
+<section class="copyright"><a href="https://rushfrisby.com">Rush Frisby</a> &copy; 2018</section>
+<section class="poweredby">Proudly <a href="https://github.com/rushfrisby/rushfrisby.com">published with my own blog engine on github</a></section>
+</footer>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>

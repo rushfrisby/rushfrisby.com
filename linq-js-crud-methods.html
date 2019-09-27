@@ -52,18 +52,13 @@
 </header>
 <section class='post-content'>
 <p>One of my favorite JavaScript libraries is <a href="https://linqjs.codeplex.com/">Linq.js</a> (LINQ for JavaScript). Unfortunately the author is not responding to pull requests so I’m going to post my update here.</p>
-
 <p>I’ve added CRUD methods to the library so that you can Add, Delete, and Update items easily. I’ve found this very useful pattern where I load a lot of data when the page loads, convert it to an Enumerable using Linq.js, then as the user modifies data update it locally and send updates back to the server asynchronously.</p>
-
 <p>Here are examples of each method I’ve added:</p>
-
-<p>var data = Enumerable.From([ { "id": 1, "url": "<a href="http://amazon.com">http://amazon.com</a>", "title": "Amazon" }, { "id": 2, "url": "<a href="http://google.com">http://google.com</a>", "title" : "Google" }, { "id": 3, "url": "<a href="http://yahoo.com">http://yahoo.com</a>", "title" : "Wrong" } ]); data.Add({ "id": 4, "url": "<a href="http://msn.com">http://msn.com</a>", "title" : "MSN" }); data.Delete(function(x) { return x.id <mark> 1; }); data.Update(function(x) { return x.id </mark> 3 }, { "id": 3, "url": "<a href="http://yahoo.com">http://yahoo.com</a>", "title" : "Yahoo!" });</p>
-
+<p>var data = Enumerable.From([ { &quot;id&quot;: 1, &quot;url&quot;: &quot;http://amazon.com&quot;, &quot;title&quot;: &quot;Amazon&quot; }, { &quot;id&quot;: 2, &quot;url&quot;: &quot;http://google.com&quot;, &quot;title&quot; : &quot;Google&quot; }, { &quot;id&quot;: 3, &quot;url&quot;: &quot;http://yahoo.com&quot;, &quot;title&quot; : &quot;Wrong&quot; } ]); data.Add({ &quot;id&quot;: 4, &quot;url&quot;: &quot;http://msn.com&quot;, &quot;title&quot; : &quot;MSN&quot; }); data.Delete(function(x) { return x.id == 1; }); data.Update(function(x) { return x.id == 3 }, { &quot;id&quot;: 3, &quot;url&quot;: &quot;http://yahoo.com&quot;, &quot;title&quot; : &quot;Yahoo!&quot; });</p>
 <p>You can <a href="https://gist.github.com/rushfrisby/6ee0e4ce3268bf87270c">download my linq.js file here</a>. You can also <a href="http://jsfiddle.net/99eu7/">play with a fiddle I created using the example above</a>.</p>
-
 <p>Alternatively you can pass a function to Update instead of an object (makes sense if you are updating more than one item at a time):</p>
+<p>data.Update(function(x) { return x; }, function(x) { x.title = &quot;updated &quot; + x.id; return x; });</p>
 
-<p>data.Update(function(x) { return x; }, function(x) { x.title = "updated " + x.id; return x; });</p>
 </section>
 <footer class='post-footer'>
 </footer>

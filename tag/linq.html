@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>linq</title>
+<meta name="HandheldFriendly" content="True" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" type="text/css" href="/css/site.css" />
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+<meta property="og:site_name" content="Rush Frisby" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="linq" />
+<meta name="twitter:title" content="linq" />
+<meta name="twitter:data1" content="Rush Frisby" />
+</head>
+<body class="post-template">
+<header id="header">
+<nav class="header-nav" ">
+<div class="blog-title"><a href="/">Rush Frisby</a></div>
+<div class="blog-description">Thoughts on software and technology.</div>
+
+<div class="taglist-wrapper clearfix">
+<ul id="taglist" class="taglist">
+<li class="nav-home" role="presentation">
+<a href="/">Home</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/about">About</a>
+</li>
+<li class="nav-mechanical-keyboards" role="presentation">
+<a href="/mechanical-keyboards">Mechanical Keyboards</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/tags">Tags</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/archive">Archive</a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<main id="content" class="content" role="main">
+<div id="article" class="box ">
+<h2 class='tag'>linq</h2>
+<article class='post'>
+<header class='post-header'>
+<a href='/linq-js-crud-methods'><h1 class='post-title'>Linq.js CRUD Methods</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2013-12-02'>Monday, December 2, 2013</time>
+</section>
+</header>
+<section class='post-content'>
+<p>One of my favorite JavaScript libraries is <a href="https://linqjs.codeplex.com/">Linq.js</a> (LINQ for JavaScript). Unfortunately the author is not responding to pull requests so I’m going to post my update here.</p>
+<p>I’ve added CRUD methods to the library so that you can Add, Delete, and Update items easily. I’ve found this very useful pattern where I load a lot of data when the page loads, convert it to an Enumerable using Linq.js, then as the user modifies data update it locally and send updates back to the server asynchronously.</p>
+<p>Here are examples of each method I’ve added:</p>
+<p>var data = Enumerable.From([ { &quot;id&quot;: 1, &quot;url&quot;: &quot;http://amazon.com&quot;, &quot;title&quot;: &quot;Amazon&quot; }, { &quot;id&quot;: 2, &quot;url&quot;: &quot;http://google.com&quot;, &quot;title&quot; : &quot;Google&quot; }, { &quot;id&quot;: 3, &quot;url&quot;: &quot;http://yahoo.com&quot;, &quot;title&quot; : &quot;Wrong&quot; } ]); data.Add({ &quot;id&quot;: 4, &quot;url&quot;: &quot;http://msn.com&quot;, &quot;title&quot; : &quot;MSN&quot; }); data.Delete(function(x) { return x.id == 1; }); data.Update(function(x) { return x.id == 3 }, { &quot;id&quot;: 3, &quot;url&quot;: &quot;http://yahoo.com&quot;, &quot;title&quot; : &quot;Yahoo!&quot; });</p>
+<p>You can <a href="https://gist.github.com/rushfrisby/6ee0e4ce3268bf87270c">download my linq.js file here</a>. You can also <a href="http://jsfiddle.net/99eu7/">play with a fiddle I created using the example above</a>.</p>
+<p>Alternatively you can pass a function to Update instead of an object (makes sense if you are updating more than one item at a time):</p>
+<p>data.Update(function(x) { return x; }, function(x) { x.title = &quot;updated &quot; + x.id; return x; });</p>
+
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+</div>
+<div id="sidebar"><div class="box sidebox about">
+<div class="sidebox-title">About</div>
+<div class="sidebox-content">
+<p class="center"><img src="/img/rush_headshot_2018_256-min.jpg" title="Rush Frisby" alt="Rush Frisby" width="256" height="256" /></p>
+<p>Rush is a software architect who loves solving problems. You'll usually find him writing about security concepts and sharing solutions to problems he's faced.</p>
+</div>
+</div>
+<div class="sidebox box social clearfix">
+<ul>
+<a href="/rss" target="_blank" class="social-item rss"><li><i class="fa fa-rss fa-fs">&nbsp;</i></li></a>
+<a href="https://twitter.com/rushonerok" target="_blank" class="social-item tw"><li><i class="fa fa-twitter fa-fs">&nbsp;</i></li></a>
+<a href="http://github.com/rushfrisby" class="social-item github"><li><i class="fa fa-github fa-fs">&nbsp;</i></li></a>
+<a href="/" class="social-item home"><li><i class="fa fa-home fa-fs">&nbsp;</i></li></a>
+</ul>
+</div>
+<div class='box sidebox latest-articles'>
+<div class='sidebox-title'>Latest Articles</div>
+<div class='sidebox-content'>
+<a href='/interface-to-rpc-service'><div class='date'>2 AUG 2018</div><div>Interface to RPC Service</div></a>
+<a href='/losing-our-memory'><div class='date'>8 DEC 2017</div><div>Losing Our Memory</div></a>
+<a href='/are-coding-bootcamps-worth-it'><div class='date'>20 AUG 2017</div><div>Are Coding Bootcamps Worth It?</div></a>
+<a href='/meetup-using-protobuf-in-net'><div class='date'>8 AUG 2017</div><div>Meetup: Using Protobuf in .NET</div></a>
+<a href='/application-security-and-single-sign-on'><div class='date'>16 DEC 2016</div><div>Application Security and Single Sign On</div></a>
+</div>
+</div>
+
+</main>
+<footer class="site-footer clearfix">
+<section class="copyright"><a href="https://rushfrisby.com">Rush Frisby</a> &copy; 2018</section>
+<section class="poweredby">Proudly <a href="https://github.com/rushfrisby/rushfrisby.com">published with my own blog engine on github</a></section>
+</footer>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>

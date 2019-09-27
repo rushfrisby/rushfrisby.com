@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>registry</title>
+<meta name="HandheldFriendly" content="True" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" type="text/css" href="/css/site.css" />
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+<meta property="og:site_name" content="Rush Frisby" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="registry" />
+<meta name="twitter:title" content="registry" />
+<meta name="twitter:data1" content="Rush Frisby" />
+</head>
+<body class="post-template">
+<header id="header">
+<nav class="header-nav" ">
+<div class="blog-title"><a href="/">Rush Frisby</a></div>
+<div class="blog-description">Thoughts on software and technology.</div>
+
+<div class="taglist-wrapper clearfix">
+<ul id="taglist" class="taglist">
+<li class="nav-home" role="presentation">
+<a href="/">Home</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/about">About</a>
+</li>
+<li class="nav-mechanical-keyboards" role="presentation">
+<a href="/mechanical-keyboards">Mechanical Keyboards</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/tags">Tags</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/archive">Archive</a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<main id="content" class="content" role="main">
+<div id="article" class="box ">
+<h2 class='tag'>registry</h2>
+<article class='post'>
+<header class='post-header'>
+<a href='/using-a-custom-default-font-color-in-lync-2010'><h1 class='post-title'>Using a custom default font color in Lync 2010</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2014-10-15'>Wednesday, October 15, 2014</time>
+</section>
+</header>
+<section class='post-content'>
+<p>I use Lync 2010 at work and wanted to use orange as my default font color. The problem is that it’s not available through the settings dialog box. These are the options it gives me…</p>
+<p><img src="/img/post/lync2010_colors_dialog.png" alt="lync2010_colors_dialog" /></p>
+<p>No orange!?!</p>
+<p>I figured the settings must be stored in the Windows Registry so I opened up the Registry Editor and navigated to the key [HKEY_CURRENT_USER\Software\Microsoft\Communicator]. There is a setting called “IM CharFormat” that stores the default font information. It is a binary value in the registry and you can modify it manually. If you look closely at the value the color is just an HTML HEX color code within this value. Here it is…</p>
+<p><img src="/img/post/lync2010_default_font_custom_color.png" alt="lync2010_default_font_custom_color" /></p>
+<p>All you need to do is get the HEX value for your custom color and update this part of the value with it. #F26522 is the orange color I want. You will have to completely close down Lync and then restart it after you save the registry value. Now open up the default font dialog in Lync again. You will see that your custom color is now being used.</p>
+<p><img src="/img/post/lync2010_colors_dialog_with_orange.png" alt="lync2010_colors_dialog_with_orange" /></p>
+<p>If you choose one of the other colors then the “Custom Color” option will go away and you’ll have to edit the registry again. If you edit the font type, size, or other options and keep the custom color selected it will stay.</p>
+<p>The color picker in Lync 2013 is different and I believe you can select a custom color with it but you can still do this registry hack if you wish. It will also work with earlier versions of Lync/Communicator.</p>
+
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+</div>
+<div id="sidebar"><div class="box sidebox about">
+<div class="sidebox-title">About</div>
+<div class="sidebox-content">
+<p class="center"><img src="/img/rush_headshot_2018_256-min.jpg" title="Rush Frisby" alt="Rush Frisby" width="256" height="256" /></p>
+<p>Rush is a software architect who loves solving problems. You'll usually find him writing about security concepts and sharing solutions to problems he's faced.</p>
+</div>
+</div>
+<div class="sidebox box social clearfix">
+<ul>
+<a href="/rss" target="_blank" class="social-item rss"><li><i class="fa fa-rss fa-fs">&nbsp;</i></li></a>
+<a href="https://twitter.com/rushonerok" target="_blank" class="social-item tw"><li><i class="fa fa-twitter fa-fs">&nbsp;</i></li></a>
+<a href="http://github.com/rushfrisby" class="social-item github"><li><i class="fa fa-github fa-fs">&nbsp;</i></li></a>
+<a href="/" class="social-item home"><li><i class="fa fa-home fa-fs">&nbsp;</i></li></a>
+</ul>
+</div>
+<div class='box sidebox latest-articles'>
+<div class='sidebox-title'>Latest Articles</div>
+<div class='sidebox-content'>
+<a href='/interface-to-rpc-service'><div class='date'>2 AUG 2018</div><div>Interface to RPC Service</div></a>
+<a href='/losing-our-memory'><div class='date'>8 DEC 2017</div><div>Losing Our Memory</div></a>
+<a href='/are-coding-bootcamps-worth-it'><div class='date'>20 AUG 2017</div><div>Are Coding Bootcamps Worth It?</div></a>
+<a href='/meetup-using-protobuf-in-net'><div class='date'>8 AUG 2017</div><div>Meetup: Using Protobuf in .NET</div></a>
+<a href='/application-security-and-single-sign-on'><div class='date'>16 DEC 2016</div><div>Application Security and Single Sign On</div></a>
+</div>
+</div>
+
+</main>
+<footer class="site-footer clearfix">
+<section class="copyright"><a href="https://rushfrisby.com">Rush Frisby</a> &copy; 2018</section>
+<section class="poweredby">Proudly <a href="https://github.com/rushfrisby/rushfrisby.com">published with my own blog engine on github</a></section>
+</footer>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>rpc</title>
+<meta name="HandheldFriendly" content="True" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" type="text/css" href="/css/site.css" />
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+<meta property="og:site_name" content="Rush Frisby" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="rpc" />
+<meta name="twitter:title" content="rpc" />
+<meta name="twitter:data1" content="Rush Frisby" />
+</head>
+<body class="post-template">
+<header id="header">
+<nav class="header-nav" ">
+<div class="blog-title"><a href="/">Rush Frisby</a></div>
+<div class="blog-description">Thoughts on software and technology.</div>
+
+<div class="taglist-wrapper clearfix">
+<ul id="taglist" class="taglist">
+<li class="nav-home" role="presentation">
+<a href="/">Home</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/about">About</a>
+</li>
+<li class="nav-mechanical-keyboards" role="presentation">
+<a href="/mechanical-keyboards">Mechanical Keyboards</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/tags">Tags</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/archive">Archive</a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<main id="content" class="content" role="main">
+<div id="article" class="box ">
+<h2 class='tag'>rpc</h2>
+<article class='post'>
+<header class='post-header'>
+<a href='/interface-to-rpc-service'><h1 class='post-title'>Interface to RPC Service</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2018-08-02'>Thursday, August 2, 2018</time>
+</section>
+</header>
+<section class='post-content'>
+<p>I'm currently working on <a href="https://github.com/rushfrisby/InterfaceRpc">a project to quickly stand up an RPC service</a> based on an interface. It's a .NET Standard library. Here's how it works.</p>
+<p>Let's say you have an interface,</p>
+<pre><code>public interface IEchoService
+{
+    string Echo(string echo);
+}
+</code></pre>
+<p>, and you have an implementation that needs to be exposed so that others can call it. I chose HTTP for this.</p>
+<p>On the server I use <code>HttpListener</code> to create a web server and listen for requests. When a request comes in the path maps to a method name. For example, if my web server is listening on <code>http://localhost:6000/</code> and a request for <code>http://localhost:6000/Echo</code> comes in - that maps to the <code>Echo</code> method on the interface... then I use reflection to call it on the implementation that was provided.</p>
+<p>If <code>Echo</code> didn't map to a method on the interface then a 404 response is returned.</p>
+<p>In my library all HTTP requests are POSTs. The content is deserialized based upon the <code>Content-Type</code> header value of the request. I am using another library I created to handle this called <a href="https://github.com/rushfrisby/SerializerDotNet">SerializerDotNet</a>. At the time of writing it supports JSON and Protobuf. The same serializer used for deserialization is also used to return data in the response and the response's <code>Content-Type</code> is the same as the incoming request.</p>
+<p>Remember when I said &quot;quickly stand up an RPC service&quot;? This is how quickly it's done...</p>
+<pre><code>var svc = new RpcService&lt;IEchoService&gt;(new EchoService());
+svc.Start();
+</code></pre>
+<p>To use this in your own project add <a href="https://www.nuget.org/packages/InterfaceRpc.Service/">InterfaceRpc.Service</a> to your project using NuGet.</p>
+<p>There is a file called <code>rpcsettings.json</code> where you can specify additional settings. Currently only the web server prefixes and number of connections.</p>
+<p>To create a client it's just as easy...</p>
+<pre><code>var client = new RpcClient&lt;IEchoService&gt;.Create(&quot;http://localhost:6000/&quot;);
+</code></pre>
+<p>To use this in your own project add <a href="https://www.nuget.org/packages/InterfaceRpc.Client/">InterfaceRpc.Client</a> to your project using NuGet.</p>
+<p>By default it uses <code>JsonSerializer</code>. There is an optional 2nd argument where you can specify the type of <code>ISerializer</code> (like <code>ProtobufSerializer</code>)</p>
+<p>Then you can call any method defined in your interface:</p>
+<pre><code>var echoed = client.Echo(&quot;hello&quot;);
+</code></pre>
+<h4>Limitations</h4>
+<p>(stuff I could use help on)</p>
+<ul>
+<li><p>I punted on handling SSL certs so it only runs over plain HTTP right now. This seems reasonable given that it's common to setup a load balancer or proxy in front of web sites and services.</p>
+</li>
+<li><p>8 parameters in method signatures - this can expand to more in the future, if needed, but I think once you get this many it's better to create a class with properties for each and use 1 parameter in the signature.</p>
+</li>
+<li><p>Because of limitations with <code>ValueTuple</code>, text based serialization reads a little funky, but I'm sure Microsoft will fix this in future versions of .NET Standard. In the meantime I'm curious to see what people think about having &quot;Item1&quot;, &quot;Item2&quot;, etc... map to method parameters. There could be some work done to replace these with parameter names but it would add (unnecessary?) overhead.</p>
+</li>
+<li><p>A good name. Any suggestions?</p>
+</li>
+<li><p>See the <a href="https://github.com/rushfrisby/InterfaceRpc/issues">issues list on github</a> for more</p>
+</li>
+</ul>
+<h4>Why?</h4>
+<p>This will help tremendously in moving off of WCF / .NET Framework and onto .NET Core. WCF clients aren't supported in .NET Core. The good thing about WCF is that it is interface-based, so swapping out a server implementation is relatively easy. Assuming a <code>ChannelFactory</code> was used for the client, it can be replaced even easier.</p>
+<p>If you'd like to help in fleshing this idea out more please contribute through the <a href="https://github.com/rushfrisby/InterfaceRpc">github repo</a>!</p>
+<table width="100%" style="border:1px solid #c0c0c0;">
+<tr>
+<td nowrap="nowrap"><a href="https://www.nuget.org/packages/InterfaceRpc.Service/" target="_blank">InterfaceRpc.Service</a></td>
+<td width="100%"><a href="https://www.nuget.org/packages/InterfaceRpc.Service/" target="_blank"><img src="https://img.shields.io/nuget/v/InterfaceRpc.Service.svg?style=flat" alt="NuGet Status" style="display:inline;padding:0" /></a></td>
+</tr>
+<tr>
+<td nowrap="nowrap"><a href="https://www.nuget.org/packages/InterfaceRpc.Client/" target="_blank">InterfaceRpc.Client</a></td>
+<td width="100%"><a href="https://www.nuget.org/packages/InterfaceRpc.Client/" target="_blank"><img src="https://img.shields.io/nuget/v/InterfaceRpc.Client.svg?style=flat" alt="NuGet Status" style="display:inline;padding:0" /></a></td>
+</tr>
+</table>
+
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+</div>
+<div id="sidebar"><div class="box sidebox about">
+<div class="sidebox-title">About</div>
+<div class="sidebox-content">
+<p class="center"><img src="/img/rush_headshot_2018_256-min.jpg" title="Rush Frisby" alt="Rush Frisby" width="256" height="256" /></p>
+<p>Rush is a software architect who loves solving problems. You'll usually find him writing about security concepts and sharing solutions to problems he's faced.</p>
+</div>
+</div>
+<div class="sidebox box social clearfix">
+<ul>
+<a href="/rss" target="_blank" class="social-item rss"><li><i class="fa fa-rss fa-fs">&nbsp;</i></li></a>
+<a href="https://twitter.com/rushonerok" target="_blank" class="social-item tw"><li><i class="fa fa-twitter fa-fs">&nbsp;</i></li></a>
+<a href="http://github.com/rushfrisby" class="social-item github"><li><i class="fa fa-github fa-fs">&nbsp;</i></li></a>
+<a href="/" class="social-item home"><li><i class="fa fa-home fa-fs">&nbsp;</i></li></a>
+</ul>
+</div>
+<div class='box sidebox latest-articles'>
+<div class='sidebox-title'>Latest Articles</div>
+<div class='sidebox-content'>
+<a href='/interface-to-rpc-service'><div class='date'>2 AUG 2018</div><div>Interface to RPC Service</div></a>
+<a href='/losing-our-memory'><div class='date'>8 DEC 2017</div><div>Losing Our Memory</div></a>
+<a href='/are-coding-bootcamps-worth-it'><div class='date'>20 AUG 2017</div><div>Are Coding Bootcamps Worth It?</div></a>
+<a href='/meetup-using-protobuf-in-net'><div class='date'>8 AUG 2017</div><div>Meetup: Using Protobuf in .NET</div></a>
+<a href='/application-security-and-single-sign-on'><div class='date'>16 DEC 2016</div><div>Application Security and Single Sign On</div></a>
+</div>
+</div>
+
+</main>
+<footer class="site-footer clearfix">
+<section class="copyright"><a href="https://rushfrisby.com">Rush Frisby</a> &copy; 2018</section>
+<section class="poweredby">Proudly <a href="https://github.com/rushfrisby/rushfrisby.com">published with my own blog engine on github</a></section>
+</footer>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>

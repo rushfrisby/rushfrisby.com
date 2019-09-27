@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>javascript</title>
+<meta name="HandheldFriendly" content="True" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" type="text/css" href="/css/site.css" />
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+<meta property="og:site_name" content="Rush Frisby" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="javascript" />
+<meta name="twitter:title" content="javascript" />
+<meta name="twitter:data1" content="Rush Frisby" />
+</head>
+<body class="post-template">
+<header id="header">
+<nav class="header-nav" ">
+<div class="blog-title"><a href="/">Rush Frisby</a></div>
+<div class="blog-description">Thoughts on software and technology.</div>
+
+<div class="taglist-wrapper clearfix">
+<ul id="taglist" class="taglist">
+<li class="nav-home" role="presentation">
+<a href="/">Home</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/about">About</a>
+</li>
+<li class="nav-mechanical-keyboards" role="presentation">
+<a href="/mechanical-keyboards">Mechanical Keyboards</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/tags">Tags</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/archive">Archive</a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<main id="content" class="content" role="main">
+<div id="article" class="box ">
+<h2 class='tag'>javascript</h2>
+<article class='post'>
+<header class='post-header'>
+<a href='/net-javascript-engine-performance-results-updated-2016'><h1 class='post-title'>.NET JavaScript Engine Performance Results - Updated 2016</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-09-19'>Monday, September 19, 2016</time>
+</section>
+</header>
+<section class='post-content'>
+<p>A little over a year ago I ran some performance tests against six .NET JavaScript engines. Here are the updated results for this year. Things that have changed are:</p>
+<ul>
+<li>Upgraded engines. Not all have updates from last year though.</li>
+<li>Upgraded some of the javascript libraries. Again, not all have had updates since last year.</li>
+<li>Upgraded project to run on .NET 4.6.1 because of NiL.JS. NiL.JS project page says its supposed to run on .NET 4.5 but I got compiler errors telling me otherwise.</li>
+</ul>
+<p>Due to such major changes I expected the results to change quite a bit, and they did.</p>
+<h3>Engines</h3>
+<ul>
+<li><a href="https://github.com/sebastienros/jint">jint</a> – version 2.9.1.0</li>
+<li><a href="https://github.com/fholm/IronJS">IronJS</a> – version 0.2.0.1</li>
+<li><a href="https://github.com/JavascriptNet/Javascript.Net">JavaScript.Net</a> – version 0.7.1.0</li>
+<li><a href="http://jurassic.codeplex.com/">Jurassic</a> – version 2.2.1.0</li>
+<li><a href="http://clearscript.codeplex.com/">ClearScript</a> – version 5.4.6.0</li>
+<li><a href="https://github.com/nilproject/NiL.JS">NiL.JS</a> – version 2.3.955.0</li>
+</ul>
+<h3>Results</h3>
+<p>** All times are in milliseconds*</p>
+<iframe width="100%" height="300" src="//jsfiddle.net/rushonerok/0L9abarn/embedded/result/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<p>The biggest improvement came from Jint, but it's still the slowest overall.</p>
+<p>IronJS is slow as well. It hasn't been updated in years. I think it was a &quot;just for fun&quot; project. Use with caution!</p>
+<p>Javascript.NET is definitely the fastest, followed closely by ClearScript (V8).</p>
+<p>Jurassic came in at about the middle. Not bad.</p>
+<p>NiL.JS showed major improvements across the board and now is a little faster than Jurassic.</p>
+
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+<article class='post'>
+<header class='post-header'>
+<a href='/net-javascript-engine-performance-results'><h1 class='post-title'>.NET JavaScript Engine Performance Results</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2015-06-18'>Thursday, June 18, 2015</time>
+</section>
+</header>
+<section class='post-content'>
+<p><a href="/which-net-javascript-engine-is-the-fastest">Back in August</a> of last year I did some tests to determine which .NET JavaScript engine was the fastest. I wanted to get a better picture of the overall performance of each so I went back and grabbed all of the tests from <a href="http://dromaeo.com/">Dromaeo</a> to run. Below are the engines I compared and how fast they ran each test.</p>
+<h3>Engines</h3>
+<ul>
+<li><a href="https://github.com/sebastienros/jint">jint</a> – version 2.5.0.0</li>
+<li><a href="https://github.com/fholm/IronJS">IronJS</a> – version 0.2.0.1</li>
+<li><a href="https://github.com/JavascriptNet/Javascript.Net">JavaScript.Net</a> – version 0.7.1.0</li>
+<li><a href="http://jurassic.codeplex.com/">Jurassic</a> – version 2.1.0.0</li>
+<li><a href="http://clearscript.codeplex.com/">ClearScript</a> – version 5.4.2.0</li>
+<li><a href="https://github.com/nilproject/NiL.JS">NiL.JS</a> – version 1.4.740.0</li>
+</ul>
+<h3>Results</h3>
+<p>** All times are in milliseconds*</p>
+<iframe width="100%" height="300" src="//jsfiddle.net/rushonerok/xmz4m70t/embedded/result/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<p>If I didn’t have a timeout then NiL.JS would never have finishing loading knockout. Jurassic’s timeout on v8-earley-boyer is okay, it just runs really slow.</p>
+<p>I’ve been thinking of adding more tests which show the performance of .NET types being used in JavaScript and JavaScript variables being retrieved by .NET after the script has run. Stay tuned.</p>
+<p>The <a href="https://github.com/rushfrisby/jsnetperf">source code for these tests</a> are on GitHub.</p>
+
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+<article class='post'>
+<header class='post-header'>
+<a href='/evolution-of-the-javascript-rule-engine'><h1 class='post-title'>Evolution of the JavaScript Rule Engine</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2015-02-26'>Thursday, February 26, 2015</time>
+</section>
+</header>
+<section class='post-content'>
+<p>I was working on RulePlex this week and came across a couple of things I wanted to share. First is a change in the way that rules are “compiled”. You can’t really compile JavaScript per se but this is the process of how things came about working the way they do…</p>
+<p>In the first iteration, JavaScript rules were executed individually. If there were 100 rules in a Policy I would execute 100 little JavaScript snippets for an incoming request. The snippets were “compiled” when the call to the API was made. I soon realized that this might be okay if a Policy had a few rules but for large Policies it was <em>slow</em> – even if I executed all of the snippets in parallel.</p>
+<p>For the next iteration I took all of the rules and compiled them into one big script. In order to do this I had to wrap the rules with some advanced JavaScript techniques. Because this big script contains the results of every rule I had to append something unique to each result’s variable name – the rule’s <strong>Id</strong>. This makes the script look horrifying but I am okay with it for now (it’s not hurting performance). Executing one big script increased performance tremendously. Here is an example of what a Policy with 1 rule that simply returns <strong>true</strong> looks like compiled:</p>
+<script src="https://gist.github.com/rushfrisby/ac4aedf49ec4b1270c9e.js"></script>
+<p>At the same time I had extended this technique to the C# rule engine. I took it a step further though and actually compiled C# rules into a DLL. I took the binary code for the DLL and stored it along with the Policy. I did the compilation whenever a rule in the Policy changed – not when the API was called like I had been doing with the JavaScript engine. When the API <em>was</em> called, I got the DLL’s binary data and loaded it into memory to be executed against the incoming data.</p>
+<p>I mimicked the binary compilation and loading of the C# rules into the JavaScript engine as well. The thing is, I never really liked doing it in the JavaScript engine because I had to convert the compiled script (text) to binary, so I could store it in the same database field, and then from binary back to text when it was time to be executed. In C# it made sense but not in JavaScript. Now that the C# engine is gone I had a chance to go back and change this.</p>
+<p>Presently, when rules are changed (or added/deleted/etc), RulePlex will compile it’s big script during the save of the rule. I saves it to the Policy as text. When the API is called the script is retrieved and executed.</p>
+<p>I haven’t thought about tweaking this process any more but I may in the future. Instead I have been thinking about how this affects the workflow from a business perspective. The more I think about it the more I like the changes that I’ve made. If I ever change how I “compile” the big script it won’t affect policies that are currently <em>working</em> (a certain way). What if I’ve got a bug in the script that you’ve accounted for in you’re rules, knowingly or unknowingly. If I change how the script is compiled and it’s being compiled during the API request then it could be different day-by-day without any actions by you. This is bad because I may have fixed or introduced a bug that changes the results. Now the application you’ve integrated with RulePlex is broken!</p>
+<p>The ideal workflow is that there are two copies of the same Policy, maybe even three, or N. One copy would be designated as a Production copy, while the others are for Dev/Staging/whatever. When the engine changes, you want to test those changes in a non-Production environment first. When you’ve verified that the changes do not affect your application then that non-Production copy can be promoted to Production. This also applies to the workflow of building out a Policy too, not just back-end changes to the engine. The concept of environments will be included in the next version of RulePlex.</p>
+
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+<article class='post'>
+<header class='post-header'>
+<a href='/supporting-one-language-makes-ruleplex-intrinsically-faster'><h1 class='post-title'>Supporting One Language Makes RulePlex Intrinsically Faster</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2015-02-04'>Wednesday, February 4, 2015</time>
+</section>
+</header>
+<section class='post-content'>
+<p>In my previous post I wrote that one of the decisions I made about RulePlex was to only support one rule language. This will make the engine intrinsically faster and I’ll show you why.</p>
+<p>When you create a Policy (a set of rules) one of the options you are given is to chose a rule language. When it’s time to run your rules you provide the data and the Name or Id of the policy. From that Name/Id the Policy is found which will tell us the rule language. Once we know the language we can begin processing the rules.</p>
+<p>At first you might think of writing code for this that fits into a switch pattern. I might look something like this:</p>
+<script src="https://gist.github.com/rushfrisby/46e42ade6fbe1ef5e179.js"></script>
+<p>Some things to note here – I am using enums and I left out the implementation of how the rules are processed. That’s because I just want to talk about the switch pattern. It’s not the cleanest way of writing this. My example only has 3 cases but the worst switch I’ve ever seen had over 80 cases, used strings for the case values, and had an average of 12 lines per case – over 1000 lines in total! This is an amplification of my point which makes it very clear, that, switches can become unreadable and hard to maintain. Whenever you have a switch statement you should ask yourself if <a href="http://blogs.microsoft.co.il/gilf/2009/11/22/applying-strategy-pattern-instead-of-using-switch-statements/">using a Strategy pattern</a> makes more sense.</p>
+<p>In RulePlex I used the Strategy Pattern, something to the effect of this:</p>
+<script src="https://gist.github.com/rushfrisby/8368c0393accbee4cd97.js"></script>
+<p>The downside to this pattern is that a dictionary lookup is slower than a switch statement. The upside is that it cleans up code very nicely. I could have added support for 10 new rule languages and the lookup code would have stayed the same. It’s up to you to decide between these trade-offs. My original goal was to support as many languages as possible in RulePlex so using the Strategy Pattern would have saved me headache down the road.</p>
+<p>That all changes now that RulePlex is only using JavaScript rules. I don’t need the strategy pattern and I don’t even need a switch statement. Instead I can new-up a JavaScriptRuleEngine and call Execute() on it. Faster and cleaner!</p>
+<p>On a side note (back to my comment on using enums): You should <a href="http://stackoverflow.com/a/9501967/266804">never use “magic strings”</a>. Your world will be a much better place without them.</p>
+
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+<article class='post'>
+<header class='post-header'>
+<a href='/introducing-ruleplex'><h1 class='post-title'>Introducing RulePlex</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2015-01-29'>Thursday, January 29, 2015</time>
+</section>
+</header>
+<section class='post-content'>
+<p>Almost a year ago I began on a mission to create the first cloud-based rules engine. I called it <a href="https://ruleplex.com">RulePlex</a>. After a few months of work I had succeeded. A lot of rules engines can be run (on virtual machines) in the cloud but mine was designed with a cloud-first approach in mind. On top of being cloud-based I had a couple of other goals I wanted for the engine:</p>
+<p><img src="/img/post/First_flight2.png" alt="The Wright brothers first flight." /></p>
+</div>- Allow rules to be written in any language
+- Allow integration with any app
+- Make it incredibly secure
+- Keep the cost low
+<p>I accomplished all of these. The engine was awesome. When I was at a good place to ease up on the development, I did, and started to connect with as many people as I could trying to drum up business. I contacted all of my developer buddies, business contacts, previous employers… but no one was interested. I tried to generate business by presenting my software at business start-up events like <a href="http://orlando.sites.1millioncups.com/">1MillionCups</a>. I tried Google Adwords. I threw a hail mary to <a href="https://twitter.com/shanselman">Scott Hanselman</a> hoping he would do a <a href="http://hanselminutes.com/">hanselminutes</a> with me. I even gave the service away for free just to get signups so people would look at it… but all of my attempts at getting the business going failed. I don’t think I did enough even though it may sound like I had.</p>
+<p><strong>I’m not giving up.</strong></p>
+<p><em>I’m changing things up!</em></p>
+<p>Instead of being cloud-based I am falling in line with all of the other rule engines. RulePlex will be an on-premise install. It can still be run in the cloud but it won’t be touted as the first cloud-based rules engine any more. It’s nice that I was able to accomplish that feat but ultimately I think proximity to where it will be used will benefit companies more. The latency between the cloud an a corporate network is too much when apps need instant results.</p>
+<p>Another thing I am changing is the ability to write rules in any language. I had support for JavaScript, C#, VB.NET, Ruby, and Python – but from now on rules will only be written in JavaScript. By going with only one language it will save development time tremendously. I chose JavaScript because it is the most widely used language today. It’s also not going anywhere anytime soon. It has become an incredible server side language thanks to <a href="https://code.google.com/p/v8/">V8</a> and the popularity of <a href="http://nodejs.org/">Node.js</a>. It’s flexible/forgiving thanks to dynamic typing and business users can learn the basics easily.</p>
+<p>The last thing I will be doing is blogging a lot more about RulePlex. I’ve been working on it for almost a year and I haven’t written anything (directly) about it. I want people to follow along with it’s progress and see how it is evolving and why things work the way they do. I want you to see what is influencing me into making design choices. Hopefully this will transform into a community of RulePlex users but I won’t get too ahead of myself. Let’s just start with clicking publish on this post.</p>
+<p><img src="/img/post/ruleplex_logo.png" alt="" /></p>
+
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+<article class='post'>
+<header class='post-header'>
+<a href='/stopwatch-class-in-javascript'><h1 class='post-title'>Stopwatch Class in JavaScript</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2014-08-08'>Friday, August 8, 2014</time>
+</section>
+</header>
+<section class='post-content'>
+<p>I needed the equivalent of .NET’s Stopwatch class in JavaScript today. I did a quick search and could only find actual stopwatches so I figured it would be faster to write it myself.</p>
+<p>Here is a fiddle that shows the usage</p>
+<iframe allowfullscreen="allowfullscreen" frameborder="0" height="300" src="https://jsfiddle.net/rushonerok/a4y9bwvt/embedded/" width="100%"></iframe>
+<p>and here is the code for the Stopwatch class</p>
+<script src="https://gist.github.com/rushfrisby/3c0dc10187ee4da04e7f.js"></script>
+
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+<article class='post'>
+<header class='post-header'>
+<a href='/which-net-javascript-engine-is-the-fastest'><h1 class='post-title'>Which .NET JavaScript Engine is the fastest?</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2014-08-02'>Saturday, August 2, 2014</time>
+</section>
+</header>
+<section class='post-content'>
+<blockquote>
+<p><strong>UPDATE 6/17/2015:</strong> Added NiL.JS, updated to the latest version of ClearScript and Jint, fixed ClearScript “compiled” test, and updated results for all.</p>
+</blockquote>
+<blockquote>
+<p><strong>UPDATE 6/18/2015:</strong><a href="/net-javascript-engine-performance-results">Reran with more tests</a></p>
+</blockquote>
+<p>In <a href="https://ruleplex.com">RulePlex</a> users are allowed to write rules in JavaScript, make an API call which passes in data, and execute those rules in the cloud. RulePlex is written in .NET. So how do we execute JavaScript in .NET? It turns out there are a bunch of JavaScript engines that can do this, but which one is the fastest?</p>
+<p>I took an inventory of the more popular .NET JavaScript engines:</p>
+<ul>
+<li><a href="https://github.com/sebastienros/jint">jint</a> – version 2.5.0.0</li>
+<li><a href="https://github.com/fholm/IronJS">IronJS</a> – version 0.2.0.1</li>
+<li><a href="https://github.com/JavascriptNet/Javascript.Net">JavaScript.Net</a> – version 0.7.1.0</li>
+<li><a href="http://jurassic.codeplex.com/">Jurassic</a> – version 2.1.0.0</li>
+<li><a href="http://clearscript.codeplex.com/">ClearScript</a> – version 5.4.2.0</li>
+<li><a href="https://github.com/nilproject/NiL.JS">NiL.JS</a> – version 1.4.740.0</li>
+</ul>
+<p>My initial thoughts were that JavaScript.Net would be fast since it is just a wrapper for <a href="https://code.google.com/p/v8/">Google’s V8 engine</a> which is the fastest JavaScript engine currently. I also thought IronJS would be fast since it uses Microsoft’s Dynamic Language Runtime. jint and Jurassic I was skeptical about.</p>
+<h3>The Tests</h3>
+<p>I created a project and referenced each engine by using <a href="https://www.nuget.org/">NuGet</a>. I called each engine 5 times to execute a snippet of code and took the average. The snippet of code I executed came from a suite of array tests I found at <a href="http://dromaeo.com/">Dromaeo</a>. You can view the tests in <a href="https://gist.github.com/rushfrisby/5491f25a82a979c5b15e">this gist</a>.</p>
+<p>I also did another test where I loaded the <a href="http://linqjs.codeplex.com/">linq.js library</a> (one of my favorite, lesser known, JavaScript libraries) but I ran it 50 times.</p>
+<h3>The Results</h3>
+<p>Array test results:</p>
+<table style="width:auto"><tr><td>jint</td><td>14,028 ms</td></tr><tr><td>IronJS</td><td>1,622 ms</td></tr><tr><td>JavaScript.Net</td><td>20 ms</td></tr><tr><td>Jurassic</td><td>237 ms</td></tr><tr><td>ClearScript</td><td>263 ms</td></tr><tr><td>ClearScript (compiled)</td><td>111 ms</td></tr><tr><td>NiL.JS</td><td>1,680 ms</td></tr></table>Linq.js load results:
+<table style="width:auto"><tr><td>jint</td><td>17 ms</td></tr><tr><td>IronJS</td><td>176 ms</td></tr><tr><td>JavaScript.Net</td><td>13 ms</td></tr><tr><td>Jurassic</td><td>114 ms</td></tr><tr><td>ClearScript</td><td>37 ms</td></tr><tr><td>ClearScript (compiled)</td><td>22 ms</td></tr><tr><td>NiL.JS</td><td>17 ms</td></tr></table>If you come across any other .NET JavaScript engines feel free to let me know and I’ll add them to my comparison.
+<h3>One More Test</h3>
+<p>I wasn’t entirely happy with the tests I had done so I added one more. The script I executed only does one small thing – set a variable to true. This shows more or less the overhead of each engine. I ran this this test 5000 times each and took the average.</p>
+<p>One variable results:</p>
+<table style="width:auto"><tr><td>jint</td><td><1 ms</td></tr><tr><td>IronJS</td><td><1 ms</td></tr><tr><td>JavaScript.Net</td><td>9 ms</td></tr><tr><td>Jurassic</td><td>3 ms</td></tr><tr><td>ClearScript</td><td>31 ms</td></tr><tr><td>ClearScript (compiled)</td><td>22 ms</td></tr><tr><td>NiL.JS</td><td><1 ms</td></tr></table>Here is the complete script I used. I swapped out currentScript and changed N as needed.
+<script src="https://gist.github.com/rushfrisby/59b2d7f91fd15cfe64ff.js"></script>
+<p>Target Framework was .NET 4.5.1, Target Platform was x86. Run on a quad score i7 CPU @ 2.40 GHz.</p>
+<p><strong>Updated Results 6/17/2015:</strong></p>
+<ul>
+<li>Jint does well with small scripts. Has become faster since last August.</li>
+<li>IronJS did okay</li>
+<li>JavaScript.Net looks like it is the overall fastest</li>
+<li>Jurassic did pretty good</li>
+<li>ClearScript is fast but has a lot of overhead. Might want to try <a href="https://github.com/eswann/ClearScript.Manager">ClearScript.Manager</a> to help with this. (Even so, I’ve had problems getting it to scale.)</li>
+<li>NiL.JS did okay</li>
+</ul>
+
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+</div>
+<div id="sidebar"><div class="box sidebox about">
+<div class="sidebox-title">About</div>
+<div class="sidebox-content">
+<p class="center"><img src="/img/rush_headshot_2018_256-min.jpg" title="Rush Frisby" alt="Rush Frisby" width="256" height="256" /></p>
+<p>Rush is a software architect who loves solving problems. You'll usually find him writing about security concepts and sharing solutions to problems he's faced.</p>
+</div>
+</div>
+<div class="sidebox box social clearfix">
+<ul>
+<a href="/rss" target="_blank" class="social-item rss"><li><i class="fa fa-rss fa-fs">&nbsp;</i></li></a>
+<a href="https://twitter.com/rushonerok" target="_blank" class="social-item tw"><li><i class="fa fa-twitter fa-fs">&nbsp;</i></li></a>
+<a href="http://github.com/rushfrisby" class="social-item github"><li><i class="fa fa-github fa-fs">&nbsp;</i></li></a>
+<a href="/" class="social-item home"><li><i class="fa fa-home fa-fs">&nbsp;</i></li></a>
+</ul>
+</div>
+<div class='box sidebox latest-articles'>
+<div class='sidebox-title'>Latest Articles</div>
+<div class='sidebox-content'>
+<a href='/interface-to-rpc-service'><div class='date'>2 AUG 2018</div><div>Interface to RPC Service</div></a>
+<a href='/losing-our-memory'><div class='date'>8 DEC 2017</div><div>Losing Our Memory</div></a>
+<a href='/are-coding-bootcamps-worth-it'><div class='date'>20 AUG 2017</div><div>Are Coding Bootcamps Worth It?</div></a>
+<a href='/meetup-using-protobuf-in-net'><div class='date'>8 AUG 2017</div><div>Meetup: Using Protobuf in .NET</div></a>
+<a href='/application-security-and-single-sign-on'><div class='date'>16 DEC 2016</div><div>Application Security and Single Sign On</div></a>
+</div>
+</div>
+
+</main>
+<footer class="site-footer clearfix">
+<section class="copyright"><a href="https://rushfrisby.com">Rush Frisby</a> &copy; 2018</section>
+<section class="poweredby">Proudly <a href="https://github.com/rushfrisby/rushfrisby.com">published with my own blog engine on github</a></section>
+</footer>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+</body>
+</html>

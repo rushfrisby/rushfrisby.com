@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<title>protobuf</title>
+<title>meetups</title>
 <meta name="HandheldFriendly" content="True" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" type="text/css" href="/css/site.css" />
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
 <meta property="og:site_name" content="Rush Frisby" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="protobuf" />
-<meta name="twitter:title" content="protobuf" />
+<meta property="og:title" content="meetups" />
+<meta name="twitter:title" content="meetups" />
 <meta name="twitter:data1" content="Rush Frisby" />
 </head>
 <body class="post-template">
@@ -43,7 +43,7 @@
 </header>
 <main id="content" class="content" role="main">
 <div id="article" class="box ">
-<h2 class='tag'>protobuf</h2>
+<h2 class='tag'>meetups</h2>
 <article class='post'>
 <header class='post-header'>
 <a href='/meetup-using-protobuf-in-net'><h1 class='post-title'>Meetup: Using Protobuf in .NET</h1></a>
@@ -55,33 +55,6 @@
 <p>Protocol Buffers is a method of serializing structured data. It is useful in developing programs to communicate with each other over a wire or for storing data.</p>
 <p>On August 10<sup>th</sup> I will be speaking at the Orlando .NET User Group <a href="https://www.meetup.com/ONETUG/events/241115418/">meetup on Using Protobuf in .NET</a>. Come check it out if you are interested in this cool technology! The meetup starts at 6PM at the Melrose Tech Center inside the downtown Orlando Library. Afterwards the group heads over to Harp &amp; Celt for food and drinks over more tech talk!</p>
 <p><img src="https://secure.meetupstatic.com/photos/event/e/a/4/4/highres_362039972.jpeg" alt="" /></p>
-
-</section>
-<footer class='post-footer'>
-</footer>
-</article>
-
-<article class='post'>
-<header class='post-header'>
-<a href='/improving-webapi-performance-with-jil-and-protocol-buffers'><h1 class='post-title'>Improving WebAPI performance with Jil and Protocol Buffers</h1></a>
-<section class='post-meta'>
-<time class='post-date' datetime='2014-10-17'>Friday, October 17, 2014</time>
-</section>
-</header>
-<section class='post-content'>
-<p>One of the reasons I don’t use WebAPI for internal services is because of the performance hit incurred when serializing and deserializing JSON and XML messages. Even for public API’s this is somewhat of a pain. After digging around I’ve found ways to improve the performance of WebAPI serialization.</p>
-<p>In .NET there are lots of serializers. The most popular being <a href="http://james.newtonking.com/json">Json.NET</a> which was chosen by Microsoft to be the default JSON serializer for WebAPI. Json.NET is great because it is fast, robust, and configurable. There are serializers that are <strong>faster</strong> than Json.NET though. Take a look at <a href="http://theburningmonk.com/2014/02/json-serializers-benchmarks-updated/">these benchmarks</a>:</p>
-<p><img src="/img/post/serializer_benchmarks.png" alt="Source: theburningmonk.com" /></p>
-<p><img src="/img/post/serializer_benchmarks2.png" alt="Source: theburningmonk.com" /></p>
-</div>ServiceStack.Text, Jil, and Protobuf-Net are all faster than Json.NET. Protobuf-Net is not a JSON serializer but I’ll get to that in a minute. ServiceStack.Text slightly edges out Json.NET in terms of speed and from what I can tell is as robust as Json.NET. I frown upon using it however because it’s not entirely free. There is a free version but it will only deserialize 10 object types and serialize 20. I will never use it because of this. Json.NET is free and the performance gain in using ServiceStack isn’t enough for me to pay.
-<p>There is one more option we need to look at though – <a href="https://github.com/kevin-montrose/Jil">Jil</a>. Jil is optimized for speed over memory. The author of Jil goes into detail on <a href="http://kevinmontrose.com/">his blog</a> on the optimizations he’s made to get the best performance. It is interesting reading if you have time. Jil is also used on the <a href="https://api.stackexchange.com/">Stack Exchange API</a> which is used by many people. I almost forgot to mention – it’s free!</p>
-<p><a href="https://code.google.com/p/protobuf/">Protocol Buffers</a>, or Protobuf for short, is Google’s official serializer. They use it for all of their internal services. Instead of JSON this is a binary serializer. I was interested to see the payload size of binary serialization versus JSON so I did a quick test. Json.NET produced a payload of 728 bytes while the same object serialized by Protobuf was 444 bytes (39% smaller). The act of serialization is also faster as you can see in the benchmarks above. The combination of the two means you can receive and send WebAPI messages faster than the default serializer. But how can we use this in WebAPI?</p>
-<p>The great thing about WebAPI is that swapping out serializers and adding support for new ones is a breeze. In my projects I am now swapping out Json.NET for Jil and adding support for protobuf. WebAPI will return the correct result to the caller based on the content-type they wish to receive. Here are some articles on how you can do this too!</p>
-<ul>
-<li><a href="http://www.strathweb.com/2013/02/asp-net-web-api-and-protocol-buffers/">Implementing protocol-buffers in WebAPI</a></li>
-<li><a href="http://damienbod.wordpress.com/2014/01/11/using-protobuf-net-media-formatter-with-web-api-2/">Consuming protobuf services</a></li>
-<li><a href="https://code.google.com/p/protobuf-net/">Protobuf-net project</a></li>
-</ul>
 
 </section>
 <footer class='post-footer'>

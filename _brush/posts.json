@@ -161,7 +161,7 @@
     "IsPublished": true,
     "PublishedOn": "2018-05-06T00:00:00-04:00",
     "Slug": "code-keyboard",
-    "Tags": [],
+    "Tags": ["keyboards","hardware"],
     "IsPage": true
   },
   {
@@ -189,7 +189,7 @@
     "IsPublished": true,
     "PublishedOn": "2018-05-07T00:00:00-04:00",
     "Slug": "dev-tty-keycaps",
-    "Tags": [],
+    "Tags": ["keyboards","hardware","keycaps"],
     "IsPage": true
   },
   {
@@ -231,7 +231,8 @@
     "Slug": "evolution-of-the-javascript-rule-engine",
     "Tags": [
       "concepts",
-      "workflow"
+      "workflow",
+      "javascript"
     ],
     "IsPage": false
   },
@@ -326,7 +327,7 @@
     "IsPublished": true,
     "PublishedOn": "2018-08-02T06:28:49-04:00",
     "Slug": "interface-to-rpc-service",
-    "Tags": [],
+    "Tags": ["rpc","services"],
     "IsPage": false
   },
   {
@@ -335,7 +336,7 @@
     "PublishedOn": "2015-01-29T00:00:00-05:00",
     "Slug": "introducing-ruleplex",
     "Tags": [
-      "javascript-ecma",
+      "javascript",
       "cloud",
       "nodejs",
       "rule-engine",
@@ -396,8 +397,8 @@
     "PublishedOn": "2013-10-28T10:07:51-04:00",
     "Slug": "max-keyboard-nighthawk-x8-review",
     "Tags": [
-      "keyboard",
-      "mechanical"
+      "keyboards",
+      "hardware"
     ],
     "IsPage": false
   },
@@ -406,7 +407,7 @@
     "IsPublished": true,
     "PublishedOn": "2016-02-29T00:00:00-05:00",
     "Slug": "mechanical-keyboards",
-    "Tags": [],
+    "Tags": ["keyboards","hardware"],
     "IsPage": true
   },
   {
@@ -414,7 +415,7 @@
     "IsPublished": true,
     "PublishedOn": "2017-08-08T15:09:30-04:00",
     "Slug": "meetup-using-protobuf-in-net",
-    "Tags": [],
+    "Tags": ["protobuf","meetups"],
     "IsPage": false
   },
   {
@@ -427,7 +428,7 @@
       "dlr",
       "dromaeo",
       "ironjs",
-      "javascript-net",
+      "javascript",
       "jint",
       "jurassic",
       "nil-js",
@@ -440,7 +441,9 @@
     "IsPublished": true,
     "PublishedOn": "2016-09-19T04:22:43-04:00",
     "Slug": "net-javascript-engine-performance-results-updated-2016",
-    "Tags": [],
+    "Tags": [
+      "javascript"
+    ],
     "IsPage": false
   },
   {
@@ -520,7 +523,7 @@
     "PublishedOn": "2015-07-06T07:18:22-04:00",
     "Slug": "running-asp-net-on-ubuntu",
     "Tags": [
-      "asp-net",
+      "aspnet",
       "dnvm",
       "dnx",
       "dotnet",
@@ -568,7 +571,8 @@
     "PublishedOn": "2014-08-08T00:45:34-04:00",
     "Slug": "stopwatch-class-in-javascript",
     "Tags": [
-      "stopwatch"
+      "stopwatch",
+      "javascript"
     ],
     "IsPage": false
   },
@@ -579,7 +583,8 @@
     "Slug": "supporting-one-language-makes-ruleplex-intrinsically-faster",
     "Tags": [
       "architecture",
-      "design-patterns"
+      "design-patterns",
+      "javascript"
     ],
     "IsPage": false
   },
@@ -774,7 +779,7 @@
     "IsPublished": true,
     "PublishedOn": "2018-05-07T00:00:00-04:00",
     "Slug": "varmilo-va87mr",
-    "Tags": [],
+    "Tags": ["keyboards","hardware"],
     "IsPage": true
   },
   {
@@ -784,7 +789,8 @@
     "Slug": "which-net-javascript-engine-is-the-fastest",
     "Tags": [
       "linqjs",
-      "nuget"
+      "nuget",
+      "javascript"
     ],
     "IsPage": false
   },

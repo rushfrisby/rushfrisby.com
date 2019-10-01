@@ -52,11 +52,11 @@
 </header>
 <section class='post-content'>
 <p>This past week my Interface RPC library hit version 2.0 and I want to take a minute to go over how I got there.</p>
-<p>I used the first version for a few services that my company depends.  It was running in production just fine, for a while. After a couple months I found an issue however. The issue was with how exceptions were handled by my code which in-turn caused an additional exception. The result of this caused threads to hang and eventually starve the system. It was a simple fix and services continued to run fine.</p>
-<p>I ran into a second problem a few months later. This one however, was much more serious and caused a service to hang until restarted. I knew what method was being called to cause it but that's about it. I didn't do much digging other that than because I knew that I didn't want to maintain the HttpListener implementation of this library any more. I was a stop-gap for how I really wanted it to work...</p>
-<p>Ideally I wanted to host services on ASP.NET Core and plug into that ecosystem of things, like; depenency injection, configuration, and security.</p>
+<p>I used the first version for a few services that my company depends on. It was running in production just fine, for a while. After a couple months I found an issue however. The issue was with how exceptions were handled by my code which in-turn caused an additional exception. The result of this caused threads to hang and eventually starve the system. It was a simple fix and services continued to run fine.</p>
+<p>I ran into a second problem a few months later. This one, however, was much more serious and caused a service to hang until restarted. I knew what method was being called to cause it but that's about it. I didn't do much digging other than that because I didn't want to maintain the HttpListener implementation of this library any more. It was a stop-gap for how I really wanted it to work anyways...</p>
+<p>Ideally I wanted to host the service on ASP.NET Core and plug into that ecosystem of things, like; depenency injection, configuration, and security.</p>
 <p>So that's what I did. Instead of fixing a bug I chucked most of my code, refactored what was left (A LOT), and made a 2.0 I felt a whole lot better about.</p>
-<p>I've had 2.0 running in production for months now with no issues whatsoever. This past week a co-worker tidy'd up one last thing which pushed me over the edge in removing the pre-release moniker and published the official 2.0 nuget package! Let's take a look.</p>
+<p>I've had 2.0 running in production for months now with no issues. This past week a co-worker tidy'd up one last thing which pushed me over the edge in removing the pre-release moniker and published the official 2.0 nuget package! Let's take a look.</p>
 <h2>Service Setup</h2>
 <p>This is done during Startup within the <code>Configure</code> method. The RPC service is essentially now middleware in the ASP.NET pipeline.</p>
 <pre><code class="language-cs">public void Configure(IApplicationBuilder app)

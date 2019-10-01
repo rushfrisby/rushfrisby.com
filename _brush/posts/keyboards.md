@@ -1,95 +1,107 @@
 Below is a list of my keyboard collection. I'll write reviews on each one... some day.
 
 <table>
-<thead>
-<tr>
-<th>Keyboard Name</th>
-<th>Size</th>
-<th>Switch</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Ajazz AK33 RGB</td>
-<td>65%</td>
-<td>Zorro Blue</td>
-</tr>
-<tr>
-<td nowrap>Das Keyboard Model S Professional</td>
-<td>Full</td>
-<td>Cherry MX Brown</td>
-</tr>
-<tr>
-<td nowrap>Dell AT101W</td>
-<td>Full</td>
-<td>Alps SKCM Black</td>
-</tr>
-<tr>
-<td>Input Club K-Type</td>
-<td nowrap>Tenkeyless</td>
-<td>Halo True</td>
-</tr>
-<tr>
-<td>Input Club WhiteFox</td>
-<td>65%</td>
-<td nowrap>Zealios Purple 67g</td>
-</tr>
-<tr>
-<td>Massdrop CTRL</td>
-<td>Tenkeyless</td>
-<td>Kaihua Box White</td>
-</tr>
-<tr>
-<td>Max Keyboard Nighthawk X8</td>
-<td>Full</td>
-<td>Cherry MX Brown</td>
-</tr>
-<tr>
-<td>Royal Kludge RG-987/928</td>
-<td>Tenkeyless</td>
-<td>Greetech Black</td>
-</tr>
-<tr>
-<td>Unicomp Ultra Classic</td>
-<td>Full</td>
-<td>Buckling Spring</td>
-</tr>
-<tr>
-<td><a href="/varmilo-va87mr">Varmilo VA87MR</a></td>
-<td>Tenkeyless</td>
-<td>Gateron Blue</td>
-</tr>
-<tr>
-<td><a href="/varmilo-va87mr">Varmilo VA87MR</a></td>
-<td>Tenkeyless</td>
-<td>Gateron Green</td>
-</tr>
-<tr>
-<td><a href="/varmilo-va87mr">Varmilo VA87MR</a></td>
-<td>Tenkeyless</td>
-<td>Cherry MX White</td>
-</tr>
-<tr>
-<td>Vortex POK3R</td>
-<td>60%</td>
-<td>Cherry MX Clear</td>
-</tr>
-<tr>
-<td><a href="/code-keyboard">WASD CODE Keyboard</a></td>
-<td>Full</td>
-<td>Cherry MX Clear</td>
-</tr>
-<tr>
-<td><a href="/code-keyboard">WASD CODE Keyboard</a></td>
-<td>Full</td>
-<td>Cherry MX Green</td>
-</tr>
-<tr>
-<td><a href="/code-keyboard">WASD CODE Keyboard</a></td>
-<td>Tenkeyless</td>
-<td>Cherry MX Green</td>
-</tr>
-</tbody>
+    <thead>
+        <tr>
+            <th>Keyboard Name</th>
+            <th>Size</th>
+            <th>Switch</th>
+        </tr>
+    </thead>
+    <tbody>
+    <!-- copy me...
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    -->
+        <tr>
+            <td>Ajazz AK33 RGB</td>
+            <td>65%</td>
+            <td>Zorro Blue</td>
+        </tr>
+        <tr>
+            <td nowrap>Das Keyboard Model S Professional</td>
+            <td>Full</td>
+            <td>Cherry MX Brown</td>
+        </tr>
+        <tr>
+            <td nowrap>Dell AT101W</td>
+            <td>Full</td>
+            <td>Alps SKCM Black</td>
+        </tr>
+        <tr>
+            <td>Input Club K-Type</td>
+            <td nowrap>Tenkeyless</td>
+            <td>Halo True</td>
+        </tr>
+        <tr>
+            <td>Input Club WhiteFox</td>
+            <td>65%</td>
+            <td nowrap>Zealios Purple 67g</td>
+        </tr>
+        <tr>
+            <td>Massdrop CTRL</td>
+            <td>Tenkeyless</td>
+            <td>Kaihua Box White</td>
+        </tr>
+        <tr>
+            <td>Max Keyboard Nighthawk X8</td>
+            <td>Full</td>
+            <td>Cherry MX Brown</td>
+        </tr>
+        <tr>
+            <td>Plum Electro-Capacitive</td>
+            <td>Tenkeyless</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Royal Kludge RG-987/928</td>
+            <td>Tenkeyless</td>
+            <td>Greetech Black</td>
+        </tr>
+        <tr>
+            <td>Unicomp Ultra Classic</td>
+            <td>Full</td>
+            <td>Buckling Spring</td>
+        </tr>
+        <tr>
+            <td><a href="/varmilo-va87mr">Varmilo VA87MR</a></td>
+            <td>Tenkeyless</td>
+            <td>Gateron Blue</td>
+        </tr>
+        <tr>
+            <td><a href="/varmilo-va87mr">Varmilo VA87MR</a></td>
+            <td>Tenkeyless</td>
+            <td>Gateron Green</td>
+        </tr>
+        <tr>
+            <td><a href="/varmilo-va87mr">Varmilo VA87MR</a></td>
+            <td>Tenkeyless</td>
+            <td>Cherry MX White</td>
+        </tr>
+        <tr>
+            <td>Vortex POK3R</td>
+            <td>60%</td>
+            <td>Cherry MX Clear</td>
+        </tr>
+        <tr>
+            <td><a href="/code-keyboard">WASD CODE Keyboard</a></td>
+            <td>Full</td>
+            <td>Cherry MX Clear</td>
+        </tr>
+        <tr>
+            <td><a href="/code-keyboard">WASD CODE Keyboard</a></td>
+            <td>Full</td>
+            <td>Cherry MX Green</td>
+        </tr>
+        <tr>
+            <td><a href="/code-keyboard">WASD CODE Keyboard</a></td>
+            <td>Tenkeyless</td>
+            <td>Cherry MX Green</td>
+        </tr>
+    </tbody>
 </table>
 
 ## Keycaps ##
@@ -103,11 +115,13 @@ Below is a list of my keyboard collection. I'll write reviews on each one... som
 * Massdrop RGB (modifiers) Set
 * Oblotzky SA Oblivion Custom Keycap Set
 * Originative Carbon Black
+* Pudding PBT Doubleshot Keycaps
 * Royal Kludge Doubleshot ABS - White Keycap / Blue Font
 * T0mb3ry SA Carbon Custom Keycap Set
 * Tai-Hao ALPS Switches Doubleshot ABS Keycaps - Red Dolch
 * Tai-Hao Avatar ABS Keycap Set - M2 (Orange Accents)
 * Tai-Hao Blue/White Doubleshot PBT Shine-Through
+* Tai-Hao Cubic Colored Translucent Keycaps
 * Tai-Hao Ocean Deep 2-Tone ABS Doubleshot
 * Tai-Hao Purple PBT Doubleshot - Cement/Lavender alphas w/ Slate/Lilac modifiers
 * Vortex Backlit Doubleshot PBT

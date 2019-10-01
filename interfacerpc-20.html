@@ -1,12 +1,172 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <title>InterfaceRpc 2.0</title>
-<meta http-equiv="refresh" content="0;URL=/">
+<meta name="HandheldFriendly" content="True" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" type="text/css" href="/css/site.css" />
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+<meta property="og:site_name" content="Rush Frisby" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="InterfaceRpc 2.0" />
+<meta name="twitter:title" content="InterfaceRpc 2.0" />
+<meta name="twitter:data1" content="Rush Frisby" />
 </head>
-<body>
-This page has not been published yet.
+<body class="post-template">
+<header id="header">
+<nav class="header-nav" ">
+<div class="blog-title"><a href="/">Rush Frisby</a></div>
+<div class="blog-description">Thoughts on software and technology.</div>
+
+<div class="taglist-wrapper clearfix">
+<ul id="taglist" class="taglist">
+<li class="nav-home" role="presentation">
+<a href="/">Home</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/about">About</a>
+</li>
+<li class="nav-mechanical-keyboards" role="presentation">
+<a href="/mechanical-keyboards">Mechanical Keyboards</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/tags">Tags</a>
+</li>
+<li class="nav-about" role="presentation">
+<a href="/archive">Archive</a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<main id="content" class="content" role="main">
+<div id="article" class="box ">
+<article class='post'>
+<header class='post-header'>
+<a href='/interfacerpc-20'><h1 class='post-title'>InterfaceRpc 2.0</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2019-10-01'>Tuesday, October 1, 2019</time>
+</section>
+</header>
+<section class='post-content'>
+<p>This past week my Interface RPC library hit version 2.0 and I want to take a minute to go over how I got there.</p>
+<p>I used the first version for a few services that my company depends.  It was running in production just fine, for a while. After a couple months I found an issue however. The issue was with how exceptions were handled by my code which in-turn caused an additional exception. The result of this caused threads to hang and eventually starve the system. It was a simple fix and services continued to run fine.</p>
+<p>I ran into a second problem a few months later. This one however, was much more serious and caused a service to hang until restarted. I knew what method was being called to cause it but that's about it. I didn't do much digging other that than because I knew that I didn't want to maintain the HttpListener implementation of this library any more. I was a stop-gap for how I really wanted it to work...</p>
+<p>Ideally I wanted to host services on ASP.NET Core and plug into that ecosystem of things, like; depenency injection, configuration, and security.</p>
+<p>So that's what I did. Instead of fixing a bug I chucked most of my code, refactored what was left (A LOT), and made a 2.0 I felt a whole lot better about.</p>
+<p>I've had 2.0 running in production for months now with no issues whatsoever. This past week a co-worker tidy'd up one last thing which pushed me over the edge in removing the pre-release moniker and published the official 2.0 nuget package! Let's take a look.</p>
+<h2>Service Setup</h2>
+<p>This is done during Startup within the <code>Configure</code> method. The RPC service is essentially now middleware in the ASP.NET pipeline.</p>
+<pre><code class="language-cs">public void Configure(IApplicationBuilder app)
+{
+    app.UseRpcService&lt;IDemoService&gt;(options =&gt; {...});
+}
+</code></pre>
+<p>The options you can configure are</p>
+<ul>
+<li><strong>Prefix</strong> - hosts the service under a virtual subdirectory. This is useful for hosting multiple services in the same app.</li>
+<li><strong>AuthorizationScope</strong> - either <code>None</code>, <code>Required</code>, or <code>AdHoc</code> (default). If AdHoc then authorization will only be checked when your method is decorated with <code>AuthorizeAttribute</code>.</li>
+<li><strong>ServiceFactory</strong> - a function that returns the instance of the interface. You can grab this from ASP.NET's DI container by calling <code>app.ApplicationServices.GetService&lt;IDemoService&gt;()</code></li>
+<li><strong>AuthorizationHandler</strong> - a function that returns true for authorized. See below for an example.</li>
+</ul>
+<p>Here we are looking for a security token in the Authorization header to determine if a user is authorized to access the service.</p>
+<pre><code class="language-cs">options.AuthorizationHandler = (methodName, instance, context) =&gt;
+{
+    if(!context.Request.Headers.ContainsKey(&quot;Authorization&quot;))
+    {
+        return false;
+    }
+    if(!context.Request.Headers.TryGetValue(&quot;Authorization&quot;, out StringValues authHeader))
+    {
+        return false;
+    }
+    var bearerCredentials = authHeader.ToString().Split(&quot; &quot;.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[1];
+    var tokenHandler = new JwtSecurityTokenHandler();
+
+    var validationParameters = new TokenValidationParameters
+    {
+        IssuerSigningKey = _signingCredentialStore.GetSigningCredentialsAsync().GetAwaiter().GetResult().Key,
+        ValidAudience = &quot;demo-service&quot;,
+        ValidIssuer = &quot;https://sso.domain.com&quot;
+    };
+
+    var user = tokenHandler.ValidateToken(bearerCredentials, validationParameters, out SecurityToken securityToken);
+    var token = securityToken as JwtSecurityToken;
+    return token != null &amp;&amp; token.ValidTo &gt;= DateTime.Now;
+};
+</code></pre>
+<p><code>_signingCredentialStore</code> is defined in the Startup class as <code>private static ISigningCredentialStore _signingCredentialStore;</code> and is set in the <code>ConfigureServices</code> method by calling <code>serviceProvider.GetService&lt;ISigningCredentialStore&gt;()</code></p>
+<p><code>IDemoService</code> is also configured in <code>ConfigureServices</code> just like any other implementation would.</p>
+<pre><code class="language-cs">services.AddTransient&lt;IDemoService, DemoService&gt;();
+</code></pre>
+<h2>Creating a Client</h2>
+<p>The client code hasn't changed much.</p>
+<pre><code class="language-cs">var client = RpcClient&lt;IDemoService&gt;.Create(new RpcClientOptions
+{
+    BaseAddress = &quot;https://demo.domain.com&quot;,
+    SetAuthorizationHeaderAction = () =&gt;
+    {
+        return new RpcClientAuthorizationHeader
+        {
+            Credentials = &quot;access token&quot;,
+            Type = &quot;Bearer&quot;
+        };
+    }
+});
+</code></pre>
+<p><code>SetAuthorizationHeaderAction</code> will be called before every request.</p>
+<p>One thing that is not apparent here is that the service and client both handle async methods.</p>
+
+</section>
+<footer class='post-footer'>
+</footer>
+<div id="disqus_thread"></div>
+<script>
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://rushfrisby.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+</article>
+
+</div>
+<div id="sidebar"><div class="box sidebox about">
+<div class="sidebox-title">About</div>
+<div class="sidebox-content">
+<p class="center"><img src="/img/rush_headshot_2018_256-min.jpg" title="Rush Frisby" alt="Rush Frisby" width="256" height="256" /></p>
+<p>Rush is a software architect who loves solving problems. You'll usually find him writing about security concepts and sharing solutions to problems he's faced.</p>
+</div>
+</div>
+<div class="sidebox box social clearfix">
+<ul>
+<a href="/rss" target="_blank" class="social-item rss"><li><i class="fa fa-rss fa-fs">&nbsp;</i></li></a>
+<a href="https://twitter.com/rushonerok" target="_blank" class="social-item tw"><li><i class="fa fa-twitter fa-fs">&nbsp;</i></li></a>
+<a href="http://github.com/rushfrisby" class="social-item github"><li><i class="fa fa-github fa-fs">&nbsp;</i></li></a>
+<a href="/" class="social-item home"><li><i class="fa fa-home fa-fs">&nbsp;</i></li></a>
+</ul>
+</div>
+<div class='box sidebox latest-articles'>
+<div class='sidebox-title'>Latest Articles</div>
+<div class='sidebox-content'>
+<a href='/interfacerpc-20'><div class='date'>1 OCT 2019</div><div>InterfaceRpc 2.0</div></a>
+<a href='/interface-to-rpc-service'><div class='date'>2 AUG 2018</div><div>Interface to RPC Service</div></a>
+<a href='/losing-our-memory'><div class='date'>8 DEC 2017</div><div>Losing Our Memory</div></a>
+<a href='/are-coding-bootcamps-worth-it'><div class='date'>20 AUG 2017</div><div>Are Coding Bootcamps Worth It?</div></a>
+<a href='/meetup-using-protobuf-in-net'><div class='date'>8 AUG 2017</div><div>Meetup: Using Protobuf in .NET</div></a>
+</div>
+</div>
+
+</main>
+<footer class="site-footer clearfix">
+<section class="copyright"><a href="https://rushfrisby.com">Rush Frisby</a> &copy; 2018</section>
+<section class="poweredby">Proudly <a href="https://github.com/rushfrisby/rushfrisby.com">published with my own blog engine on github</a></section>
+</footer>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

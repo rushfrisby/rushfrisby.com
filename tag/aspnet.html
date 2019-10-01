@@ -46,6 +46,87 @@
 <h2 class='tag'>aspnet</h2>
 <article class='post'>
 <header class='post-header'>
+<a href='/interfacerpc-20'><h1 class='post-title'>InterfaceRpc 2.0</h1></a>
+<section class='post-meta'>
+<time class='post-date' datetime='2019-10-01'>Tuesday, October 1, 2019</time>
+</section>
+</header>
+<section class='post-content'>
+<p>This past week my Interface RPC library hit version 2.0 and I want to take a minute to go over how I got there.</p>
+<p>I used the first version for a few services that my company depends.  It was running in production just fine, for a while. After a couple months I found an issue however. The issue was with how exceptions were handled by my code which in-turn caused an additional exception. The result of this caused threads to hang and eventually starve the system. It was a simple fix and services continued to run fine.</p>
+<p>I ran into a second problem a few months later. This one however, was much more serious and caused a service to hang until restarted. I knew what method was being called to cause it but that's about it. I didn't do much digging other that than because I knew that I didn't want to maintain the HttpListener implementation of this library any more. I was a stop-gap for how I really wanted it to work...</p>
+<p>Ideally I wanted to host services on ASP.NET Core and plug into that ecosystem of things, like; depenency injection, configuration, and security.</p>
+<p>So that's what I did. Instead of fixing a bug I chucked most of my code, refactored what was left (A LOT), and made a 2.0 I felt a whole lot better about.</p>
+<p>I've had 2.0 running in production for months now with no issues whatsoever. This past week a co-worker tidy'd up one last thing which pushed me over the edge in removing the pre-release moniker and published the official 2.0 nuget package! Let's take a look.</p>
+<h2>Service Setup</h2>
+<p>This is done during Startup within the <code>Configure</code> method. The RPC service is essentially now middleware in the ASP.NET pipeline.</p>
+<pre><code class="language-cs">public void Configure(IApplicationBuilder app)
+{
+    app.UseRpcService&lt;IDemoService&gt;(options =&gt; {...});
+}
+</code></pre>
+<p>The options you can configure are</p>
+<ul>
+<li><strong>Prefix</strong> - hosts the service under a virtual subdirectory. This is useful for hosting multiple services in the same app.</li>
+<li><strong>AuthorizationScope</strong> - either <code>None</code>, <code>Required</code>, or <code>AdHoc</code> (default). If AdHoc then authorization will only be checked when your method is decorated with <code>AuthorizeAttribute</code>.</li>
+<li><strong>ServiceFactory</strong> - a function that returns the instance of the interface. You can grab this from ASP.NET's DI container by calling <code>app.ApplicationServices.GetService&lt;IDemoService&gt;()</code></li>
+<li><strong>AuthorizationHandler</strong> - a function that returns true for authorized. See below for an example.</li>
+</ul>
+<p>Here we are looking for a security token in the Authorization header to determine if a user is authorized to access the service.</p>
+<pre><code class="language-cs">options.AuthorizationHandler = (methodName, instance, context) =&gt;
+{
+    if(!context.Request.Headers.ContainsKey(&quot;Authorization&quot;))
+    {
+        return false;
+    }
+    if(!context.Request.Headers.TryGetValue(&quot;Authorization&quot;, out StringValues authHeader))
+    {
+        return false;
+    }
+    var bearerCredentials = authHeader.ToString().Split(&quot; &quot;.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[1];
+    var tokenHandler = new JwtSecurityTokenHandler();
+
+    var validationParameters = new TokenValidationParameters
+    {
+        IssuerSigningKey = _signingCredentialStore.GetSigningCredentialsAsync().GetAwaiter().GetResult().Key,
+        ValidAudience = &quot;demo-service&quot;,
+        ValidIssuer = &quot;https://sso.domain.com&quot;
+    };
+
+    var user = tokenHandler.ValidateToken(bearerCredentials, validationParameters, out SecurityToken securityToken);
+    var token = securityToken as JwtSecurityToken;
+    return token != null &amp;&amp; token.ValidTo &gt;= DateTime.Now;
+};
+</code></pre>
+<p><code>_signingCredentialStore</code> is defined in the Startup class as <code>private static ISigningCredentialStore _signingCredentialStore;</code> and is set in the <code>ConfigureServices</code> method by calling <code>serviceProvider.GetService&lt;ISigningCredentialStore&gt;()</code></p>
+<p><code>IDemoService</code> is also configured in <code>ConfigureServices</code> just like any other implementation would.</p>
+<pre><code class="language-cs">services.AddTransient&lt;IDemoService, DemoService&gt;();
+</code></pre>
+<h2>Creating a Client</h2>
+<p>The client code hasn't changed much.</p>
+<pre><code class="language-cs">var client = RpcClient&lt;IDemoService&gt;.Create(new RpcClientOptions
+{
+    BaseAddress = &quot;https://demo.domain.com&quot;,
+    SetAuthorizationHeaderAction = () =&gt;
+    {
+        return new RpcClientAuthorizationHeader
+        {
+            Credentials = &quot;access token&quot;,
+            Type = &quot;Bearer&quot;
+        };
+    }
+});
+</code></pre>
+<p><code>SetAuthorizationHeaderAction</code> will be called before every request.</p>
+<p>One thing that is not apparent here is that the service and client both handle async methods.</p>
+
+</section>
+<footer class='post-footer'>
+</footer>
+</article>
+
+<article class='post'>
+<header class='post-header'>
 <a href='/running-asp-net-on-ubuntu'><h1 class='post-title'>Running ASP.NET on Ubuntu</h1></a>
 <section class='post-meta'>
 <time class='post-date' datetime='2015-07-06'>Monday, July 6, 2015</time>
@@ -121,11 +202,11 @@
 <div class='box sidebox latest-articles'>
 <div class='sidebox-title'>Latest Articles</div>
 <div class='sidebox-content'>
+<a href='/interfacerpc-20'><div class='date'>1 OCT 2019</div><div>InterfaceRpc 2.0</div></a>
 <a href='/interface-to-rpc-service'><div class='date'>2 AUG 2018</div><div>Interface to RPC Service</div></a>
 <a href='/losing-our-memory'><div class='date'>8 DEC 2017</div><div>Losing Our Memory</div></a>
 <a href='/are-coding-bootcamps-worth-it'><div class='date'>20 AUG 2017</div><div>Are Coding Bootcamps Worth It?</div></a>
 <a href='/meetup-using-protobuf-in-net'><div class='date'>8 AUG 2017</div><div>Meetup: Using Protobuf in .NET</div></a>
-<a href='/application-security-and-single-sign-on'><div class='date'>16 DEC 2016</div><div>Application Security and Single Sign On</div></a>
 </div>
 </div>
 

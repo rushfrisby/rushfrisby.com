@@ -94,4 +94,4 @@ Everything else pretty much works the same as before. The service responds to PO
 
 One thing that is not apparent is that the service and client both handle async methods.
 
-I hope you find this useful and choose to use it for your next project!
+I hope you find this useful and choose to use it for your next project! If you'd like to contribute you can find the source on [GitHub](https://github.com/rushfrisby/InterfaceRpc).

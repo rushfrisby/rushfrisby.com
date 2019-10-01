@@ -66,6 +66,7 @@ options.AuthorizationHandler = (methodName, instance, context) =>
 ```cs
 services.AddTransient<IDemoService, DemoService>();
 ```
+
 ## Creating a Client ##
 
 The client code hasn't changed much.
@@ -87,4 +88,10 @@ var client = RpcClient<IDemoService>.Create(new RpcClientOptions
 
 `SetAuthorizationHeaderAction` will be called before every request.
 
-One thing that is not apparent here is that the service and client both handle async methods.
+## Wrapping Up ##
+
+Everything else pretty much works the same as before. The service responds to POST requests where the method name in the URL translates to a method on the interface. Serialization can be any type defined in the [SerializerDotNet](https://www.nuget.org/packages/SerializerDotNet/) library (JSON and Protobuf currently).
+
+One thing that is not apparent is that the service and client both handle async methods.
+
+I hope you find this useful and choose to use it for your next project!

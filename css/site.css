@@ -44,27 +44,27 @@ article .tags a
 }
 
 .content h6 {
-    font-size: 1.2em;
+    font-size: 1.1em;
 }
 
 .content h5 {
-    font-size: 1.4em;
+    font-size: 1.2em;
 }
 
 .content h4 {
-    font-size: 1.6em;
+    font-size: 1.3em;
 }
 
 .content h3 {
-    font-size: 1.8em;
+    font-size: 1.4em;
 }
 
 .content h2 {
-    font-size: 2em;
+    font-size: 1.6em;
 }
 
 .content h1 {
-    font-size: 2.5em;
+    font-size: 1.8em;
 }
 
 #navbar-toggle:checked ~ .collapse {

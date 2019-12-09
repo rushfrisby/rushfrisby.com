@@ -1,107 +1,82 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<title>File System Monitor</title>
-<meta name="HandheldFriendly" content="True" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" type="text/css" href="/css/site.css" />
-<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
-<meta property="og:site_name" content="Rush Frisby" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="File System Monitor" />
-<meta name="twitter:title" content="File System Monitor" />
-<meta name="twitter:data1" content="Rush Frisby" />
-</head>
-<body class="post-template">
-<header id="header">
-<nav class="header-nav" ">
-<div class="blog-title"><a href="/">Rush Frisby</a></div>
-<div class="blog-description">Thoughts on software and technology.</div>
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Rush Frisby</title>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/css/site.css" />
+    </head>
+    <body>
+        <div class="container-fluid p-0" id="header">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container">
+                    <a class="navbar-brand" href="/">Rush Frisby</a>
+                    <button class="navbar-toggler" type="button" onclick="document.getElementById('navbar-toggle').checked = !document.getElementById('navbar-toggle').checked; return false;">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <input type="checkbox" id="navbar-toggle" style="display: none;">
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/about">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/keyboards">Keyboards</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/tags">Tags</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/archive">Archive</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+            
+        <div class="container">
+            <div class="row" id="main">
+                    <div class="col-md-9">
 
-<div class="taglist-wrapper clearfix">
-<ul id="taglist" class="taglist">
-<li class="nav-home" role="presentation">
-<a href="/">Home</a>
-</li>
-<li class="nav-about" role="presentation">
-<a href="/about">About</a>
-</li>
-<li class="nav-mechanical-keyboards" role="presentation">
-<a href="/keyboards">Keyboards</a>
-</li>
-<li class="nav-about" role="presentation">
-<a href="/tags">Tags</a>
-</li>
-<li class="nav-about" role="presentation">
-<a href="/archive">Archive</a>
-</li>
-</ul>
-</div>
-</nav>
-</header>
-<main id="content" class="content" role="main">
-<div id="article" class="box ">
-<article class='post'>
-<header class='post-header'>
-<a href='/file-system-monitor'><h1 class='post-title'>File System Monitor</h1></a>
-<section class='post-meta'>
-<time class='post-date' datetime='2013-03-11'>Monday, March 11, 2013</time>
-</section>
-</header>
-<section class='post-content'>
-<p>Today at work I overheard some of the IT folks talking about file monitors for various systems and remembered that I had written one of these a few years ago …so here it is!</p>
+<article>
+    <h2>File System Monitor</h2>
+    <time datetime="3/11/2013 10:05:37 AM -04:00">Published on Mon, 11 Mar 2013 14:05:37 GMT</time>
+    <div class="content">
+        <p>Today at work I overheard some of the IT folks talking about file monitors for various systems and remembered that I had written one of these a few years ago …so here it is!</p>
 <div></div><div>This app will run through a list of directories and email you a report of which files have been added or updated. I use it on my web server so that I can keep an eye on malicious files that someone may have uploaded (although that has never happened).</div><div></div><div>In the config file there are a number of settings you need to update with your SMTP credentials. There is also a template.csrzr file which is the template for the email that is sent. It is C# with Razor syntax that generates HTML for the email content. If you feel comfortable with editing that go at it.</div><div></div><div>There is also a -test.cmd file that will run the application with the -test parameter. The only thing this does different is that it doesn’t update the LastRunTime setting in the config file once it’s finished.</div><div></div><div>I have this setup on my server to run once a day using Windows Task Scheduler but you can run it as often or as little as you like using the same method.</div><div></div><div>Here is a list of all the settings in the config file. The download is below.</div><div></div><div></div><table class="table table-bordered table-condensed table-hover table-striped table-dark"><thead><tr><th>Setting Name</th><th>Description</th></tr></thead><tbody><tr><td>Paths</td><td>A | (pipe) seperated list of paths to be monitored.</td></tr><tr><td>LastRunTime</td><td>The value is used to determine when the last time the program was run and as the time to compare new/updated files to. After sending a report the program will update this value. You do not need to change this value.</td></tr><tr><td>InstanceName</td><td>The instance name to be used in the reporting template. If the instance name is blank then the name given to the machine will be used.</td></tr><tr><td>FromAddress</td><td>Email address the report will come from.</td></tr><tr><td>Subject</td><td>Subject of the email. Replaces {0} with the InstanceName. For example if the InstanceName is “WEB01” and the Subject is “File Report for {0}” then the subject of the email will be “File Report for WEB01”.</td></tr><tr><td>ToAddresses</td><td>A , (comma) seperated list of email addresses the report will be sent to.</td></tr><tr><td>SmtpHost</td><td>The SMTP host address.</td></tr><tr><td>SmtpSsl</td><td>“true” or “false” value that will determine if the email is sent using SSL.</td></tr><tr><td>SmtpPort</td><td>The SMTP port number.</td></tr><tr><td>SmtpTimeout</td><td>The number of milliseconds to wait for the email to be sent before timing out.</td></tr><tr><td>SmtpUser</td><td>The SMTP user name.</td></tr><tr><td>SmtpPass</td><td>The SMTP password.</td></tr></tbody></table>[sdm_download id=”4551″ fancy=”0″] * 92KB
 
-</section>
-<footer class='post-footer'>
-</footer>
-<div id="disqus_thread"></div>
-<script>
-(function() { // DON'T EDIT BELOW THIS LINE
-var d = document, s = d.createElement('script');
-s.src = 'https://rushfrisby.disqus.com/embed.js';
-s.setAttribute('data-timestamp', +new Date());
-(d.head || d.body).appendChild(s);
-})();
-</script>
+    </div>
+    <div class="tags">
+        Tags: <a href="/tag/file-system">file-system</a> <a href="/tag/monitor">monitor</a>
+    </div>
 </article>
-
-</div>
-<div id="sidebar"><div class="box sidebox about">
-<div class="sidebox-title">About</div>
-<div class="sidebox-content">
-<p class="center"><img src="/img/rush_headshot_2018_256-min.jpg" title="Rush Frisby" alt="Rush Frisby" width="256" height="256" /></p>
-<p>Rush is a software architect who loves solving problems. You'll usually find him writing about security concepts and sharing solutions to problems he's faced.</p>
-</div>
-</div>
-<div class="sidebox box social clearfix">
-<ul>
-<a href="/rss" target="_blank" class="social-item rss"><li><i class="fa fa-rss fa-fs">&nbsp;</i></li></a>
-<a href="https://twitter.com/rushonerok" target="_blank" class="social-item tw"><li><i class="fa fa-twitter fa-fs">&nbsp;</i></li></a>
-<a href="http://github.com/rushfrisby" class="social-item github"><li><i class="fa fa-github fa-fs">&nbsp;</i></li></a>
-<a href="/" class="social-item home"><li><i class="fa fa-home fa-fs">&nbsp;</i></li></a>
-</ul>
-</div>
-<div class='box sidebox latest-articles'>
-<div class='sidebox-title'>Latest Articles</div>
-<div class='sidebox-content'>
-<a href='/interfacerpc-20'><div class='date'>1 OCT 2019</div><div>InterfaceRpc 2.0</div></a>
-<a href='/interface-to-rpc-service'><div class='date'>2 AUG 2018</div><div>Interface to RPC Service</div></a>
-<a href='/losing-our-memory'><div class='date'>8 DEC 2017</div><div>Losing Our Memory</div></a>
-<a href='/are-coding-bootcamps-worth-it'><div class='date'>20 AUG 2017</div><div>Are Coding Bootcamps Worth It?</div></a>
-<a href='/meetup-using-protobuf-in-net'><div class='date'>8 AUG 2017</div><div>Meetup: Using Protobuf in .NET</div></a>
-</div>
-</div>
-
-</main>
-<footer class="site-footer clearfix">
-<section class="copyright"><a href="https://rushfrisby.com">Rush Frisby</a> &copy; 2018</section>
-<section class="poweredby">Proudly <a href="https://github.com/rushfrisby/rushfrisby.com">published with my own blog engine on github</a></section>
-</footer>
-<script type="text/javascript" src="/js/jquery.min.js"></script>
-<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
-<script type="text/javascript" src="/js/index.js"></script>
-</body>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-secondary mb-3">
+                        <h5 class="card-header">Recent Posts</h5>
+                        <div class="list-group list-group-flush">
+                            <div class="list-group">
+                                <a href="/interfacerpc-20" class="list-group-item list-group-item-action">InterfaceRpc 2.0</a>
+                                <a href="/interface-to-rpc-service" class="list-group-item list-group-item-action">Interface to RPC Service</a>
+                                <a href="/losing-our-memory" class="list-group-item list-group-item-action">Losing Our Memory</a>
+                                <a href="/are-coding-bootcamps-worth-it" class="list-group-item list-group-item-action">Are Coding Bootcamps Worth It?</a>
+                                <a href="/meetup-using-protobuf-in-net" class="list-group-item list-group-item-action">Meetup: Using Protobuf in .NET</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="footer">
+                <div class="col">
+                    <p>Proudly <a href="https://github.com/rushfrisby/RushBlog" target="_blank">published with my own blog engine on github</a></p>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

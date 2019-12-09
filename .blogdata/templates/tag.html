@@ -1,0 +1,16 @@
+{{> header}}
+
+{{#with SelectedTag}}
+<h2>{{ DisplayName }}</h2>
+
+<p>There are {{TimesUsed}} posts about this...</p>
+
+<ul>
+{{#each BlogPosts}}
+    <li>{{formatDate PublishedOn "yyyy-MM-dd"}} - <a href="/{{slug}}">{{Title}}</a></li>
+{{/each}}
+</ul>
+
+{{/with}}
+
+{{> footer}}

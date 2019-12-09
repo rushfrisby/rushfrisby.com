@@ -1,233 +1,82 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<title>services</title>
-<meta name="HandheldFriendly" content="True" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" type="text/css" href="/css/site.css" />
-<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
-<meta property="og:site_name" content="Rush Frisby" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="services" />
-<meta name="twitter:title" content="services" />
-<meta name="twitter:data1" content="Rush Frisby" />
-</head>
-<body class="post-template">
-<header id="header">
-<nav class="header-nav" ">
-<div class="blog-title"><a href="/">Rush Frisby</a></div>
-<div class="blog-description">Thoughts on software and technology.</div>
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Rush Frisby</title>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/css/site.css" />
+    </head>
+    <body>
+        <div class="container-fluid p-0" id="header">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container">
+                    <a class="navbar-brand" href="/">Rush Frisby</a>
+                    <button class="navbar-toggler" type="button" onclick="document.getElementById('navbar-toggle').checked = !document.getElementById('navbar-toggle').checked; return false;">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <input type="checkbox" id="navbar-toggle" style="display: none;">
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/about">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/keyboards">Keyboards</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/tags">Tags</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/archive">Archive</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+            
+        <div class="container">
+            <div class="row" id="main">
+                    <div class="col-md-9">
 
-<div class="taglist-wrapper clearfix">
-<ul id="taglist" class="taglist">
-<li class="nav-home" role="presentation">
-<a href="/">Home</a>
-</li>
-<li class="nav-about" role="presentation">
-<a href="/about">About</a>
-</li>
-<li class="nav-mechanical-keyboards" role="presentation">
-<a href="/keyboards">Keyboards</a>
-</li>
-<li class="nav-about" role="presentation">
-<a href="/tags">Tags</a>
-</li>
-<li class="nav-about" role="presentation">
-<a href="/archive">Archive</a>
-</li>
-</ul>
-</div>
-</nav>
-</header>
-<main id="content" class="content" role="main">
-<div id="article" class="box ">
-<h2 class='tag'>services</h2>
-<article class='post'>
-<header class='post-header'>
-<a href='/interfacerpc-20'><h1 class='post-title'>InterfaceRpc 2.0</h1></a>
-<section class='post-meta'>
-<time class='post-date' datetime='2019-10-01'>Tuesday, October 1, 2019</time>
-</section>
-</header>
-<section class='post-content'>
-<p>This past week my Interface RPC library hit version 2.0 and I want to take a minute to go over how I got there.</p>
-<p>I used the first version for a few services that my company depends on. It was running in production just fine, for a while. After a couple months I found an issue however. The issue was with how exceptions were handled by my code which in-turn caused an additional exception. The result of this caused threads to hang and eventually starve the system. It was a simple fix and services continued to run fine.</p>
-<p>I ran into a second problem a few months later. This one, however, was much more serious and caused a service to hang until restarted. I knew what method was being called to cause it but that's about it. I didn't do much digging other than that because I didn't want to maintain the HttpListener implementation of this library any more. It was a stop-gap for how I really wanted it to work anyways...</p>
-<p>Ideally I wanted to host the service on ASP.NET Core and plug into that ecosystem of things, like; depenency injection, configuration, and security.</p>
-<p>So that's what I did. Instead of fixing a bug I chucked most of my code, refactored what was left (A LOT), and made a 2.0 I felt a whole lot better about.</p>
-<p>I've had 2.0 running in production for months now with no issues. This past week a co-worker tidy'd up one last thing which pushed me over the edge in removing the pre-release moniker and published the official 2.0 nuget package! Let's take a look.</p>
-<h2>Service Setup</h2>
-<p>This is done during Startup within the <code>Configure</code> method. The RPC service is essentially now middleware in the ASP.NET pipeline.</p>
-<pre><code class="language-cs">public void Configure(IApplicationBuilder app)
-{
-    app.UseRpcService&lt;IDemoService&gt;(options =&gt; {...});
-}
-</code></pre>
-<p>The options you can configure are</p>
+
+<h2>services</h2>
+
+<p>There are 2 posts about this...</p>
+
 <ul>
-<li><strong>Prefix</strong> - hosts the service under a virtual subdirectory. This is useful for hosting multiple services in the same app.</li>
-<li><strong>AuthorizationScope</strong> - either <code>None</code>, <code>Required</code>, or <code>AdHoc</code> (default). If AdHoc then authorization will only be checked when your method is decorated with <code>AuthorizeAttribute</code>.</li>
-<li><strong>ServiceFactory</strong> - a function that returns the instance of the interface. You can grab this from ASP.NET's DI container by calling <code>app.ApplicationServices.GetService&lt;IDemoService&gt;()</code></li>
-<li><strong>AuthorizationHandler</strong> - a function that returns true for authorized. See below for an example.</li>
+    <li>2019-10-01 - <a href="/interfacerpc-20">InterfaceRpc 2.0</a></li>
+    <li>2018-08-02 - <a href="/interface-to-rpc-service">Interface to RPC Service</a></li>
 </ul>
-<p>Here we are looking for a security token in the Authorization header to determine if a user is authorized to access the service.</p>
-<pre><code class="language-cs">options.AuthorizationHandler = (methodName, instance, context) =&gt;
-{
-    if(!context.Request.Headers.ContainsKey(&quot;Authorization&quot;))
-    {
-        return false;
-    }
-    if(!context.Request.Headers.TryGetValue(&quot;Authorization&quot;, out StringValues authHeader))
-    {
-        return false;
-    }
-    var bearerCredentials = authHeader.ToString().Split(&quot; &quot;.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[1];
-    var tokenHandler = new JwtSecurityTokenHandler();
 
-    var validationParameters = new TokenValidationParameters
-    {
-        IssuerSigningKey = _signingCredentialStore.GetSigningCredentialsAsync().GetAwaiter().GetResult().Key,
-        ValidAudience = &quot;demo-service&quot;,
-        ValidIssuer = &quot;https://sso.domain.com&quot;
-    };
 
-    var user = tokenHandler.ValidateToken(bearerCredentials, validationParameters, out SecurityToken securityToken);
-    var token = securityToken as JwtSecurityToken;
-    return token != null &amp;&amp; token.ValidTo &gt;= DateTime.Now;
-};
-</code></pre>
-<p><code>_signingCredentialStore</code> is defined in the Startup class as <code>private static ISigningCredentialStore _signingCredentialStore;</code> and is set in the <code>ConfigureServices</code> method by calling <code>serviceProvider.GetService&lt;ISigningCredentialStore&gt;()</code></p>
-<p><code>IDemoService</code> is also configured in <code>ConfigureServices</code> just like any other implementation would.</p>
-<pre><code class="language-cs">services.AddTransient&lt;IDemoService, DemoService&gt;();
-</code></pre>
-<h2>Creating a Client</h2>
-<p>The client code hasn't changed much.</p>
-<pre><code class="language-cs">var client = RpcClient&lt;IDemoService&gt;.Create(new RpcClientOptions
-{
-    BaseAddress = &quot;https://demo.domain.com&quot;,
-    SetAuthorizationHeaderAction = () =&gt;
-    {
-        return new RpcClientAuthorizationHeader
-        {
-            Credentials = &quot;access token&quot;,
-            Type = &quot;Bearer&quot;
-        };
-    }
-});
-</code></pre>
-<p><code>SetAuthorizationHeaderAction</code> will be called before every request.</p>
-<h2>Wrapping Up</h2>
-<p>Everything else pretty much works the same as before. The service responds to POST requests where the method name in the URL translates to a method on the interface. Serialization can be any type defined in the <a href="https://www.nuget.org/packages/SerializerDotNet/">SerializerDotNet</a> library (JSON and Protobuf currently).</p>
-<p>One thing that is not apparent is that the service and client both handle async methods.</p>
-<p>I hope you find this useful and choose to use it for your next project! If you'd like to contribute you can find the source on <a href="https://github.com/rushfrisby/InterfaceRpc">GitHub</a>.</p>
 
-</section>
-<footer class='post-footer'>
-</footer>
-</article>
-
-<article class='post'>
-<header class='post-header'>
-<a href='/interface-to-rpc-service'><h1 class='post-title'>Interface to RPC Service</h1></a>
-<section class='post-meta'>
-<time class='post-date' datetime='2018-08-02'>Thursday, August 2, 2018</time>
-</section>
-</header>
-<section class='post-content'>
-<p>I'm currently working on <a href="https://github.com/rushfrisby/InterfaceRpc">a project to quickly stand up an RPC service</a> based on an interface. It's a .NET Standard library. Here's how it works.</p>
-<p>Let's say you have an interface,</p>
-<pre><code>public interface IEchoService
-{
-    string Echo(string echo);
-}
-</code></pre>
-<p>, and you have an implementation that needs to be exposed so that others can call it. I chose HTTP for this.</p>
-<p>On the server I use <code>HttpListener</code> to create a web server and listen for requests. When a request comes in the path maps to a method name. For example, if my web server is listening on <code>http://localhost:6000/</code> and a request for <code>http://localhost:6000/Echo</code> comes in - that maps to the <code>Echo</code> method on the interface... then I use reflection to call it on the implementation that was provided.</p>
-<p>If <code>Echo</code> didn't map to a method on the interface then a 404 response is returned.</p>
-<p>In my library all HTTP requests are POSTs. The content is deserialized based upon the <code>Content-Type</code> header value of the request. I am using another library I created to handle this called <a href="https://github.com/rushfrisby/SerializerDotNet">SerializerDotNet</a>. At the time of writing it supports JSON and Protobuf. The same serializer used for deserialization is also used to return data in the response and the response's <code>Content-Type</code> is the same as the incoming request.</p>
-<p>Remember when I said &quot;quickly stand up an RPC service&quot;? This is how quickly it's done...</p>
-<pre><code>var svc = new RpcService&lt;IEchoService&gt;(new EchoService());
-svc.Start();
-</code></pre>
-<p>To use this in your own project add <a href="https://www.nuget.org/packages/InterfaceRpc.Service/">InterfaceRpc.Service</a> to your project using NuGet.</p>
-<p>There is a file called <code>rpcsettings.json</code> where you can specify additional settings. Currently only the web server prefixes and number of connections.</p>
-<p>To create a client it's just as easy...</p>
-<pre><code>var client = new RpcClient&lt;IEchoService&gt;.Create(&quot;http://localhost:6000/&quot;);
-</code></pre>
-<p>To use this in your own project add <a href="https://www.nuget.org/packages/InterfaceRpc.Client/">InterfaceRpc.Client</a> to your project using NuGet.</p>
-<p>By default it uses <code>JsonSerializer</code>. There is an optional 2nd argument where you can specify the type of <code>ISerializer</code> (like <code>ProtobufSerializer</code>)</p>
-<p>Then you can call any method defined in your interface:</p>
-<pre><code>var echoed = client.Echo(&quot;hello&quot;);
-</code></pre>
-<h4>Limitations</h4>
-<p>(stuff I could use help on)</p>
-<ul>
-<li><p>I punted on handling SSL certs so it only runs over plain HTTP right now. This seems reasonable given that it's common to setup a load balancer or proxy in front of web sites and services.</p>
-</li>
-<li><p>8 parameters in method signatures - this can expand to more in the future, if needed, but I think once you get this many it's better to create a class with properties for each and use 1 parameter in the signature.</p>
-</li>
-<li><p>Because of limitations with <code>ValueTuple</code>, text based serialization reads a little funky, but I'm sure Microsoft will fix this in future versions of .NET Standard. In the meantime I'm curious to see what people think about having &quot;Item1&quot;, &quot;Item2&quot;, etc... map to method parameters. There could be some work done to replace these with parameter names but it would add (unnecessary?) overhead.</p>
-</li>
-<li><p>A good name. Any suggestions?</p>
-</li>
-<li><p>See the <a href="https://github.com/rushfrisby/InterfaceRpc/issues">issues list on github</a> for more</p>
-</li>
-</ul>
-<h4>Why?</h4>
-<p>This will help tremendously in moving off of WCF / .NET Framework and onto .NET Core. WCF clients aren't supported in .NET Core. The good thing about WCF is that it is interface-based, so swapping out a server implementation is relatively easy. Assuming a <code>ChannelFactory</code> was used for the client, it can be replaced even easier.</p>
-<p>If you'd like to help in fleshing this idea out more please contribute through the <a href="https://github.com/rushfrisby/InterfaceRpc">github repo</a>!</p>
-<table width="100%" style="border:1px solid #c0c0c0;">
-<tr>
-<td nowrap="nowrap"><a href="https://www.nuget.org/packages/InterfaceRpc.Service/" target="_blank">InterfaceRpc.Service</a></td>
-<td width="100%"><a href="https://www.nuget.org/packages/InterfaceRpc.Service/" target="_blank"><img src="https://img.shields.io/nuget/v/InterfaceRpc.Service.svg?style=flat" alt="NuGet Status" style="display:inline;padding:0" /></a></td>
-</tr>
-<tr>
-<td nowrap="nowrap"><a href="https://www.nuget.org/packages/InterfaceRpc.Client/" target="_blank">InterfaceRpc.Client</a></td>
-<td width="100%"><a href="https://www.nuget.org/packages/InterfaceRpc.Client/" target="_blank"><img src="https://img.shields.io/nuget/v/InterfaceRpc.Client.svg?style=flat" alt="NuGet Status" style="display:inline;padding:0" /></a></td>
-</tr>
-</table>
-
-</section>
-<footer class='post-footer'>
-</footer>
-</article>
-
-</div>
-<div id="sidebar"><div class="box sidebox about">
-<div class="sidebox-title">About</div>
-<div class="sidebox-content">
-<p class="center"><img src="/img/rush_headshot_2018_256-min.jpg" title="Rush Frisby" alt="Rush Frisby" width="256" height="256" /></p>
-<p>Rush is a software architect who loves solving problems. You'll usually find him writing about security concepts and sharing solutions to problems he's faced.</p>
-</div>
-</div>
-<div class="sidebox box social clearfix">
-<ul>
-<a href="/rss" target="_blank" class="social-item rss"><li><i class="fa fa-rss fa-fs">&nbsp;</i></li></a>
-<a href="https://twitter.com/rushonerok" target="_blank" class="social-item tw"><li><i class="fa fa-twitter fa-fs">&nbsp;</i></li></a>
-<a href="http://github.com/rushfrisby" class="social-item github"><li><i class="fa fa-github fa-fs">&nbsp;</i></li></a>
-<a href="/" class="social-item home"><li><i class="fa fa-home fa-fs">&nbsp;</i></li></a>
-</ul>
-</div>
-<div class='box sidebox latest-articles'>
-<div class='sidebox-title'>Latest Articles</div>
-<div class='sidebox-content'>
-<a href='/interfacerpc-20'><div class='date'>1 OCT 2019</div><div>InterfaceRpc 2.0</div></a>
-<a href='/interface-to-rpc-service'><div class='date'>2 AUG 2018</div><div>Interface to RPC Service</div></a>
-<a href='/losing-our-memory'><div class='date'>8 DEC 2017</div><div>Losing Our Memory</div></a>
-<a href='/are-coding-bootcamps-worth-it'><div class='date'>20 AUG 2017</div><div>Are Coding Bootcamps Worth It?</div></a>
-<a href='/meetup-using-protobuf-in-net'><div class='date'>8 AUG 2017</div><div>Meetup: Using Protobuf in .NET</div></a>
-</div>
-</div>
-
-</main>
-<footer class="site-footer clearfix">
-<section class="copyright"><a href="https://rushfrisby.com">Rush Frisby</a> &copy; 2018</section>
-<section class="poweredby">Proudly <a href="https://github.com/rushfrisby/rushfrisby.com">published with my own blog engine on github</a></section>
-</footer>
-<script type="text/javascript" src="/js/jquery.min.js"></script>
-<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
-<script type="text/javascript" src="/js/index.js"></script>
-</body>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-secondary mb-3">
+                        <h5 class="card-header">Recent Posts</h5>
+                        <div class="list-group list-group-flush">
+                            <div class="list-group">
+                                <a href="/interfacerpc-20" class="list-group-item list-group-item-action">InterfaceRpc 2.0</a>
+                                <a href="/interface-to-rpc-service" class="list-group-item list-group-item-action">Interface to RPC Service</a>
+                                <a href="/losing-our-memory" class="list-group-item list-group-item-action">Losing Our Memory</a>
+                                <a href="/are-coding-bootcamps-worth-it" class="list-group-item list-group-item-action">Are Coding Bootcamps Worth It?</a>
+                                <a href="/meetup-using-protobuf-in-net" class="list-group-item list-group-item-action">Meetup: Using Protobuf in .NET</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="footer">
+                <div class="col">
+                    <p>Proudly <a href="https://github.com/rushfrisby/RushBlog" target="_blank">published with my own blog engine on github</a></p>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

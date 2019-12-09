@@ -1,0 +1,12 @@
+<article>
+    <h2>{{Title}}</h2>
+    <time datetime="{{PublishedOn}}">Published on {{formatDate PublishedOn "R"}}</time>
+    <div class="content">
+        {{{Content}}}
+    </div>
+    {{#if Tags.length}}
+    <div class="tags">
+        Tags:{{#each Tags}} <a href="/tag/{{this}}">{{this}}</a>{{/each}}
+    </div>
+    {{/if}}
+</article>

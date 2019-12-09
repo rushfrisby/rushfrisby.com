@@ -1,0 +1,10 @@
+{{> header}}
+<h2>Tags</h2>
+
+<ul>
+{{#each Tags}}
+    <li><a href="/tag/{{Tag}}">{{DisplayName}}</a> <span class="badge badge-secondary">{{TimesUsed}}</span></li>
+{{/each}}
+</ul>
+
+{{> footer}}

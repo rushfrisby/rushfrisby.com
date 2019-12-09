@@ -1,0 +1,10 @@
+{{> header}}
+<h2>Pages</h2>
+
+<ul>
+{{#each PublishedPages}}
+    <li>{{formatDate PublishedOn "yyyy-MM-dd"}} - <a href="/{{slug}}">{{Title}}</a></li>
+{{/each}}
+</ul>
+
+{{> footer}}

@@ -1,0 +1,23 @@
+
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-secondary mb-3">
+                        <h5 class="card-header">Recent Posts</h5>
+                        <div class="list-group list-group-flush">
+                            <div class="list-group">
+                                {{#each RecentPosts}}
+                                <a href="/{{Slug}}" class="list-group-item list-group-item-action">{{Title}}</a>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="footer">
+                <div class="col">
+                    <p>Proudly <a href="https://github.com/rushfrisby/RushBlog" target="_blank">published with my own blog engine on github</a></p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -43,10 +43,6 @@ article .tags a
     font-style: normal;
 }
 
-.navbar {
-    background-color: #3a648e;
-}
-
 #navbar-toggle:checked ~ .collapse {
     display: block;
 }

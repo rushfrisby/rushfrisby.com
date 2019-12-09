@@ -43,8 +43,28 @@ article .tags a
     font-style: normal;
 }
 
-.content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
-    font-size: x-small;
+.content h6 {
+    font-size: 1.2em;
+}
+
+.content h5 {
+    font-size: 1.4em;
+}
+
+.content h4 {
+    font-size: 1.6em;
+}
+
+.content h3 {
+    font-size: 1.8em;
+}
+
+.content h2 {
+    font-size: 2em;
+}
+
+.content h1 {
+    font-size: 2.5em;
 }
 
 #navbar-toggle:checked ~ .collapse {

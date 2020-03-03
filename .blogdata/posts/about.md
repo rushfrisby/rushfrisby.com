@@ -29,8 +29,6 @@ height: auto !important;
     Strava<br/>
     <iframe height='454' width='300' frameborder='0' allowtransparency='true' scrolling='no' src='https://www.strava.com/athletes/41463615/latest-rides/f2e44aed2d94582d5306241ece8fc5fc067cbae9'></iframe>
 </div>
-<br/>
-<div style="width:364px;">
-    - [@rushonerok](https://twitter.com/rushonerok) on twitter
-    - [My Visual Studio themes (downloadable) on Studio Styles](https://studiostyl.es/users/832)
-</div>
+
+- [@rushonerok](https://twitter.com/rushonerok) on twitter
+- [My Visual Studio themes (downloadable) on Studio Styles](https://studiostyl.es/users/832)

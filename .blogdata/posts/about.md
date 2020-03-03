@@ -21,14 +21,10 @@ height: auto !important;
 </div>
 <br/>
 <div style="width:364px;">
-    LinkedIn<br/>
-    <script src="https://platform.linkedin.com/in.js" type="text/javascript"></script><script type="IN/MemberProfile" data-id="https://www.linkedin.com/in/rushfrisby" data-format="inline" data-related="false"></script>
-</div>
-<br/>
-<div style="width:364px;">
     Strava<br/>
     <iframe height='454' width='300' frameborder='0' allowtransparency='true' scrolling='no' src='https://www.strava.com/athletes/41463615/latest-rides/f2e44aed2d94582d5306241ece8fc5fc067cbae9'></iframe>
 </div>
 
+- [LinkedIn](https://www.linkedin.com/in/rushfrisby)
 - [@rushonerok](https://twitter.com/rushonerok) on twitter
 - [My Visual Studio themes (downloadable) on Studio Styles](https://studiostyl.es/users/832)

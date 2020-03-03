@@ -10,20 +10,11 @@ height: auto !important;
 }
 </style>
 
-<div style="width:364px;">
-    Stack Exchange<br/>
-    <a href="https://stackexchange.com/users/98607"><img src="https://stackexchange.com/users/flair/98607.png" width="208" height="58" alt="Profile for Rush Frisby on Stack Exchange" title="Profile for Rush Frisby on Stack Exchange" style="padding:0;margin:0;"></a>
-</div>
-<br/>
-<div style="width:364px;">
-    Github<br/>
-    <div class="github-card" data-github="rushfrisby" data-width="400" data-height="" data-theme="default"></div><script src="https://cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
-</div>
-<br/>
-<div style="width:364px;">
-    Strava<br/>
-    <iframe height='454' width='300' frameborder='0' allowtransparency='true' scrolling='no' src='https://www.strava.com/athletes/41463615/latest-rides/f2e44aed2d94582d5306241ece8fc5fc067cbae9'></iframe>
-</div>
+<a href="https://stackexchange.com/users/98607"><img src="https://stackexchange.com/users/flair/98607.png" width="208" height="58" alt="Profile for Rush Frisby on Stack Exchange" title="Profile for Rush Frisby on Stack Exchange" style="padding:0;margin:0;"></a>
+
+<div class="github-card" data-github="rushfrisby" data-width="400" data-height="" data-theme="default"></div><script src="https://cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+
+<iframe height='454' width='300' frameborder='0' allowtransparency='true' scrolling='no' src='https://www.strava.com/athletes/41463615/latest-rides/f2e44aed2d94582d5306241ece8fc5fc067cbae9'></iframe>
 
 - [LinkedIn](https://www.linkedin.com/in/rushfrisby)
 - [@rushonerok](https://twitter.com/rushonerok) on twitter

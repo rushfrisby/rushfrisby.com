@@ -1,10 +1,35 @@
 [
   {
+    "Title": "Doin it again",
+    "IsPublished": true,
+    "PublishedOn": "2020-06-02T04:12:02.8471489+00:00",
+    "Slug": "doin-it-again",
+    "Tags": [
+      "sso",
+      "single sign on",
+      "security",
+      "identity management",
+      "identity provider",
+      "openid",
+      "openId connect",
+      "oidc",
+      "identity server",
+      "authentication",
+      "authorization",
+      "access control"
+    ],
+    "IsPage": false
+  },
+  {
     "Title": "InterfaceRpc 2.0",
     "IsPublished": true,
     "PublishedOn": "2019-10-01T01:29:01.3333252+00:00",
     "Slug": "interfacerpc-20",
-    "Tags": ["rpc","services","aspnet"],
+    "Tags": [
+      "rpc",
+      "services",
+      "aspnet"
+    ],
     "IsPage": false
   },
   {

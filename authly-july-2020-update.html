@@ -48,17 +48,21 @@
             <div class="row" id="main">
                     <div class="col-md-9">
 
+<article>
+    <h2>Authly July 2020 Update</h2>
+    <time datetime="7/4/2020 6:24:53 PM +00:00">Published on Sat, 04 Jul 2020 18:24:53 GMT</time>
+    <div class="content">
+        <p>Development on Authly is going well. My first task was setting up the architecture and the Azure resources I needed. When I first created the solution I had brought in Identity Server 3.x but since then they've come out with 4.0, so I upgraded to that a few days ago. Doing so immediately affected what I was working on because the persisted grant models changed. I am in the middle of writing my own storage libraries currently. Grants will be stored both in Redis and SQL Azure: Redis for quick read access and SQL Azure for historical and billing purposes... which brings me to the billing model I've been thinking of.</p>
+<p>Most identity services are charging around $2 per active user a month. This cost is based on a <em>constantly</em> active user. If you have a user who logs in once a month they are considered active and you're paying $2 for them. It's essentially free money for the identity service. Conversely, you could have multiple users share the same account only be charged $2 total. Neither case accurately reflects the costs associated for the services rendered.</p>
+<p>I am thinking of charging on a per-login or per-token basis. Doing so would reflect actual usage more closely than what other companies are doing. I'm still working on the cost model but it will involve multiple tiers.</p>
+<p>One struggle I am having is using a dynamic list of Identity Providers. All usage I've seen expects IdPs to be defined in the app Startup. I'm still digging into this.</p>
+<p>I will try to blog about my progress once a month.</p>
 
-<h2>unit testing</h2>
-
-<p>There are 1 posts about this...</p>
-
-<ul>
-    <li>2014-12-02 - <a href="/unit-testing-azure-storage-in-tfs-build-server">Unit Testing Azure Storage in TFS/Build Server</a></li>
-</ul>
-
-
-
+    </div>
+    <div class="tags">
+        Tags: <a href="/tag/authly">authly</a>
+    </div>
+</article>
                 </div>
                 <div class="col-md-3">
                     <div class="card mb-3">

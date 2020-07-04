@@ -1,5 +1,13 @@
 [
   {
+    "Title": "Authly July 2020 Update",
+    "IsPublished": true,
+    "PublishedOn": "2020-07-04T18:24:53.0585816+00:00",
+    "Slug": "authly-july-2020-update",
+    "Tags": ["authly"],
+    "IsPage": false
+  },
+  {
     "Title": "Doin it again",
     "IsPublished": true,
     "PublishedOn": "2020-06-02T04:12:02.8471489+00:00",
@@ -16,7 +24,8 @@
       "identity server",
       "authentication",
       "authorization",
-      "access control"
+      "access control",
+      "authly"
     ],
     "IsPage": false
   },

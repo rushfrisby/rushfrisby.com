@@ -1,1 +1,0 @@
-I've changed blogging systems a lot. My first was one I created myself in Classic ASP.

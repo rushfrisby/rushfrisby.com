@@ -1,1 +1,0 @@
-[//]: # (Design Pattern: Object Pool)

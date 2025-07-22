@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Date Rush?</title>
+  <link rel="stylesheet" href="css/lightbox.min.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    p {
+      margin-bottom: 1em;
+    }
+    .clear {
+      clear: both;
+    }
+    form {
+      margin-top: 2em;
+      padding-right: 20px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 1em;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #5555ff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #3333ff;
+    }
+    .main {
+        float: left;
+        max-width: 755px;
+    }
+    .rsb {
+        float: right;
+        width: 125px;
+        text-align: center;
+    }
+    .rsb a {
+        display: inline-block;
+        border-radius: 10px !important;
+    }
+    .rsb img {
+        padding: 20px 0 20px 0;
+        border-radius: 10px !important;
+        vertical-align: middle;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="main">
+        
+        <h1>Interested in dating Rush?</h1>
+        <h2>Why This Page Exists</h2>
+        <p>Dating apps are exhausting. Swiping, matching, messaging... only to end up in the same surface-level conversations that go nowhere.</p>
+        <p>So I decided to try something different.</p>
+        <p>If you've landed here, you're probably a little curious and that's a good start. I made this page to give you a real sense of who I am and what I'm looking for. If something clicks for you, there's a short form at the bottom where you can reach out. It's not an application - just a way for us to skip the noise and actually connect.</p>
+
+        <h2>About Me</h2>
+        <p>I'm Rush (real name). I build software for a living but outside of work I'm all about experiences, deep conversations, spontaneous road trips, good food, time on the water, and genuine connection.</p>
+        <p>I value curiosity, humor, and emotional intelligence. I notice small things. I remember your coffee order. I'll send you a random meme that reminds me of you. I can be sarcastic one minute and thoughtful the next.</p>
+        <p>I'm in a good place in life - a job I love, two awesome kids, I'm focused, grounded, and happy on my own. I'm ready to share it with someone who's looking for something meaningful too.</p>
+
+        <h2>What I'm Looking For</h2>
+        <p>I'm looking for someone who's kind, open, playful, and grounded. You don't need to have it all figured out, but you know who you are and what matters to you.</p>
+        <p>It's important to me that you enjoy the outdoors - not just occasionally, but as part of your lifestyle. I spend a lot of time boating, hiking, fishing, paddle boarding, kayaking, and running. If you like staying active, getting some sun, and would rather be out on the water than stuck inside all weekend, we'll probably get along really well.</p>
+        <p>I'm not into games or drama. I'm into connection, honesty, and someone who makes life feel a little lighter just by being around.</p>
+
+        <h2>Let's Connect</h2>
+        <p>If you've read this far, thank you! That already says a lot.</p>
+        <p>If something here resonates with you, fill out the short form below. No pressure. Be yourself, and let's see where things go.</p>
+        <p>Afterwards you can <strike>stalk</strike> find me on Instagram at <a href="https://instagram.com/rushonerok" target="_blank">@rushonerok</a>.</p>
+    </div>
+
+    <div class="rsb">
+      <a href="images/boat.jpg" data-lightbox="rush-profile"><img src="images/boat-thumb.jpg" /></a>
+      <a href="images/cooper.jpg" data-lightbox="rush-profile"><img src="images/cooper-thumb.jpg" /></a>
+      <a href="images/hiking.jpg" data-lightbox="rush-profile"><img src="images/hiking-thumb.jpg" /></a>
+      <a href="images/skiing.jpg" data-lightbox="rush-profile"><img src="images/skiing-thumb.jpg" /></a>
+      <a href="images/spartan.jpg" data-lightbox="rush-profile"><img src="images/spartan-thumb.jpg" /></a>
+      <a href="images/suit.jpg" data-lightbox="rush-profile"><img src="images/suit-thumb.jpg" /></a>
+    </div>
+
+    <div class="clear"></div>
+
+    <form action="https://formspree.io/f/your-form-id" method="POST">
+      <label for="name">Your name</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="contact">Instagram handle</label>
+      <input type="text" id="contact" name="contact" required>
+
+      <label for="contact">Where in Orlando do you live? Or do you live somewhere else?</label>
+      <input type="text" id="contact" name="contact" required>
+
+      <label for="weekend">What's your ideal weekend?</label>
+      <textarea id="weekend" name="weekend" rows="4" required></textarea>
+
+      <label for="fun_fact">Tell me something fun or surprising about you</label>
+      <textarea id="fun_fact" name="fun_fact" rows="4"></textarea>
+
+      <label for="date_idea">If we had one night to do anything, what would it be?</label>
+      <textarea id="date_idea" name="date_idea" rows="4"></textarea>
+
+      <button type="submit">Send</button>
+    </form>
+
+    <p style="text-align:center; margin-top: 2em;">Looking forward to hearing from you!</p>
+  </div>
+
+  <script src="js/lightbox-plus-jquery.min.js"></script>
+</body>
+</html>
